@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_margin="10dp"
+    android:id="@+id/itemCarview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+<TextView
+    android:id="@+id/ivSTT"
+    android:layout_width="50dp"
+    android:layout_height="50dp"/>
+    <TextView
+        android:id="@+id/ivMaNV"
+        android:layout_width="70dp"
+        android:layout_height="50dp"/>
+    <TextView
+        android:id="@+id/ivTen"
+        android:layout_width="100dp"
+        android:layout_height="50dp"/>
+    <TextView
+        android:id="@+id/ivViTri"
+        android:layout_width="100dp"
+        android:layout_height="50dp"/>
+    <TextView
+        android:id="@+id/ivSDT"
+        android:layout_width="70dp"
+        android:layout_height="50dp"/>
+</LinearLayout>
+
+</androidx.cardview.widget.CardView>

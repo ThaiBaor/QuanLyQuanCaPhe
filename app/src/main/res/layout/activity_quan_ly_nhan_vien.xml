@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.QuanLyNhanVienActivity">
+    <LinearLayout
+        android:layout_marginVertical="10dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <androidx.appcompat.widget.SearchView
+        android:background="@drawable/search_view"
+        android:id="@+id/itemsSearchView"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"/>
+        <ImageView
+            android:layout_marginHorizontal="10dp"
+            android:src="@drawable/filters_icon"
+            android:id="@+id/ibtnSapxep"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+        <ImageView
+            android:src="@drawable/plus_small_icon"
+            android:id="@+id/ibtnThem"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:text="STT"
+            android:layout_width="70dp"
+            android:layout_height="50dp"/>
+        <TextView
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:text="Mã NV"
+            android:layout_width="70dp"
+            android:layout_height="50dp"/>
+        <TextView
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:text="Tên"
+            android:layout_width="100dp"
+            android:layout_height="50dp"/>
+        <TextView
+            android:textSize="18dp"
+            android:textAlignment="center"
+            android:text="Vị trí"
+            android:layout_width="70dp"
+            android:layout_height="50dp"/>
+        <TextView
+            android:textSize="18dp"
+            android:textAlignment="center"
+            android:text="SDT"
+            android:layout_width="70dp"
+            android:layout_height="50dp"/>
+    </LinearLayout>
+    <com.tsuryo.swipeablerv.SwipeableRecyclerView
+        android:id="@+id/itemSwipaebleRecyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+</LinearLayout>
