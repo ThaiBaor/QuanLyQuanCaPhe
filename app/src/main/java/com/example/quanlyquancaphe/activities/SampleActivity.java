@@ -1,4 +1,16 @@
 package com.example.quanlyquancaphe.activities;
 
-public class SampleActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+
+import com.example.quanlyquancaphe.R;
+
+public class SampleActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.sample_layout);
+    }
 }
