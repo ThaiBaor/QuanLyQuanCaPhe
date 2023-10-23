@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    tools:context=".activities.QuanLyMonActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <EditText
+            android:id="@+id/edtSearchBox"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
+            android:drawableLeft="@drawable/search_icon"
+            android:hint="Search" />
+        <Spinner
+            android:id="@+id/spnLoai"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"/>
+        <ImageButton
+            android:id="@+id/btnSort"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/filters_icon" />
+
+        <ImageButton
+            android:id="@+id/btnAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/plus_small_icon" />
+
+    </LinearLayout>
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tvBug"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <com.tsuryo.swipeablerv.SwipeableRecyclerView
+
+        android:id="@+id/rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:leftBgColor="#EF2C1D"
+        app:leftImage="@drawable/delete1_icon"
+        app:rightBgColor="#69DC30"
+        app:rightImage="@drawable/edit_icon"
+        app:textSize="20sp" />
+
+</LinearLayout>
