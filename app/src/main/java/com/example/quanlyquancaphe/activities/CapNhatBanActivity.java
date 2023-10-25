@@ -112,6 +112,7 @@ ValueEventListener eventListener;
         ban.setTenBan(edtTenBan.getText().toString());
         ban.setSoChoNgoi(Integer.parseInt(edtSoNguoiNgoi.getText().toString()));
         ban.setId_Khu(spKhu.getSelectedItemPosition());
+        ban.setId_TrangThaiBan(0);
         reference = FirebaseDatabase.getInstance().getReference("Ban");
         reference.child(ban.getId_Ban()).setValue(ban).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

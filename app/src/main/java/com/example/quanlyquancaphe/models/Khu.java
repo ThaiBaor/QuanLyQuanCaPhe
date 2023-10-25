@@ -1,10 +1,6 @@
 package com.example.quanlyquancaphe.models;
 
 public class Khu {
-    Integer id_Khu;
-    String tenKhu;
-
-
     public Integer getId_Khu() {
         return id_Khu;
     }
@@ -21,12 +17,21 @@ public class Khu {
         this.tenKhu = tenKhu;
     }
 
+    public Khu(Integer id_Khu, String tenKhu) {
+        this.id_Khu = id_Khu;
+        this.tenKhu = tenKhu;
+    }
     public Khu() {
     }
 
-    public Khu(int ma, String tenkhu) {
-        this.id_Khu = ma;
-        this.tenKhu = tenkhu;
+    @Override
+    public String toString() {
+        return "Khu{" +
+                "id_Khu=" + id_Khu +
+                ", tenKhu='" + tenKhu + '\'' +
+                '}';
     }
 
+    private Integer id_Khu;
+    private String tenKhu;
 }

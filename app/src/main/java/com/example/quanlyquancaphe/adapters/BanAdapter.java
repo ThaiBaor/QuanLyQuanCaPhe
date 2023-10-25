@@ -39,6 +39,7 @@ public class BanAdapter extends RecyclerView.Adapter<BanViewholder> {
         for (Khu item : dataKhu) {
             if (ban.getId_Khu() == item.getId_Khu()) {
                 holder.tvKhu.setText(item.getTenKhu());
+                break;
             }
         }
     }

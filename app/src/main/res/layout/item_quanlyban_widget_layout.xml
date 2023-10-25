@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activities.QuanLyBanActivity"
+    tools:showIn="@layout/manhinh_quanlyban_layout">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.tsuryo.swipeablerv.SwipeableRecyclerView
+        android:id="@+id/danhSachSwipeable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="150dp"
+        app:leftBgColor="@color/red"
+        app:leftImage="@drawable/delete_icon"
+        app:rightBgColor="@color/blue"
+        app:rightImage="@drawable/edit_icon"
+        app:textColor="@android:color/white"
+        app:textSize="20sp"
+        tools:layout_editor_absoluteX="141dp"
+        tools:layout_editor_absoluteY="0dp" />
+</LinearLayout>
