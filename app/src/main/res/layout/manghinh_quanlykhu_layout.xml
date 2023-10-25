@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.QuanLyKhuActivity"
+    android:background="@drawable/quanlykhu_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <EditText
+            android:id="@+id/edtSearchBox"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
+
+            android:hint="Search" />
+
+        <ImageButton
+            android:id="@+id/btnSort"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/filters_icon" />
+
+        <ImageButton
+            android:id="@+id/btnAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/plus_small_icon" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edtMa"
+            style="@style/EditEdt"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/quanlykhu_border_edt"
+            android:hint="Mã"></EditText>
+
+        <EditText
+            android:id="@+id/edtTenKhu"
+            style="@style/EditEdt"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/quanlykhu_border_edt"
+            android:hint="Tên khu"></EditText>
+
+        <Button
+            android:id="@+id/btnCapNhat"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:text="cập nhật"></Button>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:text="STT"></TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:paddingLeft="10dp"
+            android:text="Mã"></TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:paddingLeft="10dp"
+            android:text="Tên Khu"></TextView>
+    </LinearLayout>
+
+    <com.tsuryo.swipeablerv.SwipeableRecyclerView
+        android:id="@+id/recycle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></com.tsuryo.swipeablerv.SwipeableRecyclerView>
+
+</LinearLayout>
