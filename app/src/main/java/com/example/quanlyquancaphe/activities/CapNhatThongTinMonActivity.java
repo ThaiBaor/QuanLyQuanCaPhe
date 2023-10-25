@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.example.quanlyquancaphe.R;
@@ -42,6 +45,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 
 public class CapNhatThongTinMonActivity extends AppCompatActivity {
+    Toolbar toolbar;
     ImageView ivHinh;
     EditText edtTenMon, edtMoTa, edtDonGia, edtGiamGia;
     Spinner spnLoai;
@@ -60,10 +64,14 @@ public class CapNhatThongTinMonActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manhinh_capnhatthongtinmon_layout);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Cập nhật thông tin món");
-        actionBar.setDisplayHomeAsUpEnabled(true);
         setControl();
+        toolbar.setTitle("Cập nhật thông tin món");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         bundle = getIntent().getExtras();
         loadDataItem();
         loadDataSpinner();
@@ -101,10 +109,10 @@ public class CapNhatThongTinMonActivity extends AppCompatActivity {
         btnCapNhat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(CapNhatThongTinMonActivity.this, imageURL.toString(), Toast.LENGTH_SHORT).show();
-//                if (validate()){
-//                    save();
-//                }
+                //Toast.makeText(CapNhatThongTinMonActivity.this, imageURL.toString(), Toast.LENGTH_SHORT).show();
+                if (validate()){
+                    save();
+                }
             }
         });
 
@@ -118,6 +126,7 @@ public class CapNhatThongTinMonActivity extends AppCompatActivity {
         edtGiamGia = findViewById(R.id.edtGiamGia);
         spnLoai = findViewById(R.id.spnLoai);
         btnCapNhat = findViewById(R.id.btnCapNhat);
+        toolbar = findViewById(R.id.toolBar);
     }
 
     private void loadDataSpinner() {
@@ -126,11 +135,10 @@ public class CapNhatThongTinMonActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 loaiMonArrayList.clear();
-
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     LoaiMon loaiMon = dataSnapshot.getValue(LoaiMon.class);
                     loaiMonArrayList.add(loaiMon);
-                    spinnerArray[loaiMon.id_loai] = loaiMon.ten_loai;
+                    spinnerArray[loaiMon.getId_loai()] = loaiMon.getTen_loai();
                 }
                 spinnerAdapter = new ArrayAdapter(CapNhatThongTinMonActivity.this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, spinnerArray);
                 spnLoai.setAdapter(spinnerAdapter);
@@ -245,13 +253,8 @@ public class CapNhatThongTinMonActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(CapNhatThongTinMonActivity.this, "Lỗi:" + e.getMessage(), Toast.LENGTH_SHORT).show();
-
             }
         });
     }
-    @Override
-    public boolean onSupportNavigateUp() {
-        finish();
-        return true;
-    }
+
 }

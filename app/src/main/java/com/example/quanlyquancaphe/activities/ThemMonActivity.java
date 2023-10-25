@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -22,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 
 import com.example.quanlyquancaphe.R;
@@ -43,6 +46,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 
 public class ThemMonActivity extends AppCompatActivity {
+    Toolbar toolbar;
     ImageView ivHinh;
     EditText edtTenMon, edtMoTa, edtDonGia, edtGiamGia;
     Spinner spnLoai;
@@ -60,10 +64,14 @@ public class ThemMonActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manhinh_themmon_layout);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Thêm món");
-        actionBar.setDisplayHomeAsUpEnabled(true);
         setControl();
+        toolbar.setTitle("Thêm món");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         getDataSpinner();
 
         ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -98,12 +106,12 @@ public class ThemMonActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 LoaiMon loaiMon = loaiMonArrayList.get(i);
-                mon.setId_Loai(loaiMon.id_loai);
+                mon.setId_Loai(loaiMon.getId_loai());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                mon.setId_Loai(loaiMonArrayList.get(0).id_loai);
+                mon.setId_Loai(loaiMonArrayList.get(0).getId_loai());
             }
         });
 
@@ -117,7 +125,7 @@ public class ThemMonActivity extends AppCompatActivity {
                  for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                      LoaiMon loaiMon = dataSnapshot.getValue(LoaiMon.class);
                      loaiMonArrayList.add(loaiMon);
-                     spinnerArray[loaiMon.id_loai] = loaiMon.ten_loai;
+                     spinnerArray[loaiMon.getId_loai()] = loaiMon.getTen_loai();
                  }
                  spinnerAdapter = new ArrayAdapter(ThemMonActivity.this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, spinnerArray);
                  spnLoai.setAdapter(spinnerAdapter);
@@ -137,6 +145,7 @@ public class ThemMonActivity extends AppCompatActivity {
         edtGiamGia = findViewById(R.id.edtGiamGia);
         spnLoai = findViewById(R.id.spnLoai);
         btnThem = findViewById(R.id.btnThem);
+        toolbar = findViewById(R.id.toolBar);
 
     }
 
@@ -188,34 +197,39 @@ public class ThemMonActivity extends AppCompatActivity {
 
     private Boolean validate() {
         if (uri == null) {
+            Toast.makeText(this, "Chưa chọn hình", Toast.LENGTH_SHORT).show();
             return false;
         }
-        // giam gia
         if (edtGiamGia.getText().toString().isEmpty()) {
             mon.setGiamGia(0);
         } else if (Integer.parseInt(edtGiamGia.getText().toString()) > 100) {
+            edtGiamGia.requestFocus();
             edtGiamGia.setError(">100");
             return false;
         } else {
             mon.setGiamGia(Integer.parseInt(edtGiamGia.getText().toString()));
         }
-        // don gia
+
         if (edtDonGia.getText().toString().isEmpty()) {
+            edtDonGia.requestFocus();
             edtDonGia.setError("Empty");
             return false;
         }
         if (Double.parseDouble(edtDonGia.getText().toString()) > 9999999) {
+            edtDonGia.requestFocus();
             edtDonGia.setError(">9999999");
             return false;
         }
         mon.setDonGia(Double.parseDouble(edtDonGia.getText().toString()));
-        // mota
+
         if (edtMoTa.getText().toString().isEmpty()) {
             mon.setMoTa("");
-            return false;
         }
-        mon.setMoTa(edtMoTa.getText().toString());
+        else {
+            mon.setMoTa(edtMoTa.getText().toString());
+        }
         if (edtTenMon.getText().toString().isEmpty()) {
+            edtTenMon.requestFocus();
             edtTenMon.setError("Empty");
             return false;
         }
@@ -223,10 +237,5 @@ public class ThemMonActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        finish();
-        return true;
 
-    }
 }

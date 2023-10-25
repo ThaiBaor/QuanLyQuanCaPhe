@@ -8,6 +8,8 @@
     android:orientation="vertical"
     tools:context=".activities.CapNhatThongTinMonActivity">
 
+    <include layout="@layout/toolbar_layout" />
+
     <ImageView
         android:id="@+id/ivHinh"
         android:layout_width="150dp"

@@ -25,6 +25,8 @@ import com.tsuryo.swipeablerv.SwipeableRecyclerView;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -38,9 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 public class QuanLyMonActivity extends AppCompatActivity {
 
@@ -52,8 +52,6 @@ public class QuanLyMonActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
     StorageReference storageReference;
     ArrayList<Mon> data = new ArrayList<>();
-    ArrayList<Mon> filterData = new ArrayList<>();
-
     ArrayList<LoaiMon> loaiMonArrayList = new ArrayList<>();
     String[] spinnerArray = new String[4];
     ArrayAdapter spinnerAdapter;
@@ -66,14 +64,12 @@ public class QuanLyMonActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manhinh_quanlymon_layout);
         setControl();
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Quản lý món");
         adapter = new QuanLyMonAdapter(data, this);
         recyclerView.setAdapter(adapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        getDataSpinner();
-        loadData();
+        loadDataSpinner();
+        //loadData();
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,7 +98,7 @@ public class QuanLyMonActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    loadData();
+                    loadDataTheoLoaiVaTimKiem(spnLoai.getSelectedItemPosition(), edtSearchBox.getText());
                     sortCount = 0;
                 }
                 adapter.notifyDataSetChanged();
@@ -151,7 +147,7 @@ public class QuanLyMonActivity extends AppCompatActivity {
         spnLoai.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                layTheoLoai(i);
+                loadDataTheoLoaiVaTimKiem(i, edtSearchBox.getText());
             }
 
             @Override
@@ -167,25 +163,15 @@ public class QuanLyMonActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!edtSearchBox.getText().equals("")){
-                    search(charSequence);
-                    adapter = new QuanLyMonAdapter(filterData, QuanLyMonActivity.this );
-                    recyclerView.setAdapter(adapter);
-                }
+                loadDataTheoLoaiVaTimKiem(spnLoai.getSelectedItemPosition(), edtSearchBox.getText());
             }
+
             @Override
             public void afterTextChanged(Editable editable) {
 
             }
         });
-    }
-    private void search(CharSequence hint){
-        filterData.clear();
-        for (Mon mon : data){
-            if (mon.getTenMon().toLowerCase().contains(hint.toString().toLowerCase())){
-                filterData.add(mon);
-            }
-        }
+
     }
 
     @Override
@@ -194,52 +180,42 @@ public class QuanLyMonActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    private void layTheoLoai(Integer i) {
+    private void loadDataTheoLoaiVaTimKiem(Integer i, CharSequence key) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(QuanLyMonActivity.this).setTitle("").setMessage("Đang tải dữ liệu...");
+        builder.setCancelable(false);
+        AlertDialog dialog = builder.create();
+        dialog.show();
         databaseReference = FirebaseDatabase.getInstance().getReference("Mon");
         valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(QuanLyMonActivity.this).setTitle("").setMessage("Đang tải dữ liệu...");
-                builder.setCancelable(false);
-                AlertDialog dialog = builder.create();
-                dialog.show();
-                // Tham chiếu tới bảng trong database
-                databaseReference = FirebaseDatabase.getInstance().getReference("Mon");
-                // Bắt sự kiện khi dữ liệu trên database bị thay đổi
-                valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        data.clear();
-                        if (i != 3) {
-                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                Mon mon = dataSnapshot.getValue(Mon.class);
-                                if (mon.getId_Loai() == i) {
-                                    data.add(mon);
-                                }
-                            }
-                        } else {
-                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                Mon mon = dataSnapshot.getValue(Mon.class);
-                                data.add(mon);
-                            }
+                data.clear();
+                if (i != 3) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Mon mon = dataSnapshot.getValue(Mon.class);
+                        if (mon.getId_Loai() == i && mon.getTenMon().contains(key)) {
+                            data.add(mon);
                         }
-                        adapter = new QuanLyMonAdapter(data, QuanLyMonActivity.this);
-                        recyclerView.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
-                        dialog.dismiss();
                     }
+                } else {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Mon mon = dataSnapshot.getValue(Mon.class);
+                        if (mon.getTenMon().contains(key)) {
+                            data.add(mon);
+                        }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        dialog.dismiss();
-                        Toast.makeText(QuanLyMonActivity.this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                });
+                }
+                adapter = new QuanLyMonAdapter(data, QuanLyMonActivity.this);
+                recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                dialog.dismiss();
+                Toast.makeText(QuanLyMonActivity.this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -251,36 +227,7 @@ public class QuanLyMonActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rv);
         tvBug = findViewById(R.id.tvBug);
         spnLoai = findViewById(R.id.spnLoai);
-
-    }
-
-    private void loadData() {
-        // Tạo thông báo đang load dữ liệu
-        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("").setMessage("Đang tải dữ liệu...");
-        builder.setCancelable(false);
-        AlertDialog dialog = builder.create();
-        dialog.show();
-        // Tham chiếu tới bảng trong database
-        databaseReference = FirebaseDatabase.getInstance().getReference("Mon");
-        // Bắt sự kiện khi dữ liệu trên database bị thay đổi
-        valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                data.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Mon mon = dataSnapshot.getValue(Mon.class);
-                    data.add(mon);
-                }
-                adapter.notifyDataSetChanged();
-                dialog.dismiss();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                dialog.dismiss();
-                Toast.makeText(QuanLyMonActivity.this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        ;
     }
 
     private void delete(String imgUrl, String id_Mon) {
@@ -312,18 +259,19 @@ public class QuanLyMonActivity extends AppCompatActivity {
         });
     }
 
-    private void getDataSpinner() {
+    private void loadDataSpinner() {
         databaseReference = FirebaseDatabase.getInstance().getReference("LoaiMon");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                spinnerArray[3] = "Tất cả";
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     LoaiMon loaiMon = dataSnapshot.getValue(LoaiMon.class);
                     loaiMonArrayList.add(loaiMon);
-                    spinnerArray[loaiMon.id_loai] = loaiMon.ten_loai;
+                    spinnerArray[loaiMon.getId_loai()] = loaiMon.getTen_loai();
                 }
+                LoaiMon loai_Mon = new LoaiMon(3, "Tất cả");
+                spinnerArray[3] = loai_Mon.getTen_loai();
                 spinnerAdapter = new ArrayAdapter(QuanLyMonActivity.this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, spinnerArray);
                 spnLoai.setAdapter(spinnerAdapter);
                 spnLoai.setSelection(3);
@@ -331,7 +279,7 @@ public class QuanLyMonActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(QuanLyMonActivity.this, "Lỗi: "+error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
