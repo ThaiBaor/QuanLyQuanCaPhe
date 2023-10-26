@@ -31,7 +31,7 @@ public class NguyenLieuAdapter extends RecyclerView.Adapter<NguyenLieuHolder> {
     @NonNull
     @Override
     public NguyenLieuHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.quanlykho_item_layout, parent, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.item_quanlykho_layout, parent, false);
         return new NguyenLieuHolder(v);
     }
 

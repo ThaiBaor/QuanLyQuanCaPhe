@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     tools:openDrawer="start"
     android:fitsSystemWindows="true"
-    tools:context=".activities.MenuChucNangAdminActicity"
+    tools:context=".activities.MenuChucNangQuanLyActicity"
     android:orientation="vertical">
-
+    <include layout="@layout/toolbar"/>
     <androidx.drawerlayout.widget.DrawerLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,12 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <androidx.appcompat.widget.Toolbar
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:id="@+id/toolbar"
-                android:elevation="4dp">
-            </androidx.appcompat.widget.Toolbar>
+
 
         </LinearLayout>
 

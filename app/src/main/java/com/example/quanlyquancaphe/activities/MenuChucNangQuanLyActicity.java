@@ -16,17 +16,17 @@ import android.widget.Toast;
 import com.example.quanlyquancaphe.R;
 import com.google.android.material.navigation.NavigationView;
 
-public class MenuChucNangAdminActicity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MenuChucNangQuanLyActicity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     DrawerLayout drawerLayout;
-    Toolbar toolbar;
+    Toolbar toolBar;
     NavigationView navigationView;
     ActionBarDrawerToggle actionBarDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu_chuc_nang_admin_acticity);
+        setContentView(R.layout.menuchucnang_quanly_layout);
         setControl();
         setEvent();
         setdrawer();
@@ -41,10 +41,10 @@ public class MenuChucNangAdminActicity extends AppCompatActivity implements Navi
     }
 
     private void setdrawer(){
-        toolbar = findViewById(R.id.toolbar);
+        toolBar = findViewById(R.id.toolBar);
         drawerLayout = findViewById(R.id.nav_drawer_chucnang_admin);
         navigationView = findViewById(R.id.nav_view);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,toolbar,R.string.open_nav,R.string.close_nav);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,toolBar,R.string.open_nav,R.string.close_nav);
         //setSupportActionBar(toolbar);
         navigationView.setNavigationItemSelectedListener(this);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
