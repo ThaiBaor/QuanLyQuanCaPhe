@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.quanlyquancaphe.R;
@@ -25,16 +26,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.tsuryo.swipeablerv.SwipeLeftRightCallback;
 import com.tsuryo.swipeablerv.SwipeableRecyclerView;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 
 public class QuanLyKhuActivity extends AppCompatActivity {
+    Toolbar toolBar;
     EditText edtSearchBox, edtMa, edtKhu;
     ImageButton btnadd, btnSort;
     Button btnUpdate;
@@ -51,11 +50,9 @@ public class QuanLyKhuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manghinh_quanlykhu_layout);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Quản lý khu");
+        setContentView(R.layout.manhinh_quanlykhu_layout);
         setControl();
-        setEven();
+        setEvent();
     }
 
     private void setControl() {
@@ -66,9 +63,12 @@ public class QuanLyKhuActivity extends AppCompatActivity {
         edtKhu = findViewById(R.id.edtTenKhu);
         btnSort = findViewById(R.id.btnSort);
         btnUpdate = findViewById(R.id.btnCapNhat);
+        toolBar = findViewById(R.id.toolBar);
     }
 
-    private void setEven() {
+    private void setEvent() {
+        toolBar.setNavigationIcon(R.drawable.menu_icon);
+        toolBar.setTitle("Quản lý khu");
         khoiTao();
         quanLyKhuAdapter = new QuanLyKhuAdapter(QuanLyKhuActivity.this,data);
         SwipeableRecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);

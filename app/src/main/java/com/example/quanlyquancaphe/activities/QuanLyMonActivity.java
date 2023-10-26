@@ -3,6 +3,7 @@ package com.example.quanlyquancaphe.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,7 +44,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class QuanLyMonActivity extends AppCompatActivity {
-
+    Toolbar toolBar;
     TextView tvBug;
     EditText edtSearchBox;
     Spinner spnLoai;
@@ -64,6 +65,8 @@ public class QuanLyMonActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manhinh_quanlymon_layout);
         setControl();
+        toolBar.setTitle("Quản lý món");
+        toolBar.setNavigationIcon(R.drawable.menu_icon);
         adapter = new QuanLyMonAdapter(data, this);
         recyclerView.setAdapter(adapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -227,7 +230,7 @@ public class QuanLyMonActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rv);
         tvBug = findViewById(R.id.tvBug);
         spnLoai = findViewById(R.id.spnLoai);
-        ;
+        toolBar = findViewById(R.id.toolBar);
     }
 
     private void delete(String imgUrl, String id_Mon) {
@@ -279,7 +282,7 @@ public class QuanLyMonActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(QuanLyMonActivity.this, "Lỗi: "+error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(QuanLyMonActivity.this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

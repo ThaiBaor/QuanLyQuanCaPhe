@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context=".activities.CapNhatThongTinMonActivity">
 
-    <include layout="@layout/toolbar_layout" />
+    <include layout="@layout/toolbar" />
 
     <ImageView
         android:id="@+id/ivHinh"
@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="10dp"
-        android:background="@drawable/bao_edt_themmon_background"
+        android:background="@drawable/quanly_edittext_background"
         android:hint="Tên"
         android:paddingLeft="10dp" />
 
@@ -33,7 +33,7 @@
         android:layout_height="70dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/bao_edt_themmon_background"
+        android:background="@drawable/quanly_edittext_background"
         android:gravity="start"
         android:hint="Mô tả"
         android:paddingLeft="10dp"
@@ -51,7 +51,7 @@
             android:layout_height="40dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:background="@drawable/bao_edt_themmon_background"
+            android:background="@drawable/quanly_edittext_background"
             android:hint="Đơn giá"
             android:inputType="number"
             android:paddingLeft="10dp" />
@@ -70,17 +70,18 @@
         android:layout_height="40dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/bao_edt_themmon_background"
+        android:background="@drawable/quanly_edittext_background"
         android:hint="Giảm giá (%)"
         android:inputType="number"
         android:paddingLeft="10dp" />
 
     <Button
         android:id="@+id/btnCapNhat"
-        android:layout_width="200dp"
+        style="@style/quanly_button"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
-        android:background="@drawable/bao_btn_themmon_background"
+        android:background="@drawable/quanly_button_background"
         android:text="Cập nhật" />
 </LinearLayout>

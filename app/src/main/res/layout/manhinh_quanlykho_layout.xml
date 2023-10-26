@@ -4,26 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:openDrawer="start"
+    android:background="@drawable/background"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context=".activities.QuanLyKhoActivity"
-    android:orientation="vertical">
+    tools:openDrawer="start">
+
+    <include layout="@layout/toolbar" />
 
     <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/nav_drawer_chucnang_admin"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/nav_drawer_chucnang_admin">
+        android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <androidx.appcompat.widget.Toolbar
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:id="@+id/toolbar"
-                android:elevation="4dp"
-                app:title="QUẢN LÝ KHO">
-            </androidx.appcompat.widget.Toolbar>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -37,6 +34,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="10"
+                    android:drawableLeft="@drawable/search_icon"
                     android:hint="Search" />
 
                 <ImageButton
@@ -53,77 +51,77 @@
                     android:layout_weight="1"
                     android:src="@drawable/plus_small_icon" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_marginBottom="10dp"
                 android:gravity="center_horizontal"
-                android:layout_marginBottom="10dp">
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textSize="15dp"
+                    android:layout_weight="2"
+                    android:gravity="center"
                     android:text="STT"
                     android:textColor="#000"
-                    android:layout_weight="2"
-                    android:gravity="center"></TextView>
+                    android:textSize="15dp"></TextView>
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textSize="15dp"
+                    android:layout_weight="5"
+                    android:gravity="center"
                     android:text="NGUYÊN LIỆU"
                     android:textColor="#000"
-                    android:layout_weight="5"
-                    android:gravity="center"></TextView>
+                    android:textSize="15dp"></TextView>
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textSize="15dp"
+                    android:layout_weight="2"
+                    android:gravity="center"
                     android:text="NHẬP"
                     android:textColor="#000"
-                    android:layout_weight="2"
-                    android:gravity="center"></TextView>
+                    android:textSize="15dp"></TextView>
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textSize="15dp"
+                    android:layout_weight="2"
+                    android:gravity="center"
                     android:text="TỒN"
                     android:textColor="#000"
-                    android:layout_weight="2"
-                    android:gravity="center"></TextView>
+                    android:textSize="15dp"></TextView>
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:text="NGÀY NHẬP"
                     android:layout_weight="5"
+                    android:gravity="center"
+                    android:text="NGÀY NHẬP"
                     android:textColor="#000"
-                    android:gravity="center"></TextView>
+                    android:textSize="15dp"></TextView>
             </LinearLayout>
+
             <com.tsuryo.swipeablerv.SwipeableRecyclerView
                 android:id="@+id/recyclerview"
+                style="@style/quanly_recycleview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:leftBgColor="@color/red"
-
-                app:leftText="Delete"
-                app:rightBgColor="@color/blue"
-
                 app:textColor="@android:color/white"
                 app:textSize="20sp" />
 
         </LinearLayout>
 
         <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/nav_view"
             android:layout_gravity="start"
             app:headerLayout="@layout/nav_drawer_header"
-            app:menu="@menu/nav_drawer_menu_admin"
-            >
-        </com.google.android.material.navigation.NavigationView>
+            app:menu="@menu/nav_drawer_menu_admin"></com.google.android.material.navigation.NavigationView>
     </androidx.drawerlayout.widget.DrawerLayout>
 
 </LinearLayout>

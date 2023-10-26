@@ -19,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.quanlyquancaphe.R;
@@ -34,19 +33,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.tsuryo.swipeablerv.SwipeLeftRightCallback;
 import com.tsuryo.swipeablerv.SwipeableRecyclerView;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
 
 public class QuanLyKhoActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     DrawerLayout drawerLayout;
-    Toolbar toolbar;
+    Toolbar toolBar;
     NavigationView navigationView;
     ActionBarDrawerToggle actionBarDrawerToggle;
 
@@ -67,14 +60,15 @@ public class QuanLyKhoActivity extends AppCompatActivity implements NavigationVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quan_ly_kho);
+        setContentView(R.layout.manhinh_quanlykho_layout);
         setdrawer();
         setControl();
         setEvent();
     }
 
     private void setEvent() {
-
+        toolBar.setNavigationIcon(R.drawable.menu_icon);
+        toolBar.setTitle("Quản lý kho");
         getData();
         nguyenLieuAdapter = new NguyenLieuAdapter(this, data);
         swipeableRecyclerView.setAdapter(nguyenLieuAdapter);
@@ -238,10 +232,10 @@ public class QuanLyKhoActivity extends AppCompatActivity implements NavigationVi
     }
 
     private void setdrawer(){
-        toolbar = findViewById(R.id.toolbar);
+        toolBar = findViewById(R.id.toolBar);
         drawerLayout = findViewById(R.id.nav_drawer_chucnang_admin);
         navigationView = findViewById(R.id.nav_view);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,toolbar,R.string.open_nav,R.string.close_nav);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolBar,R.string.open_nav,R.string.close_nav);
         //setSupportActionBar(toolbar);
         navigationView.setNavigationItemSelectedListener(this);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);

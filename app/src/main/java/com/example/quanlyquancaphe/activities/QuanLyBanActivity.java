@@ -14,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tsuryo.swipeablerv.SwipeLeftRightCallback;
 import com.tsuryo.swipeablerv.SwipeableRecyclerView;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,24 +37,25 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class QuanLyBanActivity extends AppCompatActivity{
+public class QuanLyBanActivity extends AppCompatActivity {
+    Toolbar toolBar;
     FirebaseDatabase database;
     DatabaseReference reference;
     SwipeableRecyclerView recyclerView;
     ValueEventListener valueEventListener;
-ArrayList<Ban> data = new ArrayList<>();
-ArrayList<Khu> dataKhu = new ArrayList<>();
-ArrayList<Ban> filterData = new ArrayList<>();
-BanAdapter adapter;
-ImageButton btnSort,btnAdd;
-EditText edtSearchBox;
+    ArrayList<Ban> data = new ArrayList<>();
+    ArrayList<Khu> dataKhu = new ArrayList<>();
+    ArrayList<Ban> filterData = new ArrayList<>();
+    BanAdapter adapter;
+    ImageButton btnSort, btnAdd;
+    EditText edtSearchBox;
 
-//menu chuc nang
+    //menu chuc nang
     DrawerLayout drawerLayout;
-    Toolbar toolbar;
     NavigationView navigationView;
     ActionBarDrawerToggle actionBarDrawerToggle;
     Integer sortCount = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +67,8 @@ EditText edtSearchBox;
     }
 
     private void setEvent() {
-
+        toolBar.setNavigationIcon(R.drawable.menu_icon);
+        toolBar.setTitle("Quản lý bàn");
         adapter = new BanAdapter(data, this, dataKhu);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setAdapter(adapter);
@@ -117,6 +120,7 @@ EditText edtSearchBox;
                     recyclerView.setAdapter(adapter);
                 }
             }
+
             @Override
             public void afterTextChanged(Editable s) {
 
@@ -132,37 +136,37 @@ EditText edtSearchBox;
                     data.sort(new Comparator<Ban>() {
                         @Override
                         public int compare(Ban ban1, Ban ban2) {
-                            return ban1.getTenBan().substring(0,1).compareTo(ban2.getTenBan().substring(0,1)) > 1 ? 1 : -1;
+                            return ban1.getTenBan().substring(0, 1).compareTo(ban2.getTenBan().substring(0, 1)) > 1 ? 1 : -1;
                         }
                     });
-                }
-                else if (sortCount == 0){
+                } else if (sortCount == 0) {
                     ++sortCount;
                     data.sort(new Comparator<Ban>() {
                         @Override
                         public int compare(Ban ban1, Ban ban2) {
-                            return ban1.getTenBan().substring(0,1).compareTo(ban2.getTenBan().substring(0,1)) < 1 ? 1:-1;
+                            return ban1.getTenBan().substring(0, 1).compareTo(ban2.getTenBan().substring(0, 1)) < 1 ? 1 : -1;
                         }
                     });
-                }
-                else {
+                } else {
                     loadData();
                     sortCount = 0;
-                    }
+                }
                 adapter.notifyDataSetChanged();
             }
         });
     }
+
     //Xóa item database
-    private void DeleteItemDatabase(String key,String tenBang){
+    private void DeleteItemDatabase(String key, String tenBang) {
         final DatabaseReference reference = FirebaseDatabase.getInstance().getReference(tenBang);
         reference.child(key).removeValue();
     }
+
     //Hàm tìm kiếm
-    private void Search(CharSequence text){
+    private void Search(CharSequence text) {
         filterData.clear();
-        for (Ban ban : data){
-            if (ban.getTenBan().toLowerCase().contains(text.toString().toLowerCase())){
+        for (Ban ban : data) {
+            if (ban.getTenBan().toLowerCase().contains(text.toString().toLowerCase())) {
                 filterData.add(ban);
             }
         }
@@ -176,7 +180,7 @@ EditText edtSearchBox;
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 data.clear();
-                for (DataSnapshot item: snapshot.getChildren()){
+                for (DataSnapshot item : snapshot.getChildren()) {
                     Ban ban = item.getValue(Ban.class);
                     data.add(ban);
                 }
@@ -189,6 +193,7 @@ EditText edtSearchBox;
             }
         });
     }
+
     //Cập nhật data khu
     private void initDataKhu() {
         database = FirebaseDatabase.getInstance();
@@ -197,7 +202,7 @@ EditText edtSearchBox;
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 dataKhu.clear();
-                for (DataSnapshot item: snapshot.getChildren()){
+                for (DataSnapshot item : snapshot.getChildren()) {
                     Khu khu = item.getValue(Khu.class);
                     dataKhu.add(khu);
                 }
@@ -210,15 +215,16 @@ EditText edtSearchBox;
             }
         });
     }
+
     //Hàm chuyển đổi màn hình
-    private void chuyenManHinh(Activity activity, Class secondActivity){
+    private void chuyenManHinh(Activity activity, Class secondActivity) {
         Intent intent = new Intent(activity, secondActivity);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
     //Hàm load data
-    private void loadData(){
+    private void loadData() {
         // Tạo thông báo đang load dữ liệu
         AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("").setMessage("Đang tải dữ liệu...");
         builder.setCancelable(false);
@@ -252,7 +258,7 @@ EditText edtSearchBox;
         btnAdd = findViewById(R.id.btnAdd);
         btnSort = findViewById(R.id.btnSort);
         edtSearchBox = findViewById(R.id.edtSearchBox);
-
+        toolBar = findViewById(R.id.toolBar);
     }
 
 

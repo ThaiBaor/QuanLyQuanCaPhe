@@ -3,6 +3,7 @@ package com.example.quanlyquancaphe.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.AlertDialog;
@@ -40,19 +41,22 @@ public class QuanLyNhanVienActivity extends AppCompatActivity {
     SearchView searchView;
     ImageView ivThem, ivSapXep ;
     String key;
+    Toolbar toolBar;
     Integer sortCount = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manhinh_quan_ly_nhan_vien_layout);
-        setCtrol();
+        setContentView(R.layout.manhinh_quanlynhanvien_layout);
+        setControl();
+        toolBar.setTitle("Quản lý nhân viên");
+        toolBar.setNavigationIcon(R.drawable.menu_icon);
         loadData();
 
         swipeableRecyclerView.setListener(new SwipeLeftRightCallback.Listener() {
             @Override
             public void onSwipedLeft(int position) {
                 NhanVien nhanVien = datalist.get(position);
-                Intent intent = new Intent(QuanLyNhanVienActivity.this, CapNhapNhanVienActivity.class);
+                Intent intent = new Intent(QuanLyNhanVienActivity.this, CapNhatNhanVienActivity.class);
                 intent.putExtra("Avatar", nhanVien.getAvatar());
                 intent.putExtra("CCCDT",nhanVien.getImageCCCDT());
                 intent.putExtra("CCCDS", nhanVien.getImageCCCDS());
@@ -157,11 +161,13 @@ public class QuanLyNhanVienActivity extends AppCompatActivity {
         adapter.SearchDataList(searchlist);
     }
 
-    private void setCtrol() {
+    private void setControl() {
         swipeableRecyclerView = findViewById(R.id.itemSwipaebleRecyclerview);
         searchView = findViewById(R.id.SearchView);
         ivSapXep = findViewById(R.id.ibtnSapxep);
         ivThem = findViewById(R.id.ibtnThem);
+        toolBar = findViewById(R.id.toolBar);
+
 
     }
     private void deleteNhanVien(int position ){

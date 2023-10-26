@@ -7,6 +7,9 @@
     android:background="@drawable/background"
     android:orientation="vertical"
     tools:context=".activities.QuanLyMonActivity">
+
+    <include layout="@layout/toolbar" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -21,10 +24,12 @@
             android:layout_weight="10"
             android:drawableLeft="@drawable/search_icon"
             android:hint="Search" />
+
         <Spinner
             android:id="@+id/spnLoai"
             android:layout_width="120dp"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
+
         <ImageButton
             android:id="@+id/btnSort"
             android:layout_width="wrap_content"
@@ -40,21 +45,19 @@
             android:src="@drawable/plus_small_icon" />
 
     </LinearLayout>
+
     <TextView
-        android:visibility="gone"
-        android:text="bug"
         android:id="@+id/tvBug"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <com.tsuryo.swipeablerv.SwipeableRecyclerView
+        android:layout_height="wrap_content"
+        android:text="bug"
+        android:visibility="gone" />
 
+    <com.tsuryo.swipeablerv.SwipeableRecyclerView
         android:id="@+id/rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:leftBgColor="@color/red"
-        app:leftImage="@drawable/delete1_icon"
-        app:rightBgColor="@color/teal_700"
-        app:rightImage="@drawable/edit_icon"
+        style="@style/quanly_recycleview"
         app:textSize="20sp" />
 
 </LinearLayout>

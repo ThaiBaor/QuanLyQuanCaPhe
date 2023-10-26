@@ -2,6 +2,7 @@ package com.example.quanlyquancaphe.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,7 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.models.Ban;
@@ -32,27 +32,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ThemBanActivity extends AppCompatActivity {
-EditText edtMaBan, edtTenBan, edtSoChoNgoi;
-Spinner spKhu;
-Button btnAddBan;
-Toolbar tb;
-FirebaseDatabase database;
-DatabaseReference reference;
-ValueEventListener eventListener;
-Drawable draRe;
+
+    EditText edtMaBan, edtTenBan, edtSoChoNgoi;
+    Spinner spKhu;
+    Button btnAddBan;
+    Toolbar toolBar;
+    FirebaseDatabase database;
+    DatabaseReference reference;
+    ValueEventListener eventListener;
+    Drawable draRe;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manhinh_themban_layout);
         setControl();
-        tb.setTitle("Thêm bàn");
+
         setEvent();
     }
+
     //data spinner
     List<String> data = new ArrayList<>();
+
     private void setEvent() {
-        DataSpinner();
         //set tool bar
+        toolBar.setTitle("Thêm bàn");
+        toolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        DataSpinner();
+
 
         spKhu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -93,22 +105,16 @@ Drawable draRe;
                 spKhu.setSelection(0);
             }
         });
-        tb.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
 
-    public void DataSpinner(){
+    public void DataSpinner() {
         database = FirebaseDatabase.getInstance();
         reference = database.getReference().child("Khu");
         eventListener = reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 data.clear();
-                for(DataSnapshot item: snapshot.getChildren()){
+                for (DataSnapshot item : snapshot.getChildren()) {
                     Khu khu = item.getValue(Khu.class);
                     data.add(khu.getTenKhu());
                     ArrayAdapter adapter = new ArrayAdapter(ThemBanActivity.this, android.R.layout.simple_spinner_item, data);
@@ -123,7 +129,8 @@ Drawable draRe;
             }
         });
     }
-    private void chuyenManHinh(Activity activity, Class secondActivity){
+
+    private void chuyenManHinh(Activity activity, Class secondActivity) {
         Intent intent = new Intent(activity, secondActivity);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
@@ -136,6 +143,7 @@ Drawable draRe;
         edtSoChoNgoi = findViewById(R.id.edtSoChoNgoi);
         spKhu = findViewById(R.id.spKhu);
         btnAddBan = findViewById(R.id.btnAddBan);
-        tb = findViewById(R.id.toolBar);
+        toolBar = findViewById(R.id.toolBar);
+        toolBar = findViewById(R.id.toolBar);
     }
 }

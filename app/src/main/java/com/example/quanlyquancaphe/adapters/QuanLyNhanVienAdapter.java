@@ -18,7 +18,7 @@ import java.util.List;
 public class QuanLyNhanVienAdapter extends RecyclerView.Adapter<QuanLyNhanVienViewholder> {
     private Context context;
     private List<NhanVien> dataList;
-    String key ="";
+    String key = "";
 
     public QuanLyNhanVienAdapter(Context context, List<NhanVien> dataList) {
         this.context = context;
@@ -27,24 +27,26 @@ public class QuanLyNhanVienAdapter extends RecyclerView.Adapter<QuanLyNhanVienVi
 
     @NonNull
     @Override
-    public QuanLyNhanVienViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.items_quanlynhanvien_layout,parent,false);
-    return  new QuanLyNhanVienViewholder(view);
+    public QuanLyNhanVienViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quanlynhanvien_layout, parent, false);
+        return new QuanLyNhanVienViewholder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull QuanLyNhanVienViewholder holder, int position) {
-    holder.tvMaNhanVien.setText(dataList.get(position).getMaNhanVien());
-    holder.tvTenNhanVien.setText(dataList.get(position).getTenNhanVien());
-    holder.tvViTri.setText(dataList.get(position).getViTri());
-    holder.tvSDT.setText(dataList.get(position).getSoDienThoai());
+        holder.tvMaNhanVien.setText(dataList.get(position).getMaNhanVien());
+        holder.tvTenNhanVien.setText(dataList.get(position).getTenNhanVien());
+        holder.tvViTri.setText(dataList.get(position).getViTri());
+        holder.tvSDT.setText(dataList.get(position).getSoDienThoai());
     }
-    public void SearchDataList(ArrayList<NhanVien> search){
+
+    public void SearchDataList(ArrayList<NhanVien> search) {
         dataList = search;
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        return dataList.size() ;
+        return dataList.size();
     }
 }

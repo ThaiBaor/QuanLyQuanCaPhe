@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/quanlyban_background"
+    android:background="@drawable/background"
+    android:orientation="vertical"
     tools:context=".activities.QuanLyBanActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/toolbar"></include>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,6 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="10"
+            android:drawableLeft="@drawable/search_icon"
             android:hint="Search" />
 
         <ImageButton
@@ -34,55 +47,52 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:src="@drawable/plus_small_icon" />
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
             android:text="STT"
-            android:layout_weight="2"
-            android:textColor="#000"
+            android:textColor="@color/black"
             android:textSize="20dp"
-            android:textStyle="bold"
-            android:gravity="center"/>
+            android:textStyle="bold"></TextView>
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginLeft="50dp"
             android:text="TÊN"
-            android:gravity="center"
-            android:textColor="#000"
+            android:textColor="@color/black"
             android:textSize="20dp"
-            android:layout_weight="3"
-            android:textStyle="bold" />
+            android:textStyle="bold"></TextView>
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginLeft="50dp"
             android:text="CHỖ NGỒI"
-            android:textColor="#000"
-            android:gravity="center"
+            android:textColor="@color/black"
             android:textSize="20dp"
-            android:layout_weight="3"
-            android:textStyle="bold" />
+            android:textStyle="bold"></TextView>
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginLeft="40dp"
             android:text="KHU"
-            android:gravity="center"
-            android:layout_weight="3"
-            android:textColor="#000"
+            android:textColor="@color/black"
             android:textSize="20dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"></TextView>
     </LinearLayout>
 
     <include layout="@layout/item_quanlyban_widget_layout" />
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

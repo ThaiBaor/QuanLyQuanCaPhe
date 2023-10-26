@@ -2,6 +2,7 @@ package com.example.quanlyquancaphe.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 import android.view.View;
@@ -10,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.models.Ban;
@@ -27,39 +27,42 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class CapNhatBanActivity extends AppCompatActivity {
-Toolbar toolbar;
-EditText edtMaBan,edtTenBan, edtSoNguoiNgoi;
-Spinner spKhu;
-Button btnUpdate;
-Bundle bundle;
-String maBan, tenBan;
-Integer id_Khu, soChoNgoi;
-ArrayList<Ban> data = new ArrayList<>();
-ArrayList<Khu> datakhu = new ArrayList<>();
-ArrayList<String> dataSpinner = new ArrayList<>();
-FirebaseDatabase database;
-DatabaseReference reference;
-ValueEventListener eventListener;
+    Toolbar toolBar;
+    EditText edtMaBan, edtTenBan, edtSoNguoiNgoi;
+    Spinner spKhu;
+    Button btnUpdate;
+    Bundle bundle;
+    String maBan, tenBan;
+    Integer id_Khu, soChoNgoi;
+    ArrayList<Ban> data = new ArrayList<>();
+    ArrayList<Khu> datakhu = new ArrayList<>();
+    ArrayList<String> dataSpinner = new ArrayList<>();
+    FirebaseDatabase database;
+    DatabaseReference reference;
+    ValueEventListener eventListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manhinh_capnhatban_layout);
         setConTrol();
-        toolbar.setTitle("Cập nhật bàn");
+        toolBar.setTitle("Cập nhật bàn");
         //Truyền dữ liệu
         bundle = getIntent().getExtras();
         DataSpinner();
         InitDataItem();
         setEvent();
     }
+
     //get data ban
     private void InitDataItem() {
-        if(bundle != null){
+        if (bundle != null) {
             edtMaBan.setText(bundle.getString("id_Ban"));
             edtTenBan.setText(bundle.getString("tenBan"));
             edtSoNguoiNgoi.setText(String.valueOf(bundle.getInt("soChoNgoi")));
         }
     }
+
     //get data spinner
     private void DataSpinner() {
         database = FirebaseDatabase.getInstance();
@@ -68,7 +71,7 @@ ValueEventListener eventListener;
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 dataSpinner.clear();
-                for (DataSnapshot item: snapshot.getChildren()){
+                for (DataSnapshot item : snapshot.getChildren()) {
                     Khu khu = item.getValue(Khu.class);
                     dataSpinner.add(khu.getTenKhu());
                     ArrayAdapter adapter = new ArrayAdapter(CapNhatBanActivity.this, android.R.layout.simple_spinner_item, dataSpinner);
@@ -87,7 +90,7 @@ ValueEventListener eventListener;
 
     private void setEvent() {
         // Chuyển về màn hình quản lý bàn
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        toolBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -105,8 +108,9 @@ ValueEventListener eventListener;
             }
         });
     }
+
     //Hàm update data
-    private void Update(){
+    private void Update() {
         Ban ban = new Ban();
         ban.setId_Ban(edtMaBan.getText().toString());
         ban.setTenBan(edtTenBan.getText().toString());
@@ -128,7 +132,7 @@ ValueEventListener eventListener;
     }
 
     private void setConTrol() {
-        toolbar = findViewById(R.id.toolBar);
+        toolBar = findViewById(R.id.toolBar);
         edtMaBan = findViewById(R.id.edtMaBan);
         edtTenBan = findViewById(R.id.edtTenBan);
         edtSoNguoiNgoi = findViewById(R.id.edtSoChoNgoi);
