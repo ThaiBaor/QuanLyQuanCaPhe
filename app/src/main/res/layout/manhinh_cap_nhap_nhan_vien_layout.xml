@@ -6,33 +6,31 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activities.ThemNhanVienActivity">
-    <ImageView
-        android:id="@+id/ivBack"
-        android:src="@drawable/delete1_icon"
-        android:layout_width="30dp"
-        android:layout_height="30dp"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical">
-
         <ImageView
+            android:layout_marginTop="10dp"
             android:background="@drawable/quoc_images_quanlynhanvien_background"
             android:id="@+id/ivEditAvatarNhanVien"
             android:layout_width="100dp"
             android:layout_height="100dp" />
     </LinearLayout>
-
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tvTestLoi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="10dp"
         android:gravity="center"
         android:orientation="horizontal">
-
         <EditText
+            android:enabled="false"
             android:hint="Mã nhân viên"
             android:layout_marginRight="10dp"
             android:padding="15dp"
@@ -46,13 +44,11 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content" />
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical">
-
         <EditText
             android:padding="15dp"
             android:id="@+id/edtEditTenNV"
@@ -61,7 +57,6 @@
             android:layout_marginVertical="10dp"
             android:background="@drawable/quoc_edt_quanlynhanvien_background"
             android:hint="Tên nhân viên" />
-
         <EditText
             android:padding="15dp"
             android:id="@+id/edtEditSDT"
@@ -71,7 +66,6 @@
             android:background="@drawable/quoc_edt_quanlynhanvien_background"
             android:hint="Số điện thoại"
             android:inputType="number" />
-
         <EditText
             android:padding="15dp"
             android:id="@+id/edtEditDiaChi"
@@ -96,7 +90,6 @@
         android:text="CCCD"
         android:layout_width="350dp"
         android:layout_height="wrap_content"/>
-
     <LinearLayout
         android:layout_width="360dp"
         android:layout_height="wrap_content"
@@ -118,7 +111,6 @@
             android:layout_width="100dp"
             android:layout_height="100dp" />
     </LinearLayout>
-
     <Button
         android:id="@+id/btnCapNhapData"
         android:textStyle="bold"

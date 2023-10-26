@@ -12,14 +12,15 @@ import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.models.NhanVien;
 import com.example.quanlyquancaphe.viewholders.QuanLyNhanVienViewholder;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class QuanLyNhanVienAdpter extends RecyclerView.Adapter<QuanLyNhanVienViewholder> {
+public class QuanLyNhanVienAdapter extends RecyclerView.Adapter<QuanLyNhanVienViewholder> {
     private Context context;
     private List<NhanVien> dataList;
     String key ="";
 
-    public QuanLyNhanVienAdpter(Context context, List<NhanVien> dataList) {
+    public QuanLyNhanVienAdapter(Context context, List<NhanVien> dataList) {
         this.context = context;
         this.dataList = dataList;
     }
@@ -33,9 +34,13 @@ public class QuanLyNhanVienAdpter extends RecyclerView.Adapter<QuanLyNhanVienVie
     @Override
     public void onBindViewHolder(@NonNull QuanLyNhanVienViewholder holder, int position) {
     holder.tvMaNhanVien.setText(dataList.get(position).getMaNhanVien());
-    holder.tvTenNhanVien.setText(dataList.get(position).getTenNhan());
+    holder.tvTenNhanVien.setText(dataList.get(position).getTenNhanVien());
     holder.tvViTri.setText(dataList.get(position).getViTri());
     holder.tvSDT.setText(dataList.get(position).getSoDienThoai());
+    }
+    public void SearchDataList(ArrayList<NhanVien> search){
+        dataList = search;
+        notifyDataSetChanged();
     }
 
     @Override
