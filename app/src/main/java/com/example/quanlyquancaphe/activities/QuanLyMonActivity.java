@@ -1,9 +1,11 @@
 package com.example.quanlyquancaphe.activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,8 +13,10 @@ import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.adapters.QuanLyMonAdapter;
 import com.example.quanlyquancaphe.models.LoaiMon;
 import com.example.quanlyquancaphe.models.Mon;
+import com.example.quanlyquancaphe.services.MenuSideBarAdmin;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,11 +30,10 @@ import com.tsuryo.swipeablerv.SwipeableRecyclerView;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -43,7 +46,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class QuanLyMonActivity extends AppCompatActivity {
+public class QuanLyMonActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     Toolbar toolBar;
     TextView tvBug;
     EditText edtSearchBox;
@@ -59,11 +62,15 @@ public class QuanLyMonActivity extends AppCompatActivity {
     QuanLyMonAdapter adapter;
     ValueEventListener valueEventListener;
     Integer sortCount = 0;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    ActionBarDrawerToggle actionBarDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manhinh_quanlymon_layout);
+        setdrawer();
         setControl();
         toolBar.setTitle("Quản lý món");
         toolBar.setNavigationIcon(R.drawable.menu_icon);
@@ -285,5 +292,23 @@ public class QuanLyMonActivity extends AppCompatActivity {
                 Toast.makeText(QuanLyMonActivity.this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void setdrawer(){
+        toolBar = findViewById(R.id.toolBar);
+        drawerLayout = findViewById(R.id.nav_drawer_chucnang_admin);
+        navigationView = findViewById(R.id.nav_view);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,toolBar,R.string.open_nav,R.string.close_nav);
+        //setSupportActionBar(toolbar);
+        navigationView.setNavigationItemSelectedListener(this);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        MenuSideBarAdmin menuSideBarAdmin = new MenuSideBarAdmin();
+        menuSideBarAdmin.chonManHinh(item.getItemId(),QuanLyMonActivity.this);
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 }

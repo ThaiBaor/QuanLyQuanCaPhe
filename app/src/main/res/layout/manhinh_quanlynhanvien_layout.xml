@@ -4,80 +4,99 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:openDrawer="start"
+    android:fitsSystemWindows="true"
     android:background="@drawable/background"
-    android:orientation="vertical"
-    tools:context=".activities.QuanLyNhanVienActivity">
-
-    <include layout="@layout/toolbar" />
-
-    <LinearLayout
+    tools:context=".activities.QuanLyNhanVienActivity"
+    android:orientation="vertical">
+    <include layout="@layout/toolbar"/>
+    <androidx.drawerlayout.widget.DrawerLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginVertical="10dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="10dp">
+        android:layout_height="match_parent"
+        android:id="@+id/nav_drawer_chucnang_admin">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginVertical="10dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp">
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/SearchView"
-            android:layout_width="280dp"
-            android:layout_height="40dp"
-            android:background="@drawable/search_view"
-            app:iconifiedByDefault="false" />
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/SearchView"
+                    android:layout_width="280dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/search_view"
+                    app:iconifiedByDefault="false" />
 
-        <ImageView
-            android:id="@+id/ibtnSapxep"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginHorizontal="10dp"
-            android:src="@drawable/filters_icon" />
+                <ImageView
+                    android:id="@+id/ibtnSapxep"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:src="@drawable/filters_icon" />
 
-        <ImageView
-            android:id="@+id/ibtnThem"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/plus_small_icon" />
-    </LinearLayout>
+                <ImageView
+                    android:id="@+id/ibtnThem"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/plus_small_icon" />
+            </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginVertical="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginVertical="10dp">
 
-        <TextView
-            android:layout_width="70dp"
-            android:layout_height="30dp"
-            android:text="Mã NV"
-            android:textAlignment="center"
-            android:textSize="18dp" />
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:text="Mã NV"
+                    android:textAlignment="center"
+                    android:textSize="18dp" />
 
-        <TextView
-            android:layout_width="130dp"
-            android:layout_height="30dp"
-            android:text="Tên"
-            android:textAlignment="center"
-            android:textSize="18dp" />
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="30dp"
+                    android:text="Tên"
+                    android:textAlignment="center"
+                    android:textSize="18dp" />
 
-        <TextView
-            android:layout_width="90dp"
-            android:layout_height="30dp"
-            android:text="Vị trí"
-            android:textAlignment="center"
-            android:textSize="18dp" />
+                <TextView
+                    android:layout_width="90dp"
+                    android:layout_height="30dp"
+                    android:text="Vị trí"
+                    android:textAlignment="center"
+                    android:textSize="18dp" />
 
-        <TextView
-            android:layout_width="120dp"
-            android:layout_height="30dp"
-            android:text="SDT"
-            android:textAlignment="center"
-            android:textSize="18dp" />
-    </LinearLayout>
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="30dp"
+                    android:text="SDT"
+                    android:textAlignment="center"
+                    android:textSize="18dp" />
+            </LinearLayout>
 
-    <com.tsuryo.swipeablerv.SwipeableRecyclerView
-        android:id="@+id/itemSwipaebleRecyclerview"
-        style="@style/quanly_recycleview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+            <com.tsuryo.swipeablerv.SwipeableRecyclerView
+                android:id="@+id/itemSwipaebleRecyclerview"
+                style="@style/quanly_recycleview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
 
+        <com.google.android.material.navigation.NavigationView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/nav_view"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/nav_drawer_header"
+            app:menu="@menu/nav_drawer_menu_admin"
+            >
+        </com.google.android.material.navigation.NavigationView>
+    </androidx.drawerlayout.widget.DrawerLayout>
 
 </LinearLayout>

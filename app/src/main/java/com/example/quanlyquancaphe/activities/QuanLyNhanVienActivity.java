@@ -1,15 +1,19 @@
 package com.example.quanlyquancaphe.activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -17,7 +21,9 @@ import android.widget.Toast;
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.adapters.QuanLyNhanVienAdapter;
 import com.example.quanlyquancaphe.models.NhanVien;
+import com.example.quanlyquancaphe.services.MenuSideBarAdmin;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,7 +38,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class QuanLyNhanVienActivity extends AppCompatActivity {
+public class QuanLyNhanVienActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     SwipeableRecyclerView swipeableRecyclerView;
     List<NhanVien> datalist = new ArrayList<>();
     DatabaseReference databaseReference;
@@ -42,11 +48,15 @@ public class QuanLyNhanVienActivity extends AppCompatActivity {
     ImageView ivThem, ivSapXep ;
     String key;
     Toolbar toolBar;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    ActionBarDrawerToggle actionBarDrawerToggle;
     Integer sortCount = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manhinh_quanlynhanvien_layout);
+        setdrawer();
         setControl();
         toolBar.setTitle("Quản lý nhân viên");
         toolBar.setNavigationIcon(R.drawable.menu_icon);
@@ -221,4 +231,24 @@ public class QuanLyNhanVienActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void setdrawer(){
+        toolBar = findViewById(R.id.toolBar);
+        drawerLayout = findViewById(R.id.nav_drawer_chucnang_admin);
+        navigationView = findViewById(R.id.nav_view);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,toolBar,R.string.open_nav,R.string.close_nav);
+        //setSupportActionBar(toolbar);
+        navigationView.setNavigationItemSelectedListener(this);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        MenuSideBarAdmin menuSideBarAdmin = new MenuSideBarAdmin();
+        menuSideBarAdmin.chonManHinh(item.getItemId(), QuanLyNhanVienActivity.this);
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
 }
