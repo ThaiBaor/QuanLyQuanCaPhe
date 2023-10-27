@@ -40,21 +40,18 @@ public class QuanLyMonAdapter extends RecyclerView.Adapter<QuanLyMonViewHolder> 
         NumberFormat nf = NumberFormat.getNumberInstance();
         Mon mon = data.get(position);
         holder.tenMon.setText(mon.getTenMon());
-        holder.donGia.setText(nf.format(mon.getDonGia())+"đ");
-        if (mon.getGiamGia()==0){
+        holder.moTa.setText(mon.getMoTa());
+        holder.donGia.setTextSize(17);
+        holder.donGia.setTextColor(Color.rgb(0, 0, 255));
+        holder.donGia.setText(nf.format(mon.getDonGia()) + "đ");
+        if (mon.getGiamGia() == 0) {
             holder.giamGia.setVisibility(View.GONE);
-            holder.donGia.setTextColor(Color.rgb(255,0,0));
-            holder.donGia.setTextSize(17);
-        }
-        else {
-            holder.donGia.setTextColor(Color.rgb(110,119,119));
-            holder.donGia.setTextSize(13);
-            holder.donGia.setPaintFlags(holder.donGia.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.giamGia.setText(nf.format(mon.getDonGia()*(100-mon.getGiamGia())/100)+"đ");
-            holder.giamGia.setTextColor(Color.rgb(255,0,0));
+        } else {
+            holder.giamGia.setVisibility(View.VISIBLE);
+            holder.giamGia.setTextColor(Color.rgb(255, 0, 0));
+            holder.giamGia.setText("Giảm: " + mon.getGiamGia() + "%");
             holder.giamGia.setTextSize(17);
         }
-        holder.moTa.setText(mon.getMoTa());
         Glide.with(context).load(data.get(position).getHinh()).into(holder.hinh);
     }
 
