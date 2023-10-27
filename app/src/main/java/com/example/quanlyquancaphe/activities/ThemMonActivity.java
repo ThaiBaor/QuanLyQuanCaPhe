@@ -5,14 +5,12 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -22,9 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 
 import com.example.quanlyquancaphe.R;
@@ -46,7 +42,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 
 public class ThemMonActivity extends AppCompatActivity {
-    Toolbar toolbar;
+    Toolbar toolBar;
     ImageView ivHinh;
     EditText edtTenMon, edtMoTa, edtDonGia, edtGiamGia;
     Spinner spnLoai;
@@ -65,8 +61,8 @@ public class ThemMonActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manhinh_themmon_layout);
         setControl();
-        toolbar.setTitle("Thêm món");
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        toolBar.setTitle("Thêm món");
+        toolBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -145,7 +141,7 @@ public class ThemMonActivity extends AppCompatActivity {
         edtGiamGia = findViewById(R.id.edtGiamGia);
         spnLoai = findViewById(R.id.spnLoai);
         btnThem = findViewById(R.id.btnThem);
-        toolbar = findViewById(R.id.toolBar);
+        toolBar = findViewById(R.id.toolBar);
 
     }
 
@@ -200,16 +196,18 @@ public class ThemMonActivity extends AppCompatActivity {
             Toast.makeText(this, "Chưa chọn hình", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (edtGiamGia.getText().toString().isEmpty()) {
-            mon.setGiamGia(0);
-        } else if (Integer.parseInt(edtGiamGia.getText().toString()) > 100) {
-            edtGiamGia.requestFocus();
-            edtGiamGia.setError(">100");
+        if (edtTenMon.getText().toString().isEmpty()) {
+            edtTenMon.requestFocus();
+            edtTenMon.setError("Empty");
             return false;
-        } else {
-            mon.setGiamGia(Integer.parseInt(edtGiamGia.getText().toString()));
         }
-
+        mon.setTenMon(edtTenMon.getText().toString());
+        if (edtMoTa.getText().toString().isEmpty()) {
+            mon.setMoTa("");
+        }
+        else {
+            mon.setMoTa(edtMoTa.getText().toString());
+        }
         if (edtDonGia.getText().toString().isEmpty()) {
             edtDonGia.requestFocus();
             edtDonGia.setError("Empty");
@@ -221,19 +219,15 @@ public class ThemMonActivity extends AppCompatActivity {
             return false;
         }
         mon.setDonGia(Double.parseDouble(edtDonGia.getText().toString()));
-
-        if (edtMoTa.getText().toString().isEmpty()) {
-            mon.setMoTa("");
-        }
-        else {
-            mon.setMoTa(edtMoTa.getText().toString());
-        }
-        if (edtTenMon.getText().toString().isEmpty()) {
-            edtTenMon.requestFocus();
-            edtTenMon.setError("Empty");
+        if (edtGiamGia.getText().toString().isEmpty()) {
+            mon.setGiamGia(0);
+        } else if (Integer.parseInt(edtGiamGia.getText().toString()) > 100) {
+            edtGiamGia.requestFocus();
+            edtGiamGia.setError(">100");
             return false;
+        } else {
+            mon.setGiamGia(Integer.parseInt(edtGiamGia.getText().toString()));
         }
-        mon.setTenMon(edtTenMon.getText().toString());
         return true;
     }
 
