@@ -15,7 +15,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.quanlyquancaphe.R;
@@ -45,7 +45,8 @@ public class QuanLyNhanVienActivity extends AppCompatActivity implements Navigat
     QuanLyNhanVienAdapter adapter;
     ValueEventListener listener;
     SearchView searchView;
-    ImageView ivThem, ivSapXep ;
+    ImageButton ivThem;
+    ImageButton ivSapXep ;
     String key;
     Toolbar toolBar;
     DrawerLayout drawerLayout;
