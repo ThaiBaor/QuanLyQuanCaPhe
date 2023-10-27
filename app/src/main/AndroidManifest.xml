@@ -34,10 +34,7 @@
         <activity
             android:name=".activities.QuanLyKhoActivity"
             android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity
             android:name=".activities.ThemNguyenLieuActivity"
@@ -75,8 +72,17 @@
         <activity
             android:name=".activities.QuanLyNhanVienActivity"
             android:exported="true">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+
+        <activity
+            android:name=".activities.MenuChucNangQuanLyActicity"
+            android:exported="true">
+        </activity>
+
     </application>
 
 </manifest>

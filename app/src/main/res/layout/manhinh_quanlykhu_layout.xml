@@ -1,116 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tool="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:openDrawer="start"
+    android:fitsSystemWindows="true"
     android:background="@drawable/background"
-    android:orientation="vertical"
-    tools:context=".activities.QuanLyKhuActivity">
-
-    <include layout="@layout/toolbar" />
-
-    <LinearLayout
+    tools:context=".activities.QuanLyKhuActivity"
+    android:orientation="vertical">
+    <include layout="@layout/toolbar"/>
+    <androidx.drawerlayout.widget.DrawerLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_margin="10dp"
-        android:orientation="horizontal"
-        android:weightSum="10">
-
-        <EditText
-            android:id="@+id/edtSearchBox"
+        android:layout_height="match_parent"
+        android:id="@+id/nav_drawer_chucnang_admin">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="10"
-            android:drawableLeft="@drawable/search_icon"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:orientation="horizontal"
+                android:weightSum="10">
 
-            android:hint="Search" />
+                <EditText
+                    android:id="@+id/edtSearchBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="10"
+                    android:drawableLeft="@drawable/search_icon"
 
-        <ImageButton
-            android:id="@+id/btnSort"
+                    android:hint="Search" />
+
+                <ImageButton
+                    android:id="@+id/btnSort"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/filters_icon" />
+
+                <ImageButton
+                    android:id="@+id/btnAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/plus_small_icon" />
+
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <EditText
+
+                    android:id="@+id/edtMa"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/quanly_edittext_background"
+                    android:hint="Mã"
+                    android:padding="10dp"></EditText>
+
+                <EditText
+                    android:id="@+id/edtTenKhu"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/quanly_edittext_background"
+                    android:hint="Tên khu"
+                    android:padding="10dp"></EditText>
+
+                <Button
+                    android:id="@+id/btnCapNhat"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/quanly_button_background"
+                    android:text="cập nhật"></Button>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="30dp"
+                    android:text="STT"></TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="30dp"
+                    android:paddingLeft="10dp"
+                    android:text="Mã"></TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="30dp"
+                    android:paddingLeft="10dp"
+                    android:text="Tên Khu"></TextView>
+            </LinearLayout>
+
+            <com.tsuryo.swipeablerv.SwipeableRecyclerView
+                android:id="@+id/recycle"
+                style="@style/quanly_recycleview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></com.tsuryo.swipeablerv.SwipeableRecyclerView>
+        </LinearLayout>
+
+        <com.google.android.material.navigation.NavigationView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/filters_icon" />
-
-        <ImageButton
-            android:id="@+id/btnAdd"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/plus_small_icon" />
-
-    </LinearLayout>
-
-    <LinearLayout
-
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal">
-
-        <EditText
-
-            android:id="@+id/edtMa"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/quanly_edittext_background"
-            android:hint="Mã"
-            android:padding="10dp"></EditText>
-
-        <EditText
-            android:id="@+id/edtTenKhu"
-            android:layout_width="170dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/quanly_edittext_background"
-            android:hint="Tên khu"
-            android:padding="10dp"></EditText>
-
-        <Button
-            android:id="@+id/btnCapNhat"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_marginRight="4dp"
-            android:layout_weight="1"
-            android:background="@drawable/quanly_button_background"
-            android:text="cập nhật"></Button>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            android:text="STT"></TextView>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            android:paddingLeft="10dp"
-            android:text="Mã"></TextView>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            android:paddingLeft="10dp"
-            android:text="Tên Khu"></TextView>
-    </LinearLayout>
-
-    <com.tsuryo.swipeablerv.SwipeableRecyclerView
-        android:id="@+id/recycle"
-        style="@style/quanly_recycleview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.tsuryo.swipeablerv.SwipeableRecyclerView>
+            android:id="@+id/nav_view"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/nav_drawer_header"
+            app:menu="@menu/nav_drawer_menu_admin"
+            >
+        </com.google.android.material.navigation.NavigationView>
+    </androidx.drawerlayout.widget.DrawerLayout>
 
 </LinearLayout>

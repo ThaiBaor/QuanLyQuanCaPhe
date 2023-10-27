@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.adapters.NguyenLieuAdapter;
 import com.example.quanlyquancaphe.models.NguyenLieu;
+import com.example.quanlyquancaphe.services.MenuSideBarAdmin;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -251,37 +252,8 @@ public class QuanLyKhoActivity extends AppCompatActivity implements NavigationVi
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.nav_thongke:
-                //hàm recreate dùng để load lại màn hình khi nhấn chuyển màn hình về màn hình hiện tại
-                //recreate();
-                Toast.makeText(this, "Thống kê", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_qlnhanvien:
-                //hàm chuyển màn hình dùng để chuyển màn hình
-                // tham số thứ nhất là tên màn hình hiện tại .this
-                // VD: manhinhthunhat.this
-                // tham số thứ 2 là tên màn hình cần chuyển .class
-                // VD: manhinhthuhai.class
-                //chuyenManHinh(MenuChucNangAdminActicity.this, chuyenmanhinh.class);
-                Toast.makeText(this, "Quản lý nhân viên", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_qlban:
-                Toast.makeText(this, "Quản lý bàn", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_qlkhu:
-                Toast.makeText(this, "Quản lý khu", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_qlmon:
-                Toast.makeText(this, "Quản lý món", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_qlkho:
-                Toast.makeText(this, "Quản lý kho", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_dangxuat:
-                Toast.makeText(this, "Đăng xuất", Toast.LENGTH_SHORT).show();
-                break;
-        }
+        MenuSideBarAdmin menuSideBarAdmin = new MenuSideBarAdmin();
+        menuSideBarAdmin.chonManHinh(item.getItemId(), QuanLyKhoActivity.this);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
