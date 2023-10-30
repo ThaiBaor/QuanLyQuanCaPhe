@@ -68,7 +68,9 @@
         <activity
             android:name=".activities.ThemNhanVienActivity"
             android:exported="false" />
-
+        <activity
+            android:name=".activities.CapNhatNguyenLieuActivity"
+            android:exported="false" />
         <activity
             android:name=".activities.QuanLyNhanVienActivity"
             android:exported="true">
