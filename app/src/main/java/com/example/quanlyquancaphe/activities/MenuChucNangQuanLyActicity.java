@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.quanlyquancaphe.R;
+import com.example.quanlyquancaphe.services.MenuSideBarPhucVu;
 import com.google.android.material.navigation.NavigationView;
 
 public class MenuChucNangQuanLyActicity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -26,7 +27,7 @@ public class MenuChucNangQuanLyActicity extends AppCompatActivity implements Nav
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.menuchucnang_quanly_layout);
+        setContentView(R.layout.menuchucnang_phucvu_layout);
         setControl();
         setEvent();
         setdrawer();
@@ -42,7 +43,7 @@ public class MenuChucNangQuanLyActicity extends AppCompatActivity implements Nav
 
     private void setdrawer(){
         toolBar = findViewById(R.id.toolBar);
-        drawerLayout = findViewById(R.id.nav_drawer_chucnang_admin);
+        drawerLayout = findViewById(R.id.nav_drawer_chucnang_phuc_vu);
         navigationView = findViewById(R.id.nav_view);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,toolBar,R.string.open_nav,R.string.close_nav);
         //setSupportActionBar(toolbar);
@@ -60,37 +61,9 @@ public class MenuChucNangQuanLyActicity extends AppCompatActivity implements Nav
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.nav_thongke:
-                //hàm recreate dùng để load lại màn hình khi nhấn chuyển màn hình về màn hình hiện tại
-                //recreate();
-                Toast.makeText(this, "Thống kê", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_qlnhanvien:
-                //hàm chuyển màn hình dùng để chuyển màn hình
-                // tham số thứ nhất là tên màn hình hiện tại .this
-                // VD: manhinhthunhat.this
-                // tham số thứ 2 là tên màn hình cần chuyển .class
-                // VD: manhinhthuhai.class
-                //chuyenManHinh(MenuChucNangAdminActicity.this, chuyenmanhinh.class);
-                Toast.makeText(this, "Quản lý nhân viên", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_qlban:
-                Toast.makeText(this, "Quản lý bàn", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_qlkhu:
-                Toast.makeText(this, "Quản lý khu", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_qlmon:
-                Toast.makeText(this, "Quản lý món", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_qlkho:
-                Toast.makeText(this, "Quản lý kho", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_dangxuat:
-                Toast.makeText(this, "Đăng xuất", Toast.LENGTH_SHORT).show();
-                break;
-        }
+        MenuSideBarPhucVu menuSideBarPhucVu = new MenuSideBarPhucVu();
+        menuSideBarPhucVu.chonManHinh(item.getItemId(), MenuChucNangQuanLyActicity.this);
+        navigationView.setCheckedItem(item.getItemId());
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
