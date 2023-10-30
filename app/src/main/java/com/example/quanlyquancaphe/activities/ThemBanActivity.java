@@ -41,6 +41,7 @@ public class ThemBanActivity extends AppCompatActivity {
     DatabaseReference reference;
     ValueEventListener eventListener;
     Drawable draRe;
+    Ban ban;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,29 +81,9 @@ public class ThemBanActivity extends AppCompatActivity {
         btnAddBan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference databaseReference = firebaseDatabase.getReference("Ban");
-                String maban = edtMaBan.getText().toString();
-                String tenBan = edtTenBan.getText().toString();
-                Integer soChoNgoi = Integer.parseInt(edtSoChoNgoi.getText().toString());
-                Integer maTrangThai = 0;
-                Integer maKhu = spKhu.getSelectedItemPosition();
-                Ban ban = new Ban(maban, tenBan, soChoNgoi, maKhu, maTrangThai);
-                databaseReference.child(maban).setValue(ban).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(ThemBanActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(ThemBanActivity.this, "Lỗi:" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-                edtMaBan.setText("");
-                edtTenBan.setText("");
-                edtSoChoNgoi.setText("");
-                spKhu.setSelection(0);
+                if (validate() == true) {
+                    AddData();
+                }
             }
         });
     }
@@ -136,12 +117,55 @@ public class ThemBanActivity extends AppCompatActivity {
         startActivity(intent);
         activity.finish();
     }
+    private Boolean validate() {
+        if (edtMaBan.getText().toString().isEmpty()) {
+            edtMaBan.requestFocus();
+            edtMaBan.setError("Empty");
+            return false;
+        }
+        if (edtTenBan.getText().toString().isEmpty()) {
+            edtTenBan.requestFocus();
+            edtTenBan.setError("Empty");
+            return false;
+        }
+        if (edtSoChoNgoi.getText().toString().isEmpty()) {
+            edtSoChoNgoi.requestFocus();
+            edtSoChoNgoi.setError("Empty");
+            return false;
+        }
+        return true;
+    }
+    private void AddData(){
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Ban");
+        String maban = edtMaBan.getText().toString();
+        String tenBan = edtTenBan.getText().toString();
+        Integer soChoNgoi = Integer.parseInt(edtSoChoNgoi.getText().toString());
+        Integer maTrangThai = 0;
+        Integer maKhu = spKhu.getSelectedItemPosition();
+        Ban ban = new Ban(maban, tenBan, soChoNgoi, maKhu, maTrangThai);
+        databaseReference.child(maban).setValue(ban).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(ThemBanActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(ThemBanActivity.this, "Lỗi:" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        edtMaBan.setText("");
+        edtTenBan.setText("");
+        edtSoChoNgoi.setText("");
+        spKhu.setSelection(0);
+    }
+
 
     private void setControl() {
         edtMaBan = findViewById(R.id.edtMaBan);
         edtTenBan = findViewById(R.id.edtTenBan);
-        edtSoChoNgoi = findViewById(R.id.edtSoChoNgoi);
-        spKhu = findViewById(R.id.spKhu);
+        edtSoChoNgoi = findViewById(R.id.edtSoChoNgoi);spKhu = findViewById(R.id.spKhu);
         btnAddBan = findViewById(R.id.btnAddBan);
         toolBar = findViewById(R.id.toolBar);
         toolBar = findViewById(R.id.toolBar);

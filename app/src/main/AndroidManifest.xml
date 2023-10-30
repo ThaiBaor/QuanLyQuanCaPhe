@@ -16,14 +16,13 @@
         android:theme="@style/Theme.QuanLyQuanCaPhe"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
-        <!--  MON  -->
+        <!-- MON -->
         <activity
             android:name=".activities.CapNhatThongTinMonActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".activities.QuanLyMonActivity"
-            android:exported="true" >
+            android:exported="true">
 
         </activity>
         <activity
@@ -33,9 +32,7 @@
         <!-- NGUYEN LIEU -->
         <activity
             android:name=".activities.QuanLyKhoActivity"
-            android:exported="true" >
-
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".activities.ThemNguyenLieuActivity"
             android:exported="false" />
@@ -43,19 +40,15 @@
         <!-- KHU -->
         <activity
             android:name=".activities.QuanLyKhuActivity"
-            android:exported="false" >
+            android:exported="false"></activity>
 
-        </activity>
         <!-- BAN -->
         <activity
             android:name=".activities.QuanLyBanActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".activities.ThemBanActivity"
             android:exported="false" />
-
         <activity
             android:name=".activities.CapNhatBanActivity"
             android:exported="false" />
@@ -64,7 +57,6 @@
         <activity
             android:name=".activities.CapNhatNhanVienActivity"
             android:exported="false" />
-
         <activity
             android:name=".activities.ThemNhanVienActivity"
             android:exported="false" />
@@ -73,17 +65,21 @@
             android:exported="false" />
         <activity
             android:name=".activities.QuanLyNhanVienActivity"
+            android:exported="true"></activity>
+
+        <activity
+            android:name=".activities.DangNhapActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity
             android:name=".activities.MenuChucNangQuanLyActicity"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
 
     </application>
 
