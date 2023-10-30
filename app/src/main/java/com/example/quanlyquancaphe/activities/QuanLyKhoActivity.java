@@ -111,7 +111,6 @@ public class QuanLyKhoActivity extends AppCompatActivity implements NavigationVi
                 });
                 AlertDialog dialog = builder.create();
                 dialog.show();
-
             }
         });
 
