@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.adapters.NguyenLieuAdapter;
-import com.example.quanlyquancaphe.models.Mon;
 import com.example.quanlyquancaphe.models.NguyenLieu;
 import com.example.quanlyquancaphe.services.MenuSideBarAdmin;
 import com.google.android.material.navigation.NavigationView;
@@ -79,7 +78,7 @@ public class QuanLyKhoActivity extends AppCompatActivity implements NavigationVi
             @Override
             public void onSwipedLeft(int position) {
                 NguyenLieu nguyenLieu = data.get(position);
-                Intent intent = new Intent(QuanLyKhoActivity.this, CapNhatNguyenLieu.class);
+                Intent intent = new Intent(QuanLyKhoActivity.this, CapNhatNguyenLieuActivity.class);
                 intent.putExtra("maNguyenLieu", nguyenLieu.getMaNguyenLieu());
                 intent.putExtra("tenNguyenLieu", nguyenLieu.getTenNguyenLieu());
                 intent.putExtra("ngayNhap", nguyenLieu.getNgayNhap());
@@ -221,7 +220,11 @@ public class QuanLyKhoActivity extends AppCompatActivity implements NavigationVi
         });
     }
 
-
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        nguyenLieuAdapter.notifyDataSetChanged();
+    }
 
     private void search(CharSequence hint){
         filterData.clear();

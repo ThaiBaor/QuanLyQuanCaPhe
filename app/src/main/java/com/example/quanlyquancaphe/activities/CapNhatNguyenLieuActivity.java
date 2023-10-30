@@ -13,8 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.bumptech.glide.Glide;
 import com.example.quanlyquancaphe.R;
+import com.example.quanlyquancaphe.adapters.NguyenLieuAdapter;
 import com.example.quanlyquancaphe.models.NguyenLieu;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -25,13 +25,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class CapNhatNguyenLieu extends AppCompatActivity {
+public class CapNhatNguyenLieuActivity extends AppCompatActivity {
     EditText edtTenNguyenLieu, edtNgayNhap, edtDonVi, edtSoLuongNhap, edtTonKho;
     Button btnCapNhat;
 
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
 
+    NguyenLieuAdapter nguyenLieuAdapter;
     Toolbar toolBar;
 
     Bundle bundle;
@@ -119,12 +120,12 @@ public class CapNhatNguyenLieu extends AppCompatActivity {
         databaseReference.child(nguyenLieu1.getMaNguyenLieu()).setValue(nguyenLieu1).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(CapNhatNguyenLieu.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CapNhatNguyenLieuActivity.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(CapNhatNguyenLieu.this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CapNhatNguyenLieuActivity.this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -145,6 +146,7 @@ public class CapNhatNguyenLieu extends AppCompatActivity {
         datePickerDialog.setTitle("Chọn ngày");
         datePickerDialog.show();
     }
+
 
     private boolean kiemTraDuLieuCapNhat(){
         if(edtTenNguyenLieu.getText().toString().isEmpty()){

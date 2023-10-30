@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".activities.ThemNguyenLieuActivity"
     android:orientation="vertical">
-    <include layout="@layout/them_nguyen_lieu_toolbar_layout"/>
+    <include layout="@layout/toolbar"/>
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="176dp"
