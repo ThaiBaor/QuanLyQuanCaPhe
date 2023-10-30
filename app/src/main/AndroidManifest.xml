@@ -20,7 +20,11 @@
             android:exported="false" />
         <activity
             android:name=".activities.ThemMonActivity"
-            android:exported="true" />
+            android:exported="false" />
+        <activity
+            android:name=".activities.ThemNguyenLieuActivity"
+            android:exported="false" />
+
         <activity
             android:name=".activities.QuanLyKhoActivity"
             android:exported="true">
@@ -32,10 +36,19 @@
         </activity>
         <activity
             android:name=".activities.MenuChucNangAdminActicity"
-            android:exported="true"></activity>
+            android:exported="false"></activity>
+        <activity
+            android:name=".activities.QuanLyKhuActivity"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".activities.CapNhatNguyenLieu"
+            android:exported="false">
+
+        </activity>
         <activity
             android:name=".activities.SampleActivity"
-            android:exported="true" />
+            android:exported="false" />
     </application>
 
 </manifest>

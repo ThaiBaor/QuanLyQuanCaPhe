@@ -10,7 +10,6 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -25,13 +24,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.tsuryo.swipeablerv.SwipeLeftRightCallback;
 import com.tsuryo.swipeablerv.SwipeableRecyclerView;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 
 public class QuanLyKhuActivity extends AppCompatActivity {
@@ -51,9 +47,9 @@ public class QuanLyKhuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manghinh_quanlykhu_layout);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Quản lý khu");
+        setContentView(R.layout.manhinh_quanlykhu_layout);
+//        ActionBar actionBar = getSupportActionBar();
+//        actionBar.setTitle("Quản lý khu");
         setControl();
         setEven();
     }

@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.adapters.NguyenLieuAdapter;
+import com.example.quanlyquancaphe.models.Mon;
 import com.example.quanlyquancaphe.models.NguyenLieu;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -82,7 +83,15 @@ public class QuanLyKhoActivity extends AppCompatActivity implements NavigationVi
         swipeableRecyclerView.setListener(new SwipeLeftRightCallback.Listener() {
             @Override
             public void onSwipedLeft(int position) {
-
+                NguyenLieu nguyenLieu = data.get(position);
+                Intent intent = new Intent(QuanLyKhoActivity.this, CapNhatNguyenLieu.class);
+                intent.putExtra("maNguyenLieu", nguyenLieu.getMaNguyenLieu());
+                intent.putExtra("tenNguyenLieu", nguyenLieu.getTenNguyenLieu());
+                intent.putExtra("ngayNhap", nguyenLieu.getNgayNhap());
+                intent.putExtra("tonKho", nguyenLieu.getTonKho());
+                intent.putExtra("donVi", nguyenLieu.getDonVi());
+                intent.putExtra("soLuongNhap", nguyenLieu.getSoLuongNhap());
+                startActivity(intent);
             }
 
             @Override
