@@ -2,6 +2,7 @@ package com.example.quanlyquancaphe.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -11,7 +12,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.models.NguyenLieu;
@@ -21,31 +21,29 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 public class ThemNguyenLieuActivity extends AppCompatActivity {
     EditText edtTenNguyenLieu, edtNgayNhap, edtDonVi, edtSoLuongNhap, edtTonKho;
     Button btnAdd;
 
-    FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
 
-    Toolbar toolbar;
+    Toolbar toolBar;
 
     NguyenLieu nguyenLieu = new NguyenLieu();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.man_hinh_them_nguyen_lieu_layout);
+        setContentView(R.layout.manhinh_themnguyenlieu_layout);
         setControl();
         setEvent();
     }
 
     private void setEvent() {
+        toolBar.setTitle("Thêm nguyên liệu");
         edtNgayNhap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,7 +61,7 @@ public class ThemNguyenLieuActivity extends AppCompatActivity {
                 }
             }
         });
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        toolBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -157,6 +155,6 @@ public class ThemNguyenLieuActivity extends AppCompatActivity {
         edtTonKho = findViewById(R.id.edttonkho);
         btnAdd = findViewById(R.id.btnthem);
         edtNgayNhap.setFocusable(false);
-        toolbar = findViewById(R.id.toolBar);
+        toolBar = findViewById(R.id.toolBar);
     }
 }

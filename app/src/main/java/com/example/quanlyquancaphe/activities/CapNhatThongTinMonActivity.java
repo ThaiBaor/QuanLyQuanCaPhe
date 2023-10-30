@@ -5,14 +5,12 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -23,7 +21,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.example.quanlyquancaphe.R;
@@ -45,7 +42,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 
 public class CapNhatThongTinMonActivity extends AppCompatActivity {
-    Toolbar toolbar;
+    Toolbar toolBar;
     ImageView ivHinh;
     EditText edtTenMon, edtMoTa, edtDonGia, edtGiamGia;
     Spinner spnLoai;
@@ -54,7 +51,7 @@ public class CapNhatThongTinMonActivity extends AppCompatActivity {
     String[] spinnerArray = new String[3];
     ArrayAdapter spinnerAdapter;
     Mon mon = new Mon();
-    String imageURL = "", newImageURL="";
+    String imageURL = "", newImageURL = "";
     Uri uri;
     Bundle bundle;
     DatabaseReference databaseReference;
@@ -65,8 +62,14 @@ public class CapNhatThongTinMonActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manhinh_capnhatthongtinmon_layout);
         setControl();
-        toolbar.setTitle("Cập nhật thông tin món");
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        toolBar.setTitle("Cập nhật thông tin món");
+        toolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        toolBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -110,7 +113,7 @@ public class CapNhatThongTinMonActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(CapNhatThongTinMonActivity.this, imageURL.toString(), Toast.LENGTH_SHORT).show();
-                if (validate()){
+                if (validate()) {
                     save();
                 }
             }
@@ -126,7 +129,7 @@ public class CapNhatThongTinMonActivity extends AppCompatActivity {
         edtGiamGia = findViewById(R.id.edtGiamGia);
         spnLoai = findViewById(R.id.spnLoai);
         btnCapNhat = findViewById(R.id.btnCapNhat);
-        toolbar = findViewById(R.id.toolBar);
+        toolBar = findViewById(R.id.toolBar);
     }
 
     private void loadDataSpinner() {
@@ -154,16 +157,16 @@ public class CapNhatThongTinMonActivity extends AppCompatActivity {
 
     private Boolean validate() {
 
-        // giam gia
-        if (edtGiamGia.getText().toString().isEmpty()) {
-            mon.setGiamGia(0);
-        } else if (Integer.parseInt(edtGiamGia.getText().toString()) > 100) {
-            edtGiamGia.setError(">100");
+        if (edtTenMon.getText().toString().isEmpty()) {
+            edtTenMon.setError("Empty");
             return false;
-        } else {
-            mon.setGiamGia(Integer.parseInt(edtGiamGia.getText().toString()));
         }
-        // don gia
+        mon.setTenMon(edtTenMon.getText().toString());
+        if (edtMoTa.getText().toString().isEmpty()) {
+            mon.setMoTa("");
+            return false;
+        }
+        mon.setMoTa(edtMoTa.getText().toString());
         if (edtDonGia.getText().toString().isEmpty()) {
             edtDonGia.setError("Empty");
             return false;
@@ -173,25 +176,23 @@ public class CapNhatThongTinMonActivity extends AppCompatActivity {
             return false;
         }
         mon.setDonGia(Double.parseDouble(edtDonGia.getText().toString()));
-        // mota
-        if (edtMoTa.getText().toString().isEmpty()) {
-            mon.setMoTa("");
+        if (edtGiamGia.getText().toString().isEmpty()) {
+            mon.setGiamGia(0);
+        } else if (Integer.parseInt(edtGiamGia.getText().toString()) > 100) {
+            edtGiamGia.setError(">100");
             return false;
+        } else {
+            mon.setGiamGia(Integer.parseInt(edtGiamGia.getText().toString()));
         }
-        mon.setMoTa(edtMoTa.getText().toString());
-        if (edtTenMon.getText().toString().isEmpty()) {
-            edtTenMon.setError("Empty");
-            return false;
-        }
-        mon.setTenMon(edtTenMon.getText().toString());
         return true;
     }
-    private void loadDataItem(){
+
+    private void loadDataItem() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("").setMessage("Đang tải dữ liệu...");
         builder.setCancelable(false);
         AlertDialog dialog = builder.create();
         dialog.show();
-        if (bundle != null){
+        if (bundle != null) {
             imageURL = bundle.getString("hinh");
             mon.setHinh(bundle.getString("hinh"));
             Glide.with(CapNhatThongTinMonActivity.this).load(mon.getHinh()).into(ivHinh);
@@ -208,35 +209,37 @@ public class CapNhatThongTinMonActivity extends AppCompatActivity {
         }
         dialog.dismiss();
     }
+
     private void save() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("").setMessage("Đang lưu dữ liệu...");
         builder.setCancelable(false);
         AlertDialog dialog = builder.create();
         dialog.show();
-        if (uri!=null){
-        storageReference.child("Mon Images").child(uri.getLastPathSegment()).putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                while (!uriTask.isComplete());
-                Uri urlImage = uriTask.getResult();
-                newImageURL = urlImage.toString();
-                mon.setHinh(newImageURL);
-                update();
-                dialog.dismiss();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                dialog.dismiss();
-                Toast.makeText(CapNhatThongTinMonActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });}
-        else {
+        if (uri != null) {
+            storageReference.child("Mon Images").child(uri.getLastPathSegment()).putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                    while (!uriTask.isComplete()) ;
+                    Uri urlImage = uriTask.getResult();
+                    newImageURL = urlImage.toString();
+                    mon.setHinh(newImageURL);
+                    update();
+                    dialog.dismiss();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    dialog.dismiss();
+                    Toast.makeText(CapNhatThongTinMonActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
             update();
             dialog.dismiss();
         }
     }
+
     private void update() {
         databaseReference = FirebaseDatabase.getInstance().getReference("Mon");
         databaseReference.child(mon.getId_Mon()).setValue(mon).addOnCompleteListener(new OnCompleteListener<Void>() {

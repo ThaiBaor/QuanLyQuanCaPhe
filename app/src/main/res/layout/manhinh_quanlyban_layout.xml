@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     tools:openDrawer="start"
     android:fitsSystemWindows="true"
-    tools:context=".activities.QuanLyKhoActivity"
+    tools:context=".activities.QuanLyBanActivity"
     android:orientation="vertical">
-
+    <include layout="@layout/toolbar"/>
     <androidx.drawerlayout.widget.DrawerLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,14 +16,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-            <androidx.appcompat.widget.Toolbar
+            android:orientation="vertical"
+            android:background="@drawable/background">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:id="@+id/toolbar"
-                android:elevation="4dp"
-                app:title="QUẢN LÝ KHO">
-            </androidx.appcompat.widget.Toolbar>
+                android:layout_height="wrap_content"></LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -37,6 +34,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="10"
+                    android:drawableLeft="@drawable/search_icon"
                     android:hint="Search" />
 
                 <ImageButton
@@ -52,66 +50,64 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:src="@drawable/plus_small_icon" />
+
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal"
-                android:layout_marginBottom="10dp">
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal">
+
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:textSize="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
                     android:text="STT"
-                    android:textColor="#000"
-                    android:layout_weight="2"
-                    android:gravity="center"></TextView>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:text="NGUYÊN LIỆU"
-                    android:textColor="#000"
-                    android:layout_weight="5"
-                    android:gravity="center"></TextView>
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    android:textStyle="bold"></TextView>
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:text="NHẬP"
-                    android:textColor="#000"
-                    android:layout_weight="2"
-                    android:gravity="center"></TextView>
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="50dp"
+                    android:text="TÊN"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    android:textStyle="bold"></TextView>
+
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:text="TỒN"
-                    android:textColor="#000"
-                    android:layout_weight="2"
-                    android:gravity="center"></TextView>
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="50dp"
+                    android:text="CHỖ NGỒI"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    android:textStyle="bold"></TextView>
+
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:text="NGÀY NHẬP"
-                    android:layout_weight="5"
-                    android:textColor="#000"
-                    android:gravity="center"></TextView>
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="40dp"
+                    android:text="KHU"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    android:textStyle="bold"></TextView>
             </LinearLayout>
-            <com.tsuryo.swipeablerv.SwipeableRecyclerView
-                android:id="@+id/recyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:leftBgColor="@color/red"
 
-                app:leftText="Delete"
-                app:rightBgColor="@color/blue"
 
-                app:textColor="@android:color/white"
-                app:textSize="20sp" />
+
+                <com.tsuryo.swipeablerv.SwipeableRecyclerView
+                    android:id="@+id/danhSachSwipeable"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    style="@style/quanly_recycleview"
+                    app:textColor="@android:color/white"
+                    app:textSize="20sp"
+                    tools:layout_editor_absoluteX="141dp"
+                    tools:layout_editor_absoluteY="0dp" />
 
         </LinearLayout>
 

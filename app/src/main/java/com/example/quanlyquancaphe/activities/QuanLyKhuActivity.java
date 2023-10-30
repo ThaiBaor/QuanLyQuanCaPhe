@@ -3,6 +3,7 @@ package com.example.quanlyquancaphe.activities;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,15 +11,21 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.adapters.QuanLyKhuAdapter;
 import com.example.quanlyquancaphe.models.Khu;
+import com.example.quanlyquancaphe.services.MenuSideBarAdmin;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,7 +37,8 @@ import com.tsuryo.swipeablerv.SwipeableRecyclerView;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class QuanLyKhuActivity extends AppCompatActivity {
+public class QuanLyKhuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+    Toolbar toolBar;
     EditText edtSearchBox, edtMa, edtKhu;
     ImageButton btnadd, btnSort;
     Button btnUpdate;
@@ -41,6 +49,9 @@ public class QuanLyKhuActivity extends AppCompatActivity {
     ArrayList<Khu> data= new ArrayList<>();
     ArrayList<Khu> filterdata= new ArrayList<>();
     ValueEventListener valueEventListener;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    ActionBarDrawerToggle actionBarDrawerToggle;
     Integer sortc = 0;
     Khu khuAdd = new Khu();
 
@@ -48,10 +59,9 @@ public class QuanLyKhuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manhinh_quanlykhu_layout);
-//        ActionBar actionBar = getSupportActionBar();
-//        actionBar.setTitle("Quản lý khu");
+        setdrawer();
         setControl();
-        setEven();
+        setEvent();
     }
 
     private void setControl() {
@@ -62,9 +72,12 @@ public class QuanLyKhuActivity extends AppCompatActivity {
         edtKhu = findViewById(R.id.edtTenKhu);
         btnSort = findViewById(R.id.btnSort);
         btnUpdate = findViewById(R.id.btnCapNhat);
+        toolBar = findViewById(R.id.toolBar);
     }
 
-    private void setEven() {
+    private void setEvent() {
+        toolBar.setNavigationIcon(R.drawable.menu_icon);
+        toolBar.setTitle("Quản lý khu");
         khoiTao();
         quanLyKhuAdapter = new QuanLyKhuAdapter(QuanLyKhuActivity.this,data);
         SwipeableRecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -206,6 +219,17 @@ public class QuanLyKhuActivity extends AppCompatActivity {
         }
     }
 
+    private void setdrawer(){
+        toolBar = findViewById(R.id.toolBar);
+        drawerLayout = findViewById(R.id.nav_drawer_chucnang_admin);
+        navigationView = findViewById(R.id.nav_view);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolBar,R.string.open_nav,R.string.close_nav);
+        //setSupportActionBar(toolbar);
+        navigationView.setNavigationItemSelectedListener(this);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+    }
+
     private void update() {
 
         Khu khu = new Khu();
@@ -275,5 +299,13 @@ public class QuanLyKhuActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        MenuSideBarAdmin menuSideBarAdmin = new MenuSideBarAdmin();
+        menuSideBarAdmin.chonManHinh(item.getItemId(), QuanLyKhuActivity.this);
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 }

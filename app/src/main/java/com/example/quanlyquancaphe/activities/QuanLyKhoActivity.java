@@ -19,13 +19,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.adapters.NguyenLieuAdapter;
 import com.example.quanlyquancaphe.models.Mon;
 import com.example.quanlyquancaphe.models.NguyenLieu;
+import com.example.quanlyquancaphe.services.MenuSideBarAdmin;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,19 +35,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.tsuryo.swipeablerv.SwipeLeftRightCallback;
 import com.tsuryo.swipeablerv.SwipeableRecyclerView;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
 
 public class QuanLyKhoActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     DrawerLayout drawerLayout;
-    Toolbar toolbar;
+    Toolbar toolBar;
     NavigationView navigationView;
     ActionBarDrawerToggle actionBarDrawerToggle;
 
@@ -68,14 +62,15 @@ public class QuanLyKhoActivity extends AppCompatActivity implements NavigationVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quan_ly_kho);
+        setContentView(R.layout.manhinh_quanlykho_layout);
         setdrawer();
         setControl();
         setEvent();
     }
 
     private void setEvent() {
-
+        toolBar.setNavigationIcon(R.drawable.menu_icon);
+        toolBar.setTitle("Quản lý kho");
         getData();
         nguyenLieuAdapter = new NguyenLieuAdapter(this, data);
         swipeableRecyclerView.setAdapter(nguyenLieuAdapter);
@@ -247,10 +242,10 @@ public class QuanLyKhoActivity extends AppCompatActivity implements NavigationVi
     }
 
     private void setdrawer(){
-        toolbar = findViewById(R.id.toolbar);
+        toolBar = findViewById(R.id.toolBar);
         drawerLayout = findViewById(R.id.nav_drawer_chucnang_admin);
         navigationView = findViewById(R.id.nav_view);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,toolbar,R.string.open_nav,R.string.close_nav);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolBar,R.string.open_nav,R.string.close_nav);
         //setSupportActionBar(toolbar);
         navigationView.setNavigationItemSelectedListener(this);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
@@ -266,37 +261,8 @@ public class QuanLyKhoActivity extends AppCompatActivity implements NavigationVi
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.nav_thongke:
-                //hàm recreate dùng để load lại màn hình khi nhấn chuyển màn hình về màn hình hiện tại
-                //recreate();
-                Toast.makeText(this, "Thống kê", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_qlnhanvien:
-                //hàm chuyển màn hình dùng để chuyển màn hình
-                // tham số thứ nhất là tên màn hình hiện tại .this
-                // VD: manhinhthunhat.this
-                // tham số thứ 2 là tên màn hình cần chuyển .class
-                // VD: manhinhthuhai.class
-                //chuyenManHinh(MenuChucNangAdminActicity.this, chuyenmanhinh.class);
-                Toast.makeText(this, "Quản lý nhân viên", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_qlban:
-                Toast.makeText(this, "Quản lý bàn", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_qlkhu:
-                Toast.makeText(this, "Quản lý khu", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_qlmon:
-                Toast.makeText(this, "Quản lý món", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_qlkho:
-                Toast.makeText(this, "Quản lý kho", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_dangxuat:
-                Toast.makeText(this, "Đăng xuất", Toast.LENGTH_SHORT).show();
-                break;
-        }
+        MenuSideBarAdmin menuSideBarAdmin = new MenuSideBarAdmin();
+        menuSideBarAdmin.chonManHinh(item.getItemId(), QuanLyKhoActivity.this);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
