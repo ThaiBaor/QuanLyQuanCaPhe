@@ -273,11 +273,6 @@ public class CapNhapNhanVienActivity extends AppCompatActivity {
 
     private void upLoadData() {
         databaseReference = FirebaseDatabase.getInstance().getReference("Nhanvien");
-//        String maNV = edtEditMaNhanVien.getText().toString();
-//        String tenNV = edtEdtTenNhanVien.getText().toString();
-//        String diaChi = edtEditDiaChi.getText().toString();
-//        String soDT = edtEditSDT.getText().toString();
-//        String matKhau = editEditMatKhau.getText().toString();
         StorageReference referenceAvatar = FirebaseStorage.getInstance().getReferenceFromUrl(avatarImageUrl);
         StorageReference referenceCCCDT = FirebaseStorage.getInstance().getReferenceFromUrl(CCCDTImageUrl);
         StorageReference referenceCCCDS = FirebaseStorage.getInstance().getReferenceFromUrl(CCCDSImageUrl);
