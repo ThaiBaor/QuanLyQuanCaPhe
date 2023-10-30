@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -15,25 +15,76 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QuanLyQuanCaPhe"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31" >
+        tools:targetApi="31">
+
+        <!--  MON  -->
         <activity
-            android:name=".DanhSachOderPhaCheActivity"
-            android:exported="false" />
+            android:name=".activities.CapNhatThongTinMonActivity"
+            android:exported="false"/>
         <activity
-            android:name=".activities.CapNhapNhanVienActivity"
+            android:name=".activities.QuanLyMonActivity"
+            android:exported="true" >
+
+        </activity>
+        <activity
+            android:name=".activities.ThemMonActivity"
             android:exported="false" />
+
+        <!-- NGUYEN LIEU -->
+        <activity
+            android:name=".activities.QuanLyKhoActivity"
+            android:exported="true" >
+
+        </activity>
+        <activity
+            android:name=".activities.ThemNguyenLieuActivity"
+            android:exported="false" />
+
+        <!-- KHU -->
+        <activity
+            android:name=".activities.QuanLyKhuActivity"
+            android:exported="false" >
+
+        </activity>
+        <!-- BAN -->
+        <activity
+            android:name=".activities.QuanLyBanActivity"
+            android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".activities.ThemBanActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activities.CapNhatBanActivity"
+            android:exported="false" />
+
+        <!-- NHAN VIEN -->
+        <activity
+            android:name=".activities.CapNhatNhanVienActivity"
+            android:exported="false" />
+
         <activity
             android:name=".activities.ThemNhanVienActivity"
-            android:exported="true" />
+            android:exported="false" />
+        <activity
+            android:name=".activities.CapNhatNguyenLieuActivity"
+            android:exported="false" />
         <activity
             android:name=".activities.QuanLyNhanVienActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".activities.MenuChucNangQuanLyActicity"
+            android:exported="true">
+        </activity>
+
     </application>
 
 </manifest>

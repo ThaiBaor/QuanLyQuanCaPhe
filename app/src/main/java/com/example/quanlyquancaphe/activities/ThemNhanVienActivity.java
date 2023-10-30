@@ -5,18 +5,15 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -26,7 +23,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.quanlyquancaphe.R;
-import com.example.quanlyquancaphe.adapters.QuanLyNhanVienAdapter;
 import com.example.quanlyquancaphe.models.NhanVien;
 import com.example.quanlyquancaphe.models.ViTri;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,12 +38,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class ThemNhanVienActivity extends AppCompatActivity {
+    Toolbar toolBar;
     Button btnThem;
     ImageView ivAvatar, ivImagesCCCDT, ivImagesCCCDS;
     EditText edtMaNV, edtTenNV, edtDiachi, edtSDT, edtMatkhau;
@@ -70,7 +65,7 @@ public class ThemNhanVienActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manhinh_them_nhan_vien_layout);
+        setContentView(R.layout.manhinh_themnhanvien_layout);
         layDsMaNhanVienDaTonTai();
         setCtrol();
         setEvent();
@@ -78,6 +73,13 @@ public class ThemNhanVienActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        toolBar.setTitle("Thêm nhân viên");
+        toolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         ActivityResultLauncher<Intent> activityResultAvatar = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -293,6 +295,7 @@ public class ThemNhanVienActivity extends AppCompatActivity {
         edtSDT = findViewById(R.id.edtSDT);
         edtMatkhau = findViewById(R.id.edtMatKhau);
         spVitri = findViewById(R.id.spViTri);
+        toolBar = findViewById(R.id.toolBar);
     }
 
     private Boolean validate() {

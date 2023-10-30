@@ -5,9 +5,9 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -42,7 +42,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 
-public class CapNhapNhanVienActivity extends AppCompatActivity {
+public class CapNhatNhanVienActivity extends AppCompatActivity {
+    Toolbar toolBar;
     EditText edtEditMaNhanVien, edtEdtTenNhanVien, edtEditDiaChi, editEditMatKhau, edtEditSDT;
     Spinner spEditViTri;
     ImageView ivEditAvatar, ivEditCCCDT, ivEditCCCDS;
@@ -69,15 +70,14 @@ public class CapNhapNhanVienActivity extends AppCompatActivity {
     StorageReference storageReferenceAvatar;
     StorageReference storageReferenceCCCDT;
     StorageReference storageReferenceCCCDS;
-   String tenNV, diaChi, soDT, matKhau;
-   String  maNV;
-
+    String tenNV, diaChi, soDT, matKhau;
+    String maNV;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manhinh_cap_nhap_nhan_vien_layout);
+        setContentView(R.layout.manhinh_capnhatnhanvien_layout);
         setControl();
         setEvent();
         bundle = getIntent().getExtras();
@@ -91,9 +91,9 @@ public class CapNhapNhanVienActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
         if (bundle != null) {
-            Glide.with(CapNhapNhanVienActivity.this).load(bundle.getString("Avatar")).into(ivEditAvatar);
-            Glide.with(CapNhapNhanVienActivity.this).load(bundle.getString("CCCDT")).into(ivEditCCCDT);
-            Glide.with(CapNhapNhanVienActivity.this).load(bundle.getString("CCCDS")).into(ivEditCCCDS);
+            Glide.with(CapNhatNhanVienActivity.this).load(bundle.getString("Avatar")).into(ivEditAvatar);
+            Glide.with(CapNhatNhanVienActivity.this).load(bundle.getString("CCCDT")).into(ivEditCCCDT);
+            Glide.with(CapNhatNhanVienActivity.this).load(bundle.getString("CCCDS")).into(ivEditCCCDS);
             edtEditMaNhanVien.setText(bundle.getString("MaNV"));
             maNV = bundle.getString("MaNV");
             edtEdtTenNhanVien.setText(bundle.getString("TenNV"));
@@ -122,7 +122,7 @@ public class CapNhapNhanVienActivity extends AppCompatActivity {
                     arrayListSpinner.add(vitri);
                     spinnerArray[vitri.getId() - 1] = vitri.getVitri();
                 }
-                spinnerAdapter = new ArrayAdapter<>(CapNhapNhanVienActivity.this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, spinnerArray);
+                spinnerAdapter = new ArrayAdapter<>(CapNhatNhanVienActivity.this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, spinnerArray);
                 spEditViTri.setAdapter(spinnerAdapter);
 
                 for (int i = 0; i < 3; i++) {
@@ -141,6 +141,13 @@ public class CapNhapNhanVienActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        toolBar.setTitle("Cập nhật nhân viên");
+        toolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         ActivityResultLauncher<Intent> activityResultAvatar = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -151,7 +158,7 @@ public class CapNhapNhanVienActivity extends AppCompatActivity {
                             avatarUri = data.getData();
                             ivEditAvatar.setImageURI(avatarUri);
                         } else {
-                            Toast.makeText(CapNhapNhanVienActivity.this, "No Image Selected", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CapNhatNhanVienActivity.this, "No Image Selected", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -166,7 +173,7 @@ public class CapNhapNhanVienActivity extends AppCompatActivity {
                             CCCDTUri = data.getData();
                             ivEditCCCDT.setImageURI(CCCDTUri);
                         } else {
-                            Toast.makeText(CapNhapNhanVienActivity.this, "No Image Selected", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CapNhatNhanVienActivity.this, "No Image Selected", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -181,7 +188,7 @@ public class CapNhapNhanVienActivity extends AppCompatActivity {
                             CCCDSUri = data.getData();
                             ivEditCCCDS.setImageURI(CCCDSUri);
                         } else {
-                            Toast.makeText(CapNhapNhanVienActivity.this, "No Image Selected", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CapNhatNhanVienActivity.this, "No Image Selected", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -202,7 +209,7 @@ public class CapNhapNhanVienActivity extends AppCompatActivity {
         btnCapNhap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!validate()){
+                if (!validate()) {
                     return;
                 }
                 if (avatarUri != null && CCCDTUri != null && CCCDSUri != null) {
@@ -269,6 +276,7 @@ public class CapNhapNhanVienActivity extends AppCompatActivity {
         ivEditAvatar = findViewById(R.id.ivEditAvatarNhanVien);
         ivEditCCCDT = findViewById(R.id.ivEditCCCDTruoc);
         ivEditCCCDS = findViewById(R.id.ivEditCCCDSau);
+        toolBar = findViewById(R.id.toolBar);
     }
 
     private void upLoadData() {
@@ -307,14 +315,14 @@ public class CapNhapNhanVienActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(CapNhapNhanVienActivity.this, "Cập nhập dữ liệu thành công !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CapNhatNhanVienActivity.this, "Cập nhập dữ liệu thành công !", Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(CapNhapNhanVienActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(CapNhatNhanVienActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -338,7 +346,7 @@ public class CapNhapNhanVienActivity extends AppCompatActivity {
                 Uri urlImage = uriTask.getResult();
                 newCCCDSImageUrl = urlImage.toString();
                 upLoadData();
-                Toast.makeText(CapNhapNhanVienActivity.this, "Images Success !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CapNhatNhanVienActivity.this, "Images Success !", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -350,7 +358,7 @@ public class CapNhapNhanVienActivity extends AppCompatActivity {
                 Uri urlImage = uriTask.getResult();
                 newCCCDTImageUrl = urlImage.toString();
                 upLoadData();
-                Toast.makeText(CapNhapNhanVienActivity.this, "Images Success !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CapNhatNhanVienActivity.this, "Images Success !", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -460,6 +468,7 @@ public class CapNhapNhanVienActivity extends AppCompatActivity {
             }
         });
     }
+
     private Boolean validate() {
         tenNV = edtEdtTenNhanVien.getText().toString();
         if (tenNV.isEmpty() || tenNV.length() > 256) {
@@ -483,8 +492,6 @@ public class CapNhapNhanVienActivity extends AppCompatActivity {
         }
         return true;
     }
-
-
 
 
 }

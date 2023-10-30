@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.quanlyquancaphe.R;
 
 public class QuanLyNhanVienViewholder extends RecyclerView.ViewHolder {
-    public TextView tvMaNhanVien , tvTenNhanVien ,tvViTri ,tvSDT ;
+    public TextView tvMaNhanVien , tvTenNhanVien ,tvViTri ;
    public CardView cardView;
 
     public QuanLyNhanVienViewholder(@NonNull View itemView) {
@@ -18,7 +18,6 @@ public class QuanLyNhanVienViewholder extends RecyclerView.ViewHolder {
         tvMaNhanVien =itemView.findViewById(R.id.ivMaNV);
         tvTenNhanVien =itemView.findViewById(R.id.ivTen);
         tvViTri =itemView.findViewById(R.id.ivViTri);
-        tvSDT =itemView.findViewById(R.id.ivSDT);
         cardView= itemView.findViewById(R.id.itemCarview);
     }
 }
