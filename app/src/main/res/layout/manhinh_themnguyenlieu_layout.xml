@@ -15,7 +15,7 @@
         android:layout_height="150dp"
         android:layout_gravity="center"
         android:layout_marginBottom="20dp"
-        android:src="@drawable/logo"></ImageView>
+        android:src="@drawable/logo" />
 
     <EditText
         android:id="@+id/edttennguyenlieu"
@@ -24,7 +24,7 @@
         android:layout_margin="10dp"
         android:background="@drawable/quanly_edittext_background"
         android:hint="Tên nguyên liệu"
-        android:paddingLeft="10dp"></EditText>
+        android:paddingLeft="10dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,7 +42,7 @@
             android:drawableRight="@drawable/qlkho_icon"
             android:hint="Ngày nhập"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp"></EditText>
+            android:paddingRight="10dp" />
 
         <EditText
             android:id="@+id/edtdonvi"
@@ -52,7 +52,7 @@
             android:layout_weight="1"
             android:background="@drawable/quanly_edittext_background"
             android:hint="Đơn vị"
-            android:paddingLeft="10dp"></EditText>
+            android:paddingLeft="10dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -71,7 +71,7 @@
             android:background="@drawable/quanly_edittext_background"
             android:hint="Số lượng nhập"
             android:inputType="number"
-            android:padding="10dp"></EditText>
+            android:padding="10dp" />
 
         <EditText
             android:id="@+id/edttonkho"
@@ -82,7 +82,7 @@
             android:background="@drawable/quanly_edittext_background"
             android:hint="Tồn kho"
             android:inputType="number"
-            android:paddingLeft="10dp"></EditText>
+            android:paddingLeft="10dp" />
     </LinearLayout>
 
     <Button
@@ -93,6 +93,6 @@
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:background="@drawable/quanly_button_background"
-        android:text="thêm"></Button>
+        android:text="thêm" />
 
 </LinearLayout>

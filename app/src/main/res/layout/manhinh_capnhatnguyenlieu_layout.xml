@@ -4,66 +4,95 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ThemNguyenLieuActivity"
-    android:orientation="vertical">
-    <include layout="@layout/toolbar"/>
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    tools:context=".activities.ThemNguyenLieuActivity">
+
+    <include layout="@layout/toolbar" />
+
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="176dp"
-        android:src="@drawable/logo">
-    </ImageView>
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/logo" />
 
     <EditText
+        android:id="@+id/edttennguyenlieu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/quanly_edittext_background"
         android:hint="Tên nguyên liệu"
-        android:id="@+id/edttennguyenlieu">
-    </EditText>
+        android:paddingLeft="10dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/edtngaynhap"
-            android:hint="Ngày nhập"
-            android:layout_weight="1"
-            android:drawableRight="@drawable/qlkho_icon"></EditText>
-        <EditText
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/quanly_edittext_background"
+            android:drawableRight="@drawable/qlkho_icon"
+            android:hint="Ngày nhập"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
+
+        <EditText
             android:id="@+id/edtdonvi"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/quanly_edittext_background"
             android:hint="Đơn vị"
-            android:layout_weight="1"></EditText>
+            android:paddingLeft="10dp" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
+
         <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/edtsoluongnhap"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/quanly_edittext_background"
             android:hint="Số lượng nhập"
             android:inputType="number"
-            android:layout_weight="1"></EditText>
+            android:padding="10dp" />
+
         <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/edttonkho"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/quanly_edittext_background"
             android:hint="Tồn kho"
             android:inputType="number"
-            android:layout_weight="1"></EditText>
+            android:paddingLeft="10dp" />
     </LinearLayout>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cập nhật"
-        android:textColor="#000"
+        android:id="@+id/btnCapNhat"
+        style="@style/quanly_button"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
-        android:id="@+id/btnCapNhat"></Button>
+        android:layout_marginTop="20dp"
+        android:background="@drawable/quanly_button_background"
+        android:text="Cập nhật" />
 
 </LinearLayout>

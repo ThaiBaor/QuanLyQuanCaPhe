@@ -100,11 +100,10 @@ public class CapNhatBanActivity extends AppCompatActivity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Update();
-                edtMaBan.setText("");
-                edtTenBan.setText("");
-                edtSoNguoiNgoi.setText("");
-                spKhu.setSelection(0);
+                if(validate() == true){
+                    Update();
+                    finish();
+                }
             }
         });
     }
@@ -129,6 +128,23 @@ public class CapNhatBanActivity extends AppCompatActivity {
                 Toast.makeText(CapNhatBanActivity.this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
             }
         });
+        edtMaBan.setText("");
+        edtTenBan.setText("");
+        edtSoNguoiNgoi.setText("");
+        spKhu.setSelection(0);
+    }
+    private Boolean validate() {
+        if (edtTenBan.getText().toString().isEmpty()) {
+            edtTenBan.requestFocus();
+            edtTenBan.setError("Empty");
+            return false;
+        }
+        if (edtSoNguoiNgoi.getText().toString().isEmpty()) {
+            edtSoNguoiNgoi.requestFocus();
+            edtSoNguoiNgoi.setError("Empty");
+            return false;
+        }
+        return true;
     }
 
     private void setConTrol() {
