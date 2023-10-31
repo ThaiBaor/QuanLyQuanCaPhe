@@ -52,7 +52,7 @@ public class CapNhatNhanVienActivity extends AppCompatActivity {
     String itemsViTri;
     ArrayList<ViTri> arrayListSpinner = new ArrayList<>();
     ArrayAdapter spinnerAdapter;
-    String[] spinnerArray = new String[3];
+    String[] spinnerArray = new String[4];
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     Uri CCCDTUri;
     Uri avatarUri;
@@ -130,8 +130,6 @@ public class CapNhatNhanVienActivity extends AppCompatActivity {
                         spEditViTri.setSelection(i);
                     }
                 }
-
-
             }
 
             @Override
@@ -230,6 +228,12 @@ public class CapNhatNhanVienActivity extends AppCompatActivity {
                 if (avatarUri == null && CCCDTUri != null && CCCDSUri != null) {
                     saveDataCCCDTCCCDS();
                 }
+                if (avatarUri != null && CCCDTUri != null && CCCDSUri == null) {
+                   saveDataAvatarCCCDT();
+                }
+                if (avatarUri != null && CCCDTUri == null && CCCDSUri != null) {
+                    saveDataAvatarCCCDS();
+                }
             }
         });
         ivEditAvatar.setOnClickListener(new View.OnClickListener() {
@@ -241,7 +245,6 @@ public class CapNhatNhanVienActivity extends AppCompatActivity {
 
             }
         });
-        //tvTest.setText(String.valueOf(CCCDTUri));
         ivEditCCCDT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -311,11 +314,20 @@ public class CapNhatNhanVienActivity extends AppCompatActivity {
             referenceCCCDS.delete();
             referenceCCCDT.delete();
         }
+        if (newAvatarImageUrl != null && newCCCDSImageUrl == null && newCCCDTImageUrl != null) {
+            nhanVien = new NhanVien(tenNV, maNV, diaChi, soDT, matKhau, newAvatarImageUrl, CCCDSImageUrl, newCCCDTImageUrl, itemsViTri);
+            referenceAvatar.delete();
+            referenceCCCDT.delete();
+        }
+        if (newAvatarImageUrl != null && newCCCDSImageUrl != null && newCCCDTImageUrl == null) {
+            nhanVien = new NhanVien(tenNV, maNV, diaChi, soDT, matKhau, newAvatarImageUrl, newCCCDSImageUrl, CCCDTImageUrl, itemsViTri);
+            referenceAvatar.delete();
+            referenceCCCDS.delete();
+        }
         databaseReference.child(maNV).setValue(nhanVien).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(CapNhatNhanVienActivity.this, "Cập nhập dữ liệu thành công !", Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }
@@ -346,8 +358,6 @@ public class CapNhatNhanVienActivity extends AppCompatActivity {
                 Uri urlImage = uriTask.getResult();
                 newCCCDSImageUrl = urlImage.toString();
                 upLoadData();
-                Toast.makeText(CapNhatNhanVienActivity.this, "Images Success !", Toast.LENGTH_SHORT).show();
-
             }
         });
         storageReferenceCCCDT.putFile(CCCDTUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -358,8 +368,6 @@ public class CapNhatNhanVienActivity extends AppCompatActivity {
                 Uri urlImage = uriTask.getResult();
                 newCCCDTImageUrl = urlImage.toString();
                 upLoadData();
-                Toast.makeText(CapNhatNhanVienActivity.this, "Images Success !", Toast.LENGTH_SHORT).show();
-
             }
         });
         storageReferenceAvatar.putFile(avatarUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -435,8 +443,6 @@ public class CapNhatNhanVienActivity extends AppCompatActivity {
             }
         });
     }
-    // Kiểm tra url 2 Tấm ảnh
-
     private void saveDataCCCDTCCCDS() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("").setMessage("Đang lưu dữ liệu...");
         builder.setCancelable(false);
@@ -453,6 +459,68 @@ public class CapNhatNhanVienActivity extends AppCompatActivity {
                 while (!uriTask.isComplete()) ;
                 Uri urlImage = uriTask.getResult();
                 newCCCDSImageUrl = urlImage.toString();
+                dialog.dismiss();
+            }
+        });
+        storageReferenceCCCDS.putFile(CCCDSUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                while (!uriTask.isComplete()) ;
+                Uri urlImage = uriTask.getResult();
+                newCCCDTImageUrl = urlImage.toString();
+                upLoadData();
+                dialog.dismiss();
+            }
+        });
+    }
+    private void saveDataAvatarCCCDT() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("").setMessage("Đang lưu dữ liệu...");
+        builder.setCancelable(false);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        StorageReference storageReferenceAvatar = FirebaseStorage.getInstance().getReference().child("Nhan Vien Image")
+                .child(avatarUri.getLastPathSegment());
+        StorageReference storageReferenceCCCDT = FirebaseStorage.getInstance().getReference().child("Nhan Vien Image")
+                .child(CCCDTUri.getLastPathSegment());
+        storageReferenceCCCDT.putFile(CCCDTUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                while (!uriTask.isComplete()) ;
+                Uri urlImage = uriTask.getResult();
+                newCCCDSImageUrl = urlImage.toString();
+                dialog.dismiss();
+            }
+        });
+        storageReferenceAvatar.putFile(avatarUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                while (!uriTask.isComplete()) ;
+                Uri urlImage = uriTask.getResult();
+                newAvatarImageUrl = urlImage.toString();
+                upLoadData();
+                dialog.dismiss();
+            }
+        });
+    }
+    private void saveDataAvatarCCCDS() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("").setMessage("Đang lưu dữ liệu...");
+        builder.setCancelable(false);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        StorageReference storageReferenceCCCDS = FirebaseStorage.getInstance().getReference().child("Nhan Vien Image")
+                .child(CCCDSUri.getLastPathSegment());
+        StorageReference storageReferenceAvatar = FirebaseStorage.getInstance().getReference().child("Nhan Vien Image")
+                .child(avatarUri.getLastPathSegment());
+        storageReferenceAvatar.putFile(avatarUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                while (!uriTask.isComplete()) ;
+                Uri urlImage = uriTask.getResult();
+                newAvatarImageUrl = urlImage.toString();
                 dialog.dismiss();
             }
         });
