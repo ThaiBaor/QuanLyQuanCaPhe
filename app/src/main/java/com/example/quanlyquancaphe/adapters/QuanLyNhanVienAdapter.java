@@ -37,7 +37,6 @@ public class QuanLyNhanVienAdapter extends RecyclerView.Adapter<QuanLyNhanVienVi
         holder.tvMaNhanVien.setText(dataList.get(position).getMaNhanVien());
         holder.tvTenNhanVien.setText(dataList.get(position).getTenNhanVien());
         holder.tvViTri.setText(dataList.get(position).getViTri());
-        holder.tvSDT.setText(dataList.get(position).getSoDienThoai());
     }
 
     public void SearchDataList(ArrayList<NhanVien> search) {

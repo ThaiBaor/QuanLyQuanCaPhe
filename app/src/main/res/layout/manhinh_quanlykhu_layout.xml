@@ -4,20 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:openDrawer="start"
-    android:fitsSystemWindows="true"
     android:background="@drawable/background"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context=".activities.QuanLyKhuActivity"
-    android:orientation="vertical">
-    <include layout="@layout/toolbar"/>
+    tools:openDrawer="start">
+
+    <include layout="@layout/toolbar" />
+
     <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/nav_drawer_chucnang_admin"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/nav_drawer_chucnang_admin">
+        android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -66,7 +70,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/quanly_edittext_background"
                     android:hint="Mã"
-                    android:padding="10dp"></EditText>
+                    android:padding="10dp"/>
 
                 <EditText
                     android:id="@+id/edtTenKhu"
@@ -77,7 +81,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/quanly_edittext_background"
                     android:hint="Tên khu"
-                    android:padding="10dp"></EditText>
+                    android:padding="10dp"/>
 
                 <Button
                     android:id="@+id/btnCapNhat"
@@ -86,7 +90,7 @@
                     android:layout_marginRight="4dp"
                     android:layout_weight="1"
                     android:background="@drawable/quanly_button_background"
-                    android:text="cập nhật"></Button>
+                    android:text="cập nhật"/>
             </LinearLayout>
 
             <LinearLayout
@@ -98,39 +102,43 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="30dp"
-                    android:text="STT"></TextView>
+                    android:text="STT"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="30dp"
                     android:paddingLeft="10dp"
-                    android:text="Mã"></TextView>
+                    android:text="Mã"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="30dp"
                     android:paddingLeft="10dp"
-                    android:text="Tên Khu"></TextView>
+                    android:text="Tên Khu"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <com.tsuryo.swipeablerv.SwipeableRecyclerView
                 android:id="@+id/recycle"
                 style="@style/quanly_recycleview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></com.tsuryo.swipeablerv.SwipeableRecyclerView>
+                android:layout_height="match_parent"/>
         </LinearLayout>
 
         <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/nav_view"
             android:layout_gravity="start"
             app:headerLayout="@layout/nav_drawer_header"
-            app:menu="@menu/nav_drawer_menu_admin"
-            >
-        </com.google.android.material.navigation.NavigationView>
+            app:menu="@menu/nav_drawer_menu_admin"/>
     </androidx.drawerlayout.widget.DrawerLayout>
 
 </LinearLayout>
