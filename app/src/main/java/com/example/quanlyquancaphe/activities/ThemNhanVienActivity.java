@@ -58,7 +58,7 @@ public class ThemNhanVienActivity extends AppCompatActivity {
     String viTri;
     ArrayList<ViTri> arrayListSpinner = new ArrayList<>();
     ArrayAdapter spinnerAdapter;
-    String[] spinnerArray = new String[3];
+    String[] spinnerArray = new String[4];
     String maNV, tenNV, diaChi, soDT, matKhau;
     List<String> maNVDaTonTai = new ArrayList<>();
 
@@ -201,7 +201,6 @@ public class ThemNhanVienActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(ThemNhanVienActivity.this, " Thêm thành công !", Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     }
@@ -281,9 +280,7 @@ public class ThemNhanVienActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-
     }
-
     private void setCtrol() {
         ivAvatar = findViewById(R.id.ivAvatarNhanVien);
         ivImagesCCCDS = findViewById(R.id.ivCCCDSau);
