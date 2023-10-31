@@ -115,7 +115,7 @@ public class ThemNguyenLieuActivity extends AppCompatActivity {
         nguyenLieu.setTenNguyenLieu(edtTenNguyenLieu.getText().toString());
         nguyenLieu.setDonVi(edtDonVi.getText().toString());
         nguyenLieu.setNgayNhap(edtNgayNhap.getText().toString());
-        nguyenLieu.setSoLuongNhap(Double.parseDouble(edtSoLuongNhap.getText().toString()));
+        nguyenLieu.setSoLuongNhap( Double.parseDouble(edtSoLuongNhap.getText().toString()) + Double.parseDouble(edtTonKho.getText().toString()));
         nguyenLieu.setTonKho(Double.parseDouble(edtTonKho.getText().toString()));
     }
 

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -34,36 +35,58 @@ public class DangNhapActivity extends AppCompatActivity {
     }
 
     private void setEnvent() {
-        dangNhap("PC1", "123456789");
+        btnDangNhap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (kiemTraDuLieuDangNhap()){
+                    dangNhap(edtTenDangNhap.getText().toString(), edtMatKhau.getText().toString());
+                }
+            }
+        });
     }
 
     private void dangNhap(String taiKhoan, String matKhau){
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference().child("Nhanvien");
-        valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("Nhanvien");
+        ref.child(taiKhoan).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot == null){
-                    Toast.makeText(DangNhapActivity.this, "no", Toast.LENGTH_SHORT).show();
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists() == false){
+                    Toast.makeText(DangNhapActivity.this, "Tài khoản không tồn tài trên hệ thống. Vui lòng kiểm tra lại.", Toast.LENGTH_SHORT).show();
                 }
-                else{
-                    for (DataSnapshot item: snapshot.getChildren()){
-                         if(tenDangNhap.equals(item.child("maNhanVien").toString()) && matKhauNhap.equals(item.child("matKhau").toString())){
-                             Toast.makeText(DangNhapActivity.this, "ok", Toast.LENGTH_SHORT).show();
-                             break;
-                         }
+                else {
+                    String taiKhoanData = snapshot.child("maNhanVien").getValue(String.class);
+                    String matKhauData = snapshot.child("matKhau").getValue(String.class);
+                    if(kiemTraDangNhap(taiKhoanData, matKhauData)){
+                        Toast.makeText(DangNhapActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Toast.makeText(DangNhapActivity.this, "Mật khẩu sai. Vui lòng kiểm tra lại", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
-
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(DangNhapActivity.this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onCancelled(DatabaseError error) {
+                Toast.makeText(DangNhapActivity.this, "apvbapva", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
-    private boolean kiemTraDangNhap(){
+    private boolean kiemTraDangNhap(String taiKhoan, String matKhau){
+        if(taiKhoan.equals(edtTenDangNhap.getText().toString()) && matKhau.equals(edtMatKhau.getText().toString())){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean kiemTraDuLieuDangNhap(){
+        if(edtTenDangNhap.getText().toString().isEmpty()){
+            edtTenDangNhap.setError("Tên đăng nhập trống!!!");
+            return false;
+        }
+        if(edtMatKhau.getText().toString().isEmpty()){
+            edtMatKhau.setError("Mật khẩu trống!!!");
+            return false;
+        }
         return true;
     }
 

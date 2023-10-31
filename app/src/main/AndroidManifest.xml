@@ -32,7 +32,12 @@
         <!-- NGUYEN LIEU -->
         <activity
             android:name=".activities.QuanLyKhoActivity"
-            android:exported="true"></activity>
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activities.ThemNguyenLieuActivity"
             android:exported="false" />
@@ -62,21 +67,21 @@
             android:exported="false" />
         <activity
             android:name=".activities.QuanLyNhanVienActivity"
-            android:exported="true"></activity>
+            android:exported="true">
+
+        </activity>
 
         <activity
             android:name=".activities.DangNhapActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity
             android:name=".activities.MenuChucNangQuanLyActicity"
-            android:exported="true"></activity>
+            android:exported="true">
+
+        </activity>
 
     </application>
 
