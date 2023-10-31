@@ -1,2 +1,4 @@
-package com.example.quanlyquancaphe.activities;public class HoaDonTaiBanActivity {
+package com.example.quanlyquancaphe.activities;
+
+public class HoaDonTaiBanActivity {
 }

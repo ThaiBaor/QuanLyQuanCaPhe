@@ -76,13 +76,15 @@ public class CapNhatNguyenLieuActivity extends AppCompatActivity {
         btnCapNhat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                kiemTraDuLieuCapNhat();
-                capNhat();
-                edtTenNguyenLieu.setText("");
-                edtDonVi.setText("");
-                edtNgayNhap.setText("");
-                edtSoLuongNhap.setText("");
-                edtTonKho.setText("");
+                if (kiemTraDuLieuCapNhat() == true){
+                    capNhat();
+                    edtTenNguyenLieu.setText("");
+                    edtDonVi.setText("");
+                    edtNgayNhap.setText("");
+                    edtSoLuongNhap.setText("");
+                    edtTonKho.setText("");
+                }
+
             }
         });
     }
