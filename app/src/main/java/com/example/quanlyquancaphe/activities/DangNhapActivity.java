@@ -3,10 +3,13 @@ package com.example.quanlyquancaphe.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.quanlyquancaphe.R;
@@ -22,10 +25,11 @@ public class DangNhapActivity extends AppCompatActivity {
     EditText edtTenDangNhap, edtMatKhau;
     Button btnDangNhap;
 
+
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     ValueEventListener valueEventListener;
-    String tenDangNhap = "", matKhauNhap = "", viTri = "";
+    String tenDangNhap = "", matKhauNhap = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +50,10 @@ public class DangNhapActivity extends AppCompatActivity {
     }
 
     private void dangNhap(String taiKhoan, String matKhau){
+        AlertDialog.Builder builder = new AlertDialog.Builder(DangNhapActivity.this).setTitle("").setMessage("Đang đăng nhập...");
+        builder.setCancelable(false);
+        AlertDialog dialog = builder.create();
+        dialog.show();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("Nhanvien");
         ref.child(taiKhoan).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -57,19 +65,40 @@ public class DangNhapActivity extends AppCompatActivity {
                 else {
                     String taiKhoanData = snapshot.child("maNhanVien").getValue(String.class);
                     String matKhauData = snapshot.child("matKhau").getValue(String.class);
+                    String viTri = snapshot.child("viTri").getValue(String.class);
                     if(kiemTraDangNhap(taiKhoanData, matKhauData)){
+                        dangNhapTheoRole(viTri);
                         Toast.makeText(DangNhapActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                     }
                     else {
                         Toast.makeText(DangNhapActivity.this, "Mật khẩu sai. Vui lòng kiểm tra lại", Toast.LENGTH_SHORT).show();
                     }
+                    dialog.dismiss();
                 }
             }
             @Override
             public void onCancelled(DatabaseError error) {
+                dialog.dismiss();
                 Toast.makeText(DangNhapActivity.this, "apvbapva", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void dangNhapTheoRole(String viTri){
+        switch (viTri){
+            case "Phục vụ":
+                break;
+            case "Pha chế":
+                break;
+            case "Thu ngân":
+                break;
+            case "Quản lý":
+                Intent intent = new Intent(DangNhapActivity.this, QuanLyMonActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                this.startActivity(intent);
+                this.finish();
+                break;
+        }
     }
     private boolean kiemTraDangNhap(String taiKhoan, String matKhau){
         if(taiKhoan.equals(edtTenDangNhap.getText().toString()) && matKhau.equals(edtMatKhau.getText().toString())){
