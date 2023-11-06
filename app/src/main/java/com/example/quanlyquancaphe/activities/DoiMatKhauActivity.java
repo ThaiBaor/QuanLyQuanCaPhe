@@ -110,7 +110,7 @@ public class DoiMatKhauActivity extends AppCompatActivity {
             public void onClick(View view) {
                 kiemTraDuLieuNhap();
                 if(xacNhan){
-                    doiMatKhau(edtTenDangNhap.getText().toString(), edtMatKhauMoi.getText().toString());
+                    kiemTraTaiKhoanVaDoiMatKhau(edtTenDangNhap.getText().toString(), edtMatKhauHienTai.getText().toString());
                 }
                 else {
                     Toast.makeText(DoiMatKhauActivity.this, "Vui lòng kiểm tra lại dữ liệu nhập", Toast.LENGTH_SHORT).show();
@@ -137,7 +137,7 @@ public class DoiMatKhauActivity extends AppCompatActivity {
 
     private void doiMatKhau(String tenDangNhap, String matKhau){
         if (kiemTraXacNhanMatKhau()){
-            if(kiemTraTaiKhoan(edtTenDangNhap.getText().toString(), edtMatKhauHienTai.getText().toString())){
+
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference ref = database.getReference("Nhanvien");
                 ref.child(tenDangNhap).child("matKhau").setValue(matKhau).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -151,10 +151,7 @@ public class DoiMatKhauActivity extends AppCompatActivity {
                         Toast.makeText(DoiMatKhauActivity.this, "Thất bại", Toast.LENGTH_SHORT).show();
                     }
                 });
-            }
-            else {
-                Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
-            }
+
 
         }
     }
@@ -169,25 +166,22 @@ public class DoiMatKhauActivity extends AppCompatActivity {
         }
     }
 
-    private boolean kiemTraTaiKhoan(String taiKhoanNhap, String matKhauNhap){
+    private void kiemTraTaiKhoanVaDoiMatKhau(String taiKhoanNhap, String matKhauNhap){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("Nhanvien");
         ref.child(taiKhoanNhap).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.exists() == false){
-                    kiemTraTaiKhoan = false;
                     Toast.makeText(DoiMatKhauActivity.this, "Tài khoản không tồn tài trên hệ thống. Vui lòng kiểm tra lại.", Toast.LENGTH_SHORT).show();
-                    return;
                 }
                 else {
                     String matKhauData = snapshot.child("matKhau").getValue(String.class);
                     if(matKhauData.equals(matKhauNhap)){
-                        kiemTraTaiKhoan = true;
-                        return;
+                        doiMatKhau(edtTenDangNhap.getText().toString(), edtXacNhanMatKhauMoi.getText().toString());
+
                     }
                     else {
-                        kiemTraTaiKhoan = false;
                         Toast.makeText(DoiMatKhauActivity.this, "Mật khẩu không tồn tài trên hệ thống. Vui lòng kiểm tra lại.", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -197,7 +191,6 @@ public class DoiMatKhauActivity extends AppCompatActivity {
                 Toast.makeText(DoiMatKhauActivity.this, "Thất bại", Toast.LENGTH_SHORT).show();
             }
         });
-        return kiemTraTaiKhoan;
     }
 
     public boolean hasSpecialChar(String str) {

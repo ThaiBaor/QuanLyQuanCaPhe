@@ -40,6 +40,7 @@
             android:name=".activities.QuanLyBanActivity"
             android:exported="true" />
         <activity
+
             android:name=".activities.ThemBanActivity"
             android:exported="false" />
         <activity
