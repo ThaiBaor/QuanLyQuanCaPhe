@@ -77,7 +77,15 @@ public class QuanLyKhoActivity extends AppCompatActivity implements NavigationVi
         swipeableRecyclerView.setListener(new SwipeLeftRightCallback.Listener() {
             @Override
             public void onSwipedLeft(int position) {
-
+                NguyenLieu nguyenLieu = data.get(position);
+                Intent intent = new Intent(QuanLyKhoActivity.this, CapNhatNguyenLieuActivity.class);
+                intent.putExtra("maNguyenLieu", nguyenLieu.getMaNguyenLieu());
+                intent.putExtra("tenNguyenLieu", nguyenLieu.getTenNguyenLieu());
+                intent.putExtra("ngayNhap", nguyenLieu.getNgayNhap());
+                intent.putExtra("tonKho", nguyenLieu.getTonKho());
+                intent.putExtra("donVi", nguyenLieu.getDonVi());
+                intent.putExtra("soLuongNhap", nguyenLieu.getSoLuongNhap());
+                startActivity(intent);
             }
 
             @Override
@@ -103,7 +111,6 @@ public class QuanLyKhoActivity extends AppCompatActivity implements NavigationVi
                 });
                 AlertDialog dialog = builder.create();
                 dialog.show();
-
             }
         });
 
@@ -212,7 +219,11 @@ public class QuanLyKhoActivity extends AppCompatActivity implements NavigationVi
         });
     }
 
-
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        nguyenLieuAdapter.notifyDataSetChanged();
+    }
 
     private void search(CharSequence hint){
         filterData.clear();
@@ -239,6 +250,7 @@ public class QuanLyKhoActivity extends AppCompatActivity implements NavigationVi
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolBar,R.string.open_nav,R.string.close_nav);
         //setSupportActionBar(toolbar);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_qlkho);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
     }

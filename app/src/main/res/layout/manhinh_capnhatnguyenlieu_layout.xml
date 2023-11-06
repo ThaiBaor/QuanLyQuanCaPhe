@@ -86,13 +86,13 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btnthem"
+        android:id="@+id/btnCapNhat"
         style="@style/quanly_button"
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:background="@drawable/quanly_button_background"
-        android:text="thêm" />
+        android:text="Cập nhật" />
 
 </LinearLayout>

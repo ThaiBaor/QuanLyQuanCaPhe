@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_thongkehoadon"
+            android:icon="@drawable/thongkehoadon_icon"
+            android:title="Thống kê hóa đơn"></item>
+        <item
+            android:id="@+id/nav_thanhtoantaiban"
+            android:icon="@drawable/qlban_icon"
+            android:title="Thanh toán tại bàn"></item>
+        <item
+            android:id="@+id/nav_thanhtoanmangdi"
+            android:icon="@drawable/thongkehoadon_icon"
+            android:title="Thanh toán mang đi"></item>
+        <item
+            android:id="@+id/nav_doimatkhau"
+            android:icon="@drawable/lock_icon"
+            android:title="Đổi mật khẩu"></item>
+        <item
+            android:id="@+id/nav_dangxuat"
+            android:icon="@drawable/dangxuat_icon"
+            android:title="Đăng xuất"></item>
+    </group>
+</menu>

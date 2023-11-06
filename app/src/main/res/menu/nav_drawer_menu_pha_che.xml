@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+tools:showIn="navigation_view">
+<group
+    android:checkableBehavior="single">
+    <item
+        android:id="@+id/nav_danhsachmonkhadung"
+        android:icon="@drawable/dsmonkhadung_icon"
+        android:title="Danh sách món khả dụng"></item>
+    <item
+        android:id="@+id/nav_danhsachorder"
+        android:icon="@drawable/qlmon_icon"
+        android:title="Danh sách món Order"></item>
+    <item
+        android:id="@+id/nav_doimatkhau"
+        android:icon="@drawable/lock_icon"
+        android:title="Đổi mật khẩu"></item>
+    <item
+        android:id="@+id/nav_dangxuat"
+        android:icon="@drawable/dangxuat_icon"
+        android:title="Đăng xuất"></item>
+</group>
+</menu>

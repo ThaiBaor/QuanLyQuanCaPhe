@@ -1,5 +1,7 @@
 package com.example.quanlyquancaphe.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -94,11 +96,27 @@ public class QuanLyKhuActivity extends AppCompatActivity implements NavigationVi
             }
             @Override
             public void onSwipedRight(int position) {
-                databaseReference = FirebaseDatabase.getInstance().getReference("Khu");
-                databaseReference.child(String.valueOf(data.get(position).getId_Khu())).removeValue();
-                data.remove(position);
-                data.clear();
-                quanLyKhuAdapter.notifyDataSetChanged();
+                AlertDialog.Builder builder = new AlertDialog.Builder(QuanLyKhuActivity.this);
+                builder.setCancelable(true);
+                builder.setTitle("Thông báo");
+                builder.setMessage("Bạn có muốn xóa " + data.get(position).getId_Khu() + " không ?");
+                builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        databaseReference = FirebaseDatabase.getInstance().getReference("Khu");
+                        databaseReference.child(String.valueOf(data.get(position).getId_Khu())).removeValue();
+                        data.remove(position);
+                        data.clear();
+                    }
+                });
+                builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        quanLyKhuAdapter.notifyDataSetChanged();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
@@ -226,12 +244,13 @@ public class QuanLyKhuActivity extends AppCompatActivity implements NavigationVi
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolBar,R.string.open_nav,R.string.close_nav);
         //setSupportActionBar(toolbar);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_qlkhu);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
     }
 
     private void update() {
-
+        kiemTraUpdate();
         Khu khu = new Khu();
         khu.setId_Khu(Integer.parseInt(edtMa.getText().toString()));
         khu.setTenKhu(edtKhu.getText().toString());
