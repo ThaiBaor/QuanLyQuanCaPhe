@@ -135,7 +135,7 @@ public class CapNhatNguyenLieuActivity extends AppCompatActivity {
         int yearNow = calendar.get(Calendar.YEAR);
         int monthNow = calendar.get(Calendar.MONTH);
         int dayNow = calendar.get(Calendar.DAY_OF_MONTH);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {

@@ -16,14 +16,18 @@
         android:theme="@style/Theme.QuanLyQuanCaPhe"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
-        <!-- MON -->
+        <activity
+            android:name=".activities.DanhSachMonKhaDungActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.ThongKeHoaDonActivity"
+            android:exported="true" /> <!-- MON -->
         <activity
             android:name=".activities.CapNhatThongTinMonActivity"
             android:exported="false" />
         <activity
             android:name=".activities.QuanLyMonActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".activities.ThemMonActivity"
             android:exported="false" /> <!-- NGUYEN LIEU -->
@@ -40,7 +44,6 @@
             android:name=".activities.QuanLyBanActivity"
             android:exported="true" />
         <activity
-
             android:name=".activities.ThemBanActivity"
             android:exported="false" />
         <activity
@@ -57,17 +60,16 @@
             android:exported="false" />
         <activity
             android:name=".activities.QuanLyNhanVienActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".activities.DangNhapActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".activities.DoiMatKhauActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
