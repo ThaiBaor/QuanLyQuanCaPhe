@@ -39,7 +39,7 @@
             android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:background="@drawable/quanly_edittext_background"
-            android:drawableRight="@drawable/qlkho_icon"
+            android:drawableRight="@drawable/lich_icon"
             android:hint="Ngày nhập"
             android:paddingLeft="10dp"
             android:paddingRight="10dp" />

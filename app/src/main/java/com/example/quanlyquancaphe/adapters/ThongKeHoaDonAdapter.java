@@ -38,10 +38,11 @@ public class ThongKeHoaDonAdapter extends RecyclerView.Adapter<ThongKeHoaDonView
     public void onBindViewHolder(@NonNull ThongKeHoaDonViewholder holder, int position) {
         ThongKeHoaDon thongKeHoaDon = data.get(position);
         holder.maHoaDon.setText(thongKeHoaDon.getId_MaHoaDon());
-        holder.tenKhachHang.setText(thongKeHoaDon.getId_MaHoaDon());
-        holder.gio.setText(thongKeHoaDon.getThoiGian_thanhtoan());
+        holder.tenKhachHang.setText(thongKeHoaDon.getTenKhachHang());
+        holder.gio.setText(thongKeHoaDon.getGio());
         holder.ngay.setText(thongKeHoaDon.getThoiGian_thanhtoan());
         holder.maHoaDon.setText(thongKeHoaDon.getId_MaHoaDon());
+        holder.tongTien.setText(thongKeHoaDon.getTongTien()+"");
     }
 
     @Override

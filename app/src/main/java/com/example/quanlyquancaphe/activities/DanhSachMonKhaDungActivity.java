@@ -54,7 +54,7 @@ public class DanhSachMonKhaDungActivity extends AppCompatActivity implements Nav
         setEvent();
         setdrawer();
         toolBar.setNavigationIcon(R.drawable.menu_icon);
-        toolBar.setTitle("Danh sách món khà dụng");
+        toolBar.setTitle("Danh sách món khả dụng");
         danhSachMonKhaDungAdapter = new DanhSachMonKhaDungAdapter(this, data);
         recyclerView.setAdapter(danhSachMonKhaDungAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
