@@ -27,7 +27,6 @@ public class DanhSachOrderAdapter extends RecyclerView.Adapter<DanhSachOrderView
     @Override
     public DanhSachOrderViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.items_danhsachorderphache_layout,parent,false);
-
         return new DanhSachOrderViewholder(view);
     }
 
