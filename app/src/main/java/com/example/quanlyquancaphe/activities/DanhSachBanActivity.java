@@ -1,23 +1,32 @@
 package com.example.quanlyquancaphe.activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -54,7 +63,12 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
         setContentView(R.layout.manhinh_danhsachban_layout);
         setConTrol();
         setEvent();
-
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openCustomDialog();
+            }
+        });
     }
 
     private void GetDataBan() {
@@ -136,8 +150,8 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
                             Khu khu = item.getValue(Khu.class);
                             dataKhu.add(khu);
                         }
-                            HienThiBanTheoKhu(position, dataKhu, parent.getItemAtPosition(position).toString());
-                            adapter.notifyDataSetChanged();
+                        HienThiBanTheoKhu(position, dataKhu, parent.getItemAtPosition(position).toString());
+                        adapter.notifyDataSetChanged();
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
@@ -153,7 +167,7 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
         });
         //set data ban
         adapter = new DanhSachBanAdapter(dataBan, DanhSachBanActivity.this, new DanhSachBanAdapter.onItemLongClickListenner() {
-        //Sử dụng interface để lấy vị trí phần tử trong data bàn
+            //Sử dụng interface để lấy vị trí phần tử trong data bàn
             @Override
             public void onItemLongClickListenner(int position) {
                 //Tạo context menu
@@ -198,9 +212,27 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
                             menu.getItem(2).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                                 @Override
                                 public boolean onMenuItemClick(@NonNull MenuItem item) {
-                                    //hủy đặt bàn, chuyển trạng thái về 0: bàn trống
-                                        ChuyenTrangThaiBan(dataBan.get(position).getId_Ban(), 0);
-                                    Toast.makeText(DanhSachBanActivity.this, "Hủy đặt bàn thành công", Toast.LENGTH_SHORT).show();
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(DanhSachBanActivity.this);
+                                    builder.setCancelable(true);
+                                    builder.setTitle("Thông báo");
+                                    builder.setMessage("Bạn có muốn hủy đặt "+ dataBan.get(position).getTenBan() + " không?");
+                                    builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            //hủy đặt bàn, chuyển trạng thái về 0: bàn trống
+                                            ChuyenTrangThaiBan(dataBan.get(position).getId_Ban(), 0);
+                                            DeleteItemDatabase(dataBan.get(position).getId_Ban(), "DatBan");
+                                            Toast.makeText(DanhSachBanActivity.this, "Hủy đặt bàn thành công", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                    builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+                                    });
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
                                     return true;
                                 }
                             });
@@ -214,7 +246,7 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
                                     return true;
                                 }
                             });
-                            }
+                        }
                         //Trạng thái bàn: đang sử dụng
                         else{
                             menu.getItem(1).setEnabled(false);
@@ -301,6 +333,43 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("Ban");
         databaseReference.child(maBan).child("id_TrangThaiBan").setValue(trangThai);
+    }
+    private void DeleteItemDatabase(String key, String tenBang) {
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference(tenBang);
+        reference.child(key).removeValue();
+        adapter.notifyDataSetChanged();
+    }
+    private void openCustomDialog(){
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_dialog);
+        dialog.setCancelable(false);
+        Window window = dialog.getWindow();
+        if (window != null){
+            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            WindowManager.LayoutParams layoutParams = window.getAttributes();
+            layoutParams.gravity = Gravity.CENTER;
+            window.setAttributes(layoutParams);
+        }
+        Button btnHuy = dialog.findViewById(R.id.btnHuy);
+        Button btnTiep = dialog.findViewById(R.id.btnTiep);
+        EditText edtTenKH = dialog.findViewById(R.id.edtTenKH);
+        btnHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(DanhSachBanActivity.this, "Tat", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+        btnTiep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(DanhSachBanActivity.this, edtTenKH.getText().toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        dialog.show();
+
     }
     private void setConTrol() {
         btnbanDaDat = findViewById(R.id.btnBanDaDat);

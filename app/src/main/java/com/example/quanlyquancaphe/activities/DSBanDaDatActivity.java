@@ -95,6 +95,8 @@ public class DSBanDaDatActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         DeleteItemDatabase(dataDatBan.get(position).getId_Ban(), "DatBan");
+                        //Chuyển trạng thái bàn sang 0: bàn trống
+                        ChuyenTrangThaiBan(dataDatBan.get(position).getId_Ban(), 0);
                     }
                 });
                 builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
@@ -146,6 +148,7 @@ public class DSBanDaDatActivity extends AppCompatActivity {
                     Khu khu = item.getValue(Khu.class);
                     dataKhu.add(khu);
                 }
+                adapter.notifyDataSetChanged();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -165,6 +168,7 @@ public class DSBanDaDatActivity extends AppCompatActivity {
                     DatBan datBan = item.getValue(DatBan.class);
                     dataDatBan.add(datBan);
                 }
+                adapter.notifyDataSetChanged();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -185,6 +189,11 @@ public class DSBanDaDatActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    private void ChuyenTrangThaiBan(String maBan, Integer trangThai){
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Ban");
+        databaseReference.child(maBan).child("id_TrangThaiBan").setValue(trangThai);
+    }
     private void setControl() {
         toolbar = findViewById(R.id.toolBar);
         dsBanDaDat = findViewById(R.id.DSBanDaDat);

@@ -28,10 +28,10 @@ import java.util.Calendar;
 import java.util.SimpleTimeZone;
 
 public class DatBanActivity extends AppCompatActivity {
-Toolbar toolbar;
-Bundle bundle;
-EditText edtTenKH, edtSDT, edtSoNguoi, edtNgay, edtGio;
-Button btnDat, btnDatBanNgay;
+    Toolbar toolbar;
+    Bundle bundle;
+    EditText edtTenKH, edtSDT, edtSoNguoi, edtNgay, edtGio;
+    Button btnDat, btnDatBanNgay;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,7 +146,7 @@ Button btnDat, btnDatBanNgay;
                 }
             });
             //Chuyển trạng thái bàn về 2: Đã đặt
-             ChuyenTrangThaiBan(id_Ban, 2);
+            ChuyenTrangThaiBan(id_Ban, 2);
         }
         else {
             Toast.makeText(DatBanActivity.this, "Đặt bàn thất bại", Toast.LENGTH_SHORT).show();
