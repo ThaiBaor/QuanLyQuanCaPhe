@@ -14,6 +14,10 @@ public class QuanLyMonViewHolder extends RecyclerView.ViewHolder {
     public ImageView hinh;
     public QuanLyMonViewHolder(@NonNull View itemView) {
         super(itemView);
+        setControl();
+
+    }
+    private void setControl(){
         tenMon = itemView.findViewById(R.id.tvTenMon);
         donGia = itemView.findViewById(R.id.tvDonGia);
         moTa = itemView.findViewById(R.id.tvMoTa);
