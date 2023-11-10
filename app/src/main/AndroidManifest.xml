@@ -16,12 +16,6 @@
         android:theme="@style/Theme.QuanLyQuanCaPhe"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".activities.DanhSachMonKhaDungActivity"
-            android:exported="true" />
-        <activity
-            android:name=".activities.ThongKeHoaDonActivity"
-            android:exported="true" />
         <!-- MON -->
         <activity
             android:name=".activities.CapNhatThongTinMonActivity"
@@ -89,16 +83,21 @@
         <activity
             android:name=".activities.DoiMatKhauActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activities.MenuChucNangQuanLyActicity"
             android:exported="true"></activity>
 
+
+
+
+        <activity
+            android:name=".activities.GioHangActivity"
+            android:exported="true"></activity>
+        <activity
+            android:name=".activities.DanhSachMonPhucVuActivity"
+            android:exported="true"></activity>
 
     </application>
 
