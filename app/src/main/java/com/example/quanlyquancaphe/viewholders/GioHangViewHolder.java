@@ -23,71 +23,77 @@ public class GioHangViewHolder extends RecyclerView.ViewHolder {
     public GioHangViewHolder(@NonNull View itemView, GioHangInterface buttonClickListener) {
         super(itemView);
         setControl();
-       btnTang.setOnClickListener(view -> {
-           if (buttonClickListener != null) {
-               int position = getAdapterPosition();
-               if (position != RecyclerView.NO_POSITION) {
-                   buttonClickListener.onPlusButtonClick(position, edtSL, tvGia);
-               }
-           }
-       });
-       btnGiam.setOnClickListener(view -> {
-           if (buttonClickListener != null) {
-               int position = getAdapterPosition();
-               if (position != RecyclerView.NO_POSITION) {
-                   buttonClickListener.onMinusButtonClick(position, edtSL, tvGia);
-               }
-           }
-       });
-       btnXoa.setOnClickListener(view -> {
-           if (buttonClickListener != null) {
-               int position = getAdapterPosition();
-               if (position != RecyclerView.NO_POSITION) {
-                   buttonClickListener.onDeleteButtonClick(position);
-               }
-           }
-       });
-       edtGhiChu.addTextChangedListener(new TextWatcher() {
-           @Override
-           public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        btnTang.setOnClickListener(view -> {
+            if (buttonClickListener != null) {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    buttonClickListener.onPlusButtonClick(position, edtSL, tvGia);
+                }
+            }
+        });
+        btnGiam.setOnClickListener(view -> {
+            if (buttonClickListener != null) {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    buttonClickListener.onMinusButtonClick(position, edtSL, tvGia);
+                }
+            }
+        });
+        btnXoa.setOnClickListener(view -> {
+            if (buttonClickListener != null) {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    buttonClickListener.onDeleteButtonClick(position);
+                }
+            }
+        });
+        edtGhiChu.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-           }
+            }
 
-           @Override
-           public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-               if (buttonClickListener != null) {
-                   int position = getAdapterPosition();
-                   if (position != RecyclerView.NO_POSITION) {
-                       buttonClickListener.onNoteChange(position, edtGhiChu.getText().toString());
-                   }
-               }
-           }
-           @Override
-           public void afterTextChanged(Editable editable) {
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (buttonClickListener != null) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        buttonClickListener.onNoteChange(position, edtGhiChu.getText().toString());
+                    }
+                }
+            }
 
-           }
-       });
-       edtSL.addTextChangedListener(new TextWatcher() {
-           @Override
-           public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            @Override
+            public void afterTextChanged(Editable editable) {
 
-           }
+            }
+        });
+        edtSL.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-           @Override
-           public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-               if (buttonClickListener != null) {
-                   int position = getAdapterPosition();
-                   if (position != RecyclerView.NO_POSITION) {
-                       buttonClickListener.onQtyChange(position, Integer.parseInt(edtSL.getText().toString()));
-                   }
-               }
-           }
+            }
 
-           @Override
-           public void afterTextChanged(Editable editable) {
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (buttonClickListener != null) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        if (!edtSL.getText().toString().equals("")) {
+                            buttonClickListener.onQtyChange(position, Integer.parseInt(edtSL.getText().toString()), tvGia);
+                        } else {
+                            edtSL.setText("1");
+                            buttonClickListener.onQtyChange(position, 1, tvGia);
+                        }
+                    }
+                }
+            }
 
-           }
-       });
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     private void setControl() {
