@@ -48,7 +48,7 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangViewHolder> {
         switch (chiTietMon_.getId_TrangThai()) {
             case 0:
                 holder.btnXoa.setVisibility(View.VISIBLE);
-                hienThiTrangThai(holder.edtSL, holder.edtGhiChu, holder.btnTang, holder.btnGiam, false);
+                hienThiTrangThai(holder.edtSL, holder.edtGhiChu, holder.btnTang, holder.btnGiam, true);
                 break;
             case 1:
                 holder.btnXoa.setVisibility(View.INVISIBLE);
