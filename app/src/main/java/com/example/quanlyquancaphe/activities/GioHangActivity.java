@@ -91,11 +91,10 @@ public class GioHangActivity extends AppCompatActivity implements GioHangInterfa
                 }
                 // Trường hợp vừa lấy dữ liệu tạm thời vừa lấy dũ liệu trên Firebase
                 if (dataOnFB.size() != 0) {
-                    cong2DanhSach();
+                    dataOnFB.addAll(currentData);
                     finalData.addAll(dataOnFB);
                     adapter.notifyDataSetChanged();
                 }
-
             }
 
             @Override
@@ -117,8 +116,8 @@ public class GioHangActivity extends AppCompatActivity implements GioHangInterfa
         dialog.show();
         // Lấy ngày và giờ hiện tại
         String ngayGoiMon = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        String gioGoiMon = LocalTime.now().format(DateTimeFormatter.ofPattern("hh:mm:ss"));
-        String time = LocalTime.now().format(DateTimeFormatter.ofPattern("hh:mm:ss")).replace(':', '0');
+        String gioGoiMon = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+        String time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")).replace(':', '0');
         if (!id_Ban.equals(" ")) {
             databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(id_Ban);
         }
@@ -155,7 +154,6 @@ public class GioHangActivity extends AppCompatActivity implements GioHangInterfa
         int dataSize = currentData.size();
         // Duyệt 2 danh sách
         for (int i = 0; i < dataSize; ++i) {
-            System.out.println("i: " + i);
             for (int y = 0; y < dataOnFBSize; ++y) {
                 // Trường hợp không trùng id món
                 if (y == dataOnFBSize - 1 && !currentData.get(i).getId_Mon().equals(dataOnFB.get(y).getId_Mon())) {
@@ -184,15 +182,47 @@ public class GioHangActivity extends AppCompatActivity implements GioHangInterfa
 
     @Override
     public void onDeleteButtonClick(Integer position) {
-        // Trường hợp xóa dũ liệu ở danh sách tạm thời
-        if (currentData.size() != 0 && dataOnFB.size() == 0) {
-            currentData.remove(finalData.get((int) position));
-            finalData.remove((int) position);
-            adapter.notifyItemRemoved((int) position);
+        boolean flag = false;
+        // Trường hợp vừa xóa dữ liệu tạm thời vừa xóa dữ liệu trên Firebase
+        if (currentData.size() != 0 && dataOnFB.size() != 0) {
+            // Xóa dữ liệu tạm thời
+            for (int i = 0; i < currentData.size(); ++i) {
+                if (finalData.get(position).getId_Mon().equals(currentData.get(i).getId_Mon()) && finalData.get(position).getGioGoiMon() == null) {
+                    finalData.remove((int) position);
+                    adapter.notifyItemRemoved(position);
+                    flag = true;
+                    break;
+                }
+            }
+            // Xóa dữ liệu trên Firebase
+            if (!flag) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(GioHangActivity.this);
+                builder.setCancelable(true);
+                builder.setTitle("Thông báo");
+                builder.setMessage("Món hiện tại đã có trên hệ thống. Xác nhận xóa ?");
+                builder.setPositiveButton("Xác nhận", (dialogInterface, i) -> {
+                    String id_Mon = finalData.get((int) position).getId_Mon();
+                    String gioGoiMon = finalData.get((int) position).getGioGoiMon().replace(':', '0');
+                    String id_Ban = finalData.get((int) position).getId_Ban();
+                    databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon");
+                    databaseReference.child(id_Ban).child("HT").child(gioGoiMon).child(id_Mon).removeValue();
+                });
+                builder.setNegativeButton("Hủy", (dialogInterface, i) -> {
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
             return;
         }
-        // Trường hợp xóa dữ liệu trên Firebase
-        if (dataOnFB.size() != 0){
+        // Trường hợp chỉ xóa dữ liệu ở danh sách tạm thời
+        if (currentData.size() != 0 && dataOnFB.size() == 0) {
+            currentData.remove(finalData.get((int) position));
+
+            return;
+        }
+
+        // Trường hợp chỉ xóa dữ liệu trên Firebase
+        if (dataOnFB.size() != 0) {
             AlertDialog.Builder builder = new AlertDialog.Builder(GioHangActivity.this);
             builder.setCancelable(true);
             builder.setTitle("Thông báo");
@@ -209,43 +239,36 @@ public class GioHangActivity extends AppCompatActivity implements GioHangInterfa
             AlertDialog dialog = builder.create();
             dialog.show();
         }
+
     }
 
     @SuppressLint("SetTextI18n")
     @Override
     public void onPlusButtonClick(Integer position, EditText edtSL, TextView tvGia) {
         NumberFormat nf = NumberFormat.getNumberInstance();
-        currentData.get(position).tang();
-        edtSL.setText(String.valueOf(currentData.get(position).getSl()));
-        tvGia.setText(nf.format(currentData.get(position).getSl() * currentData.get(position).getGia()) + "đ");
+        finalData.get(position).tang();
+        edtSL.setText(String.valueOf(finalData.get(position).getSl()));
+        tvGia.setText(nf.format(finalData.get(position).getSl() * finalData.get(position).getGia()) + "đ");
+
     }
 
     @SuppressLint("SetTextI18n")
     @Override
     public void onMinusButtonClick(Integer position, EditText edtSL, TextView tvGia) {
         NumberFormat nf = NumberFormat.getNumberInstance();
-        currentData.get(position).giam();
-        edtSL.setText(String.valueOf(currentData.get(position).getSl()));
-        tvGia.setText(nf.format(currentData.get(position).getSl() * currentData.get(position).getGia()) + "đ");
+        finalData.get(position).giam();
+        edtSL.setText(String.valueOf(finalData.get(position).getSl()));
+        tvGia.setText(nf.format(finalData.get(position).getSl() * finalData.get(position).getGia()) + "đ");
     }
 
     @Override
     public void onNoteChange(Integer position, String note) {
-        try {
-            currentData.get(position).setGhiChu(note);
-        } catch (IndexOutOfBoundsException e) {
-            e.printStackTrace();
-        }
+        finalData.get(position).setGhiChu(note);
     }
 
     @Override
     public void onQtyChange(Integer position, Integer qty) {
-        try {
-            currentData.get(position).setSl(qty);
-        } catch (IndexOutOfBoundsException e) {
-            e.printStackTrace();
-        }
-
+        finalData.get(position).setSl(qty);
     }
 
 }
