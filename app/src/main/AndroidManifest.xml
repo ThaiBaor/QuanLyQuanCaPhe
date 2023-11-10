@@ -21,7 +21,8 @@
             android:exported="true" />
         <activity
             android:name=".activities.ThongKeHoaDonActivity"
-            android:exported="true" /> <!-- MON -->
+            android:exported="true" />
+        <!-- MON -->
         <activity
             android:name=".activities.CapNhatThongTinMonActivity"
             android:exported="false" />
@@ -30,16 +31,19 @@
             android:exported="true" />
         <activity
             android:name=".activities.ThemMonActivity"
-            android:exported="false" /> <!-- NGUYEN LIEU -->
+            android:exported="false" />
+        <!-- NGUYEN LIEU -->
         <activity
             android:name=".activities.QuanLyKhoActivity"
             android:exported="true" />
         <activity
             android:name=".activities.ThemNguyenLieuActivity"
-            android:exported="false" /> <!-- KHU -->
+            android:exported="false" />
+        <!-- KHU -->
         <activity
             android:name=".activities.QuanLyKhuActivity"
-            android:exported="false" /> <!-- BAN -->
+            android:exported="false" />
+        <!-- BAN -->
         <activity
             android:name=".activities.QuanLyBanActivity"
             android:exported="true" />
@@ -48,7 +52,25 @@
             android:exported="false" />
         <activity
             android:name=".activities.CapNhatBanActivity"
-            android:exported="false" /> <!-- NHAN VIEN -->
+            android:exported="false" />
+
+        <activity
+            android:name=".activities.CapNhatDatBanActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".activities.DanhSachBanActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".activities.DatBanActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".activities.DSBanDaDatActivity"
+            android:exported="true">
+        </activity>
+        <!-- NHAN VIEN -->
         <activity
             android:name=".activities.CapNhatNhanVienActivity"
             android:exported="false" />
@@ -77,22 +99,7 @@
             android:name=".activities.MenuChucNangQuanLyActicity"
             android:exported="true"></activity>
 
-        <activity
-            android:name=".activities.CapNhatDatBanActivity"
-            android:exported="true">
-        </activity>
-        <activity
-            android:name=".activities.DanhSachBanActivity"
-            android:exported="true">
-        </activity>
-        <activity
-            android:name=".activities.DatBanActivity"
-            android:exported="true">
-        </activity>
-        <activity
-            android:name=".activities.DSBanDaDatActivity"
-            android:exported="true">
-        </activity>
+
     </application>
 
 </manifest>

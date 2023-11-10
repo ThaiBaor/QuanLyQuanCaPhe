@@ -9,11 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quanlyquancaphe.R;
-import com.example.quanlyquancaphe.models.HoaDonMangVe;
-import com.example.quanlyquancaphe.models.HoaDonTaiBan;
-import com.example.quanlyquancaphe.models.NguyenLieu;
 import com.example.quanlyquancaphe.models.ThongKeHoaDon;
-import com.example.quanlyquancaphe.viewholders.NguyenLieuHolder;
 import com.example.quanlyquancaphe.viewholders.ThongKeHoaDonViewholder;
 
 import java.util.ArrayList;
@@ -39,7 +35,7 @@ public class ThongKeHoaDonAdapter extends RecyclerView.Adapter<ThongKeHoaDonView
         ThongKeHoaDon thongKeHoaDon = data.get(position);
         holder.maHoaDon.setText(thongKeHoaDon.getId_MaHoaDon());
         holder.tenKhachHang.setText(thongKeHoaDon.getTenKhachHang());
-        holder.gio.setText(thongKeHoaDon.getGio());
+        holder.gio.setText(thongKeHoaDon.getNgayThanhToan());
         holder.ngay.setText(thongKeHoaDon.getThoiGian_thanhtoan());
         holder.maHoaDon.setText(thongKeHoaDon.getId_MaHoaDon());
         holder.tongTien.setText(thongKeHoaDon.getTongTien()+"");

@@ -1,38 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background">
-<include layout="@layout/toolbar"></include>
-    <LinearLayout
-        android:layout_marginTop="13dp"
-        android:orientation="horizontal"
+    android:background="@drawable/background"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context=".activities.DanhSachBanActivity"
+    tools:openDrawer="start">
+
+    <include layout="@layout/toolbar" />
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/nav_drawer_chucnang_phuc_vu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp">
-        <Spinner
-            android:id="@+id/spKhu1"
-            android:layout_marginLeft="15dp"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="4"
-            android:layout_marginRight="20dp"></Spinner>
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/btnBanDaDat"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginRight="15dp"
-            android:layout_weight="4"
-            android:background="@drawable/quanly_button_background"
-            android:text="Bàn đã đặt"></Button>
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_marginTop="13dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
+                <Spinner
+                    android:id="@+id/spKhu1"
+                    android:layout_marginLeft="15dp"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="4"
+                    android:layout_marginRight="20dp"></Spinner>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_gravity="center"
-        android:id="@+id/listBan"
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"></androidx.recyclerview.widget.RecyclerView>
+                <Button
+                    android:id="@+id/btnBanDaDat"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_weight="4"
+                    android:background="@drawable/quanly_button_background"
+                    android:text="Bàn đã đặt"></Button>
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_gravity="center"
+                android:id="@+id/listBan"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"></androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/nav_drawer_header"
+            app:menu="@menu/nav_drawer_menu_phuc_vu"></com.google.android.material.navigation.NavigationView>
+    </androidx.drawerlayout.widget.DrawerLayout>
+
 </LinearLayout>

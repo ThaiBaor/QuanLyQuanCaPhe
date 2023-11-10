@@ -9,6 +9,8 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -18,9 +20,6 @@ import android.widget.Toast;
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.adapters.ThongKeHoaDonAdapter;
 import com.example.quanlyquancaphe.models.Ban;
-import com.example.quanlyquancaphe.models.Khu;
-import com.example.quanlyquancaphe.models.LoaiMon;
-import com.example.quanlyquancaphe.models.NguyenLieu;
 import com.example.quanlyquancaphe.models.ThongKeHoaDon;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,12 +36,13 @@ import java.util.Date;
 public class ThongKeHoaDonActivity extends AppCompatActivity {
 
     ArrayList<ThongKeHoaDon> data = new ArrayList<>();
+    ArrayList<ThongKeHoaDon> dataFilter = new ArrayList<>();
     ThongKeHoaDonAdapter thongKeHoaDonAdapter ;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     ValueEventListener valueEventListener;
     RecyclerView recyclerView;
-    TextView tvGiothuNhat, tvGioThuHai, tvNgayThongKe;
+    TextView tvGiothuNhat, tvGioThuHai, tvNgayThongKe, tvSoLuongHoaDon, tvTongTien;
 
     ThongKeHoaDon thongKeHoaDon = new ThongKeHoaDon();
 
@@ -52,17 +52,39 @@ public class ThongKeHoaDonActivity extends AppCompatActivity {
         setContentView(R.layout.manhinh_thongkehoadon_layout);
         setControl();
         setEvent();
-        getDataHoaDonTaiBan();
-        thongKeHoaDonAdapter = new ThongKeHoaDonAdapter(this, data);
-        recyclerView.setAdapter(thongKeHoaDonAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        getDataHoaDon();
+        filterHoaDon();
     }
 
     private void setEvent() {
+        setNgayHienTai();
         tvGiothuNhat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ChonGioThuNhat();
+
+            }
+        });
+
+        tvGiothuNhat.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(kiemTraNgayGio()>0){
+                    tvGiothuNhat.setText("00:00");
+                }
+                else {
+                    filterHoaDon();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
         tvGioThuHai.setOnClickListener(new View.OnClickListener() {
@@ -71,11 +93,53 @@ public class ThongKeHoaDonActivity extends AppCompatActivity {
                 ChonGioThuHai();
             }
         });
+
+        tvGioThuHai.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(kiemTraNgayGio()>0){
+                    tvGioThuHai.setText("00:00");
+                }
+                else {
+                    filterHoaDon();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         tvNgayThongKe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 chonNgayThongKe();
                 chuyenNgayGioThongKeThuNhat();
+                chuyenNgayGioThongKeThuHai();
+            }
+        });
+
+        tvNgayThongKe.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                chuyenNgayGioThongKeThuNhat();
+                chuyenNgayGioThongKeThuHai();
+                filterHoaDon();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
     }
@@ -90,7 +154,13 @@ public class ThongKeHoaDonActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 calendar.set(year,month,day);
-                tvNgayThongKe.setText(dateFormat.format(calendar.getTime()));
+                //tvNgayThongKe.setText(dateFormat.format(calendar.getTime()));
+                if(kiemTraNgayGio() <= 0){
+                    tvNgayThongKe.setText(dateFormat.format(calendar.getTime()));
+                }
+                else {
+                    Toast.makeText(ThongKeHoaDonActivity.this, "Vui long nhap lai gio", Toast.LENGTH_SHORT).show();
+                }
             }
         }, yearNow, monthNow, dayNow);
         datePickerDialog.setTitle("Chọn ngày");
@@ -104,7 +174,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity {
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                tvGiothuNhat.setText(hourOfDay + ":" + minute);
+                    tvGiothuNhat.setText(hourOfDay + ":" + minute);
             }
         },gio, phut, true);
         timePickerDialog.show();
@@ -116,32 +186,33 @@ public class ThongKeHoaDonActivity extends AppCompatActivity {
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                tvGioThuHai.setText(hourOfDay + ":" + minute);
+                    tvGioThuHai.setText(hourOfDay + ":" + minute);
             }
         },gio, phut, true);
         timePickerDialog.show();
     }
 
-    private void getDataHoaDonTaiBan(){
+    private void getDataHoaDon(){
         AlertDialog.Builder builder = new AlertDialog.Builder(ThongKeHoaDonActivity.this).setTitle("").setMessage("Đang tải dữ liệu...");
         builder.setCancelable(false);
         AlertDialog dialog = builder.create();
         dialog.show();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference().child("HoaDonTaiBan");
+        databaseReference = firebaseDatabase.getReference().child("HoaDon");
         valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 data.clear();
                 for (DataSnapshot item: snapshot.getChildren()){
                     String id_MaHoaDon = item.child("id_HoaDon").getValue().toString();
-                    String ID_DSMon = item.child("id_DSMon_TaiBan").getValue().toString();
+                    String id_Ban = item.child("id_Ban").getValue().toString();
                     String thoiGian_thanhtoan = item.child("thoiGian_ThanhToan").getValue().toString();
+                    String ngayThanhToan = item.child("ngayThanhToan").getValue().toString();
                     Double tongTien = Double.parseDouble(item.child("tongTien").getValue().toString());
                     Boolean daThanhToan = Boolean.parseBoolean(item.child("daThanhToan").getValue().toString());
-
                     String tenKhachHang = "Không có";
-                    thongKeHoaDon = new ThongKeHoaDon(id_MaHoaDon, ID_DSMon, thoiGian_thanhtoan, tongTien, daThanhToan, tenKhachHang);
+                    Toast.makeText(ThongKeHoaDonActivity.this,ngayThanhToan + " " + thoiGian_thanhtoan, Toast.LENGTH_SHORT).show();
+                    thongKeHoaDon = new ThongKeHoaDon(id_MaHoaDon, id_Ban,ngayThanhToan, thoiGian_thanhtoan, tongTien, daThanhToan, tenKhachHang);
                     data.add(thongKeHoaDon);
                 }
                 thongKeHoaDonAdapter.notifyDataSetChanged();
@@ -156,22 +227,38 @@ public class ThongKeHoaDonActivity extends AppCompatActivity {
         });
     }
 
-    private ThongKeHoaDon getGio(String id_dsmon, ThongKeHoaDon thongKeHoaDon){
+    private void filterHoaDon(){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        dataFilter.clear();
+        for (ThongKeHoaDon item : data){
+            //Toast.makeText(this, item.getThoiGian_thanhtoan() + " " + item.getNgayThanhToan(), Toast.LENGTH_SHORT).show();
+            Date dateData = chuyenNgayGioData(item.getThoiGian_thanhtoan() + " " + item.getNgayThanhToan());
+            if (dateData.compareTo(chuyenNgayGioThongKeThuNhat()) >= 0 && dateData.compareTo(chuyenNgayGioThongKeThuHai()) <= 0 ){
+                dataFilter.add(item);
+            }
+            else {
+            }
+        }
+        if(dataFilter != null){
+            thongKeHoaDonAdapter = new ThongKeHoaDonAdapter(this, dataFilter);
+            recyclerView.setAdapter(thongKeHoaDonAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            tvSoLuongHoaDon.setText(dataFilter.size()+"");
+            tvTongTien.setText(getTongTien(dataFilter));
+        }else {
+            tvSoLuongHoaDon.setText("0");
+            tvTongTien.setText("0d");
+        }
+    }
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("DSMon_TaiBan");
-        ref.child(id_dsmon).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                String gio = snapshot.child("thoiGian_GoiMon").getValue(String.class);
-                thongKeHoaDon.setGio(gio);
-                Toast.makeText(ThongKeHoaDonActivity.this, thongKeHoaDon.getGio(), Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-            }
-        });
-        return thongKeHoaDon;
+    private String getTongTien(ArrayList<ThongKeHoaDon> data){
+        String getTongTien = "";
+        Double tongTien = Double.valueOf(0);
+        for(ThongKeHoaDon item : data){
+            tongTien += item.getTongTien();
+        }
+        getTongTien = String.valueOf(tongTien);
+        return getTongTien;
     }
 
     private Date chuyenNgayGioThongKeThuNhat(){
@@ -180,9 +267,8 @@ public class ThongKeHoaDonActivity extends AppCompatActivity {
         String dateString = tvNgayThongKe.getText().toString() + " " + tvGiothuNhat.getText().toString();
         try{
              date = dateFormat.parse(dateString);
-            Toast.makeText(this, date.toString(), Toast.LENGTH_LONG).show();
         } catch (ParseException e) {
-            Toast.makeText(this, "Loi", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Loi tg 1", Toast.LENGTH_SHORT).show();
         }
         return date;
     }
@@ -192,11 +278,43 @@ public class ThongKeHoaDonActivity extends AppCompatActivity {
         String dateString = tvNgayThongKe.getText().toString() + " " + tvGioThuHai.getText().toString();
         try{
             date = dateFormat.parse(dateString);
-            Toast.makeText(this, date.toString(), Toast.LENGTH_LONG).show();
         } catch (ParseException e) {
-            Toast.makeText(this, "Loi", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Loi tg 2", Toast.LENGTH_SHORT).show();
         }
         return date;
+    }
+    private Date chuyenNgayGioData(String dateString){
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        try{
+            Toast.makeText(this, dateString, Toast.LENGTH_SHORT).show();
+            date = dateFormat.parse(dateString);
+        } catch (ParseException e) {
+            Toast.makeText(this, "Loi tg data", Toast.LENGTH_SHORT).show();
+        }
+        return date;
+    }
+
+    private Date chuyenNgayGio(String dateString){
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        try{
+            date = dateFormat.parse(dateString);
+        } catch (ParseException e) {
+            Toast.makeText(this, "Loi ngay gio", Toast.LENGTH_SHORT).show();
+        }
+        return date;
+    }
+
+    private int kiemTraNgayGio(){
+        Date dateThuNhat = chuyenNgayGio(tvNgayThongKe.getText().toString() + " " + tvGiothuNhat.getText().toString());
+        Date dateThuHai = chuyenNgayGio(tvNgayThongKe.getText().toString() + " " + tvGioThuHai.getText().toString());
+        return dateThuNhat.compareTo(dateThuHai);
+    }
+    private void setNgayHienTai(){
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        tvNgayThongKe.setText(dateFormat.format(calendar.getTime()));
     }
 
     private void setControl() {
@@ -204,6 +322,9 @@ public class ThongKeHoaDonActivity extends AppCompatActivity {
         tvGiothuNhat = findViewById(R.id.tvGioThuNhat);
         tvGioThuHai = findViewById(R.id.tvGioThuHai);
         tvNgayThongKe = findViewById(R.id.tvNgayThongKe);
+        tvSoLuongHoaDon = findViewById(R.id.tvSoLuongHD);
+        tvTongTien = findViewById(R.id.tvTongCong);
     }
+
 
 }

@@ -2,10 +2,10 @@ package com.example.quanlyquancaphe.models;
 
 public class ThongKeHoaDon {
     private String id_MaHoaDon;
-    private String ID_DSMon;
+    private String id_Ban;
     private String thoiGian_thanhtoan;
 
-    private String gio;
+    private String ngayThanhToan;
     private Double tongTien;
     private Boolean daThanhToan;
     private String tenKhachHang;
@@ -31,12 +31,12 @@ public class ThongKeHoaDon {
         this.id_MaHoaDon = id_MaHoaDon;
     }
 
-    public String getID_DSMon() {
-        return ID_DSMon;
+    public String getId_Ban() {
+        return id_Ban;
     }
 
-    public void setID_DSMon(String ID_DSMon) {
-        this.ID_DSMon = ID_DSMon;
+    public void setId_Ban(String id_Ban) {
+        this.id_Ban = id_Ban;
     }
 
     public String getThoiGian_thanhtoan() {
@@ -67,36 +67,36 @@ public class ThongKeHoaDon {
     public String toString() {
         return "ThongKeHoaDon{" +
                 "id_MaHoaDon='" + id_MaHoaDon + '\'' +
-                ", ID_DSMon='" + ID_DSMon + '\'' +
+                ", ID_DSMon='" + id_Ban + '\'' +
                 ", thoiGian_thanhtoan='" + thoiGian_thanhtoan + '\'' +
-                ", gio='" + gio + '\'' +
+                ", gio='" + ngayThanhToan + '\'' +
                 ", tongTien=" + tongTien +
                 ", daThanhToan=" + daThanhToan +
                 ", tenKhachHang='" + tenKhachHang + '\'' +
                 '}';
     }
 
-    public String getGio() {
-        return gio;
+    public String getNgayThanhToan() {
+        return ngayThanhToan;
     }
 
-    public void setGio(String gio) {
-        this.gio = gio;
+    public void setNgayThanhToan(String ngayThanhToan) {
+        this.ngayThanhToan = ngayThanhToan;
     }
 
-    public ThongKeHoaDon(String id_MaHoaDon, String ID_DSMon, String thoiGian_thanhtoan, String gio, Double tongTien, Boolean daThanhToan, String tenKhachHang) {
+    public ThongKeHoaDon(String id_MaHoaDon, String id_Ban, String thoiGian_thanhtoan, String ngayThanhToan, Double tongTien, Boolean daThanhToan, String tenKhachHang) {
         this.id_MaHoaDon = id_MaHoaDon;
-        this.ID_DSMon = ID_DSMon;
+        this.id_Ban = id_Ban;
         this.thoiGian_thanhtoan = thoiGian_thanhtoan;
-        this.gio = gio;
+        this.ngayThanhToan = ngayThanhToan;
         this.tongTien = tongTien;
         this.daThanhToan = daThanhToan;
         this.tenKhachHang = tenKhachHang;
     }
 
-    public ThongKeHoaDon(String id_MaHoaDon, String ID_DSMon, String thoiGian_thanhtoan, Double tongTien, Boolean daThanhToan, String tenKhachHang) {
+    public ThongKeHoaDon(String id_MaHoaDon, String id_Ban, String thoiGian_thanhtoan, Double tongTien, Boolean daThanhToan, String tenKhachHang) {
         this.id_MaHoaDon = id_MaHoaDon;
-        this.ID_DSMon = ID_DSMon;
+        this.id_Ban = id_Ban;
         this.thoiGian_thanhtoan = thoiGian_thanhtoan;
         this.tongTien = tongTien;
         this.daThanhToan = daThanhToan;

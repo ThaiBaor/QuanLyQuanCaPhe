@@ -3,6 +3,7 @@ package com.example.quanlyquancaphe.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -87,18 +88,23 @@ public class DangNhapActivity extends AppCompatActivity {
     private void dangNhapTheoRole(String viTri){
         switch (viTri){
             case "Phục vụ":
+                chuyenManHinhTheoRole(DangNhapActivity.this, DanhSachBanActivity.class);
                 break;
             case "Pha chế":
                 break;
             case "Thu ngân":
                 break;
             case "Quản lý":
-                Intent intent = new Intent(DangNhapActivity.this, QuanLyMonActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                this.startActivity(intent);
-                this.finish();
+                chuyenManHinhTheoRole(DangNhapActivity.this, QuanLyMonActivity.class);
                 break;
         }
+    }
+
+    private void chuyenManHinhTheoRole(Activity activity, Class secondActivity){
+        Intent intent = new Intent(activity, secondActivity);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        this.startActivity(intent);
+        this.finish();
     }
     private boolean kiemTraDangNhap(String taiKhoan, String matKhau){
         if(taiKhoan.equals(edtTenDangNhap.getText().toString()) && matKhau.equals(edtMatKhau.getText().toString())){
