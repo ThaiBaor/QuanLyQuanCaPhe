@@ -4,114 +4,136 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/background"
-    tools:context=".activities.ThongKeHoaDonActivity">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="8"
-        android:layout_marginBottom="30dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvGioThuNhat"
-            android:text="10:30"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="30dp"></TextView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="|"
-            android:layout_weight="2"
-            android:textSize="30dp"
-            android:gravity="center"></TextView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvGioThuHai"
-            android:text="10:30"
-            android:layout_weight="1"
-            android:textSize="30dp"
-            android:gravity="center"></TextView>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvNgayThongKe"
-            android:text="1-1-2023"
-            android:layout_weight="4"
-            android:textSize="30dp"
-            android:layout_marginLeft="10dp"
-            android:drawableLeft="@drawable/lich_icon"></TextView>
-    </LinearLayout>
-
-    <LinearLayout
+    tools:openDrawer="start"
+    android:fitsSystemWindows="true"
+    tools:context=".activities.ThongKeHoaDonActivity"
+    android:orientation="vertical">
+    <include layout="@layout/toolbar"/>
+    <androidx.drawerlayout.widget.DrawerLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:weightSum="10"
-        android:orientation="vertical">
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="10"
-            android:id="@+id/recyclerviewthongkehoadon">
-        </androidx.recyclerview.widget.RecyclerView>
+        android:id="@+id/nav_drawer_chucnang_thungan">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="20dp"
-            android:background="@color/white"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="8"
+                android:layout_marginBottom="30dp">
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/tvGioThuNhat"
+                    android:text="10:30"
                     android:layout_weight="1"
-                    android:textColor="#000"
-                    android:text="Số lượng hóa đơn"
-                    android:textSize="20dp"></TextView>
+                    android:gravity="center"
+                    android:textSize="30dp"></TextView>
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="|"
+                    android:layout_weight="2"
+                    android:textSize="30dp"
+                    android:gravity="center"></TextView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvGioThuHai"
+                    android:text="10:30"
                     android:layout_weight="1"
-                    android:id="@+id/tvSoLuongHD"
-                    android:textSize="20dp"
-                    android:gravity="end"
-                    android:textColor="#000"
-                    android:paddingEnd="20dp"
-                    android:text="5"></TextView>
+                    android:textSize="30dp"
+                    android:gravity="center"></TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvNgayThongKe"
+                    android:text="1-1-2023"
+                    android:layout_weight="4"
+                    android:textSize="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:drawableLeft="@drawable/lich_icon"></TextView>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
-                <TextView
+                android:weightSum="10"
+                android:orientation="vertical">
+                <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Tổng cộng:"
-                    android:textColor="#000"
-                    android:textSize="20dp"></TextView>
-                <TextView
+                    android:layout_weight="10"
+                    android:id="@+id/recyclerviewthongkehoadon">
+                </androidx.recyclerview.widget.RecyclerView>
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:id="@+id/tvTongCong"
-                    android:textSize="20dp"
-                    android:gravity="end"
-                    android:textColor="#000"
-                    android:paddingEnd="20dp"
-                    android:text="1000"></TextView>
+                    android:orientation="vertical"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/white"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="#000"
+                            android:text="Số lượng hóa đơn"
+                            android:textSize="20dp"></TextView>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:id="@+id/tvSoLuongHD"
+                            android:textSize="20dp"
+                            android:gravity="end"
+                            android:textColor="#000"
+                            android:paddingEnd="20dp"
+                            android:text="5"></TextView>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Tổng cộng:"
+                            android:textColor="#000"
+                            android:textSize="20dp"></TextView>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:id="@+id/tvTongCong"
+                            android:textSize="20dp"
+                            android:gravity="end"
+                            android:textColor="#000"
+                            android:paddingEnd="20dp"
+                            android:text="1000"></TextView>
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/nav_view"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/nav_drawer_header"
+            app:menu="@menu/nav_drawer_menu_thu_ngan"
+            >
+        </com.google.android.material.navigation.NavigationView>
+    </androidx.drawerlayout.widget.DrawerLayout>
 
 </LinearLayout>
