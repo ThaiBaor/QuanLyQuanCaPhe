@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -104,9 +105,25 @@ public class QuanLyBanActivity extends AppCompatActivity implements NavigationVi
 
             @Override
             public void onSwipedRight(int position) {
-                DeleteItemDatabase(data.get(position).getId_Ban(), "Ban");
-                initDataKhu();
-                initDataBan();
+                AlertDialog.Builder builder = new AlertDialog.Builder(QuanLyBanActivity.this);
+                builder.setCancelable(true);
+                builder.setTitle("Thông báo");
+                builder.setMessage("Bạn có muốn xóa bàn " + data.get(position).getTenBan() + " không ?");
+                builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DeleteItemDatabase(data.get(position).getId_Ban(), "Ban");
+                    }
+                });
+                builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        initDataKhu();
+                        initDataBan();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
         //Set sự kiện cho nút tìm kiếm
@@ -272,6 +289,7 @@ public class QuanLyBanActivity extends AppCompatActivity implements NavigationVi
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,toolBar,R.string.open_nav,R.string.close_nav);
         //setSupportActionBar(toolbar);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_qlban);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
     }

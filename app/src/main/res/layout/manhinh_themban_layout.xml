@@ -69,7 +69,8 @@
             android:layout_weight="1"
             android:background="@drawable/quanly_edittext_background"
             android:hint="Số chỗ ngồi"
-            android:paddingLeft="10dp" />
+            android:paddingLeft="10dp"
+            android:inputType="number"/>
     </LinearLayout>
 
     <LinearLayout

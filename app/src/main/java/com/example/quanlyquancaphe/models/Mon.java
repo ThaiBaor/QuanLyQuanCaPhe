@@ -3,13 +3,13 @@ package com.example.quanlyquancaphe.models;
 public class Mon {
     private String id_Mon, moTa, tenMon, hinh;
     private Double donGia;
-    private Integer giamGia, id_Loai;
+    private Integer giamGia, id_Loai, slDaBan = 0;
     private Boolean hetMon = false;
-
     public Mon() {
     }
 
-    public Mon(String id_Mon, String moTa, String tenMon, String hinh, Double donGia, Integer giamGia, Integer id_Loai, Boolean hetMon) {
+
+    public Mon(String id_Mon, String moTa, String tenMon, String hinh, Double donGia, Integer giamGia, Integer id_Loai, Integer slDaBan, Boolean hetMon) {
         this.id_Mon = id_Mon;
         this.moTa = moTa;
         this.tenMon = tenMon;
@@ -17,6 +17,7 @@ public class Mon {
         this.donGia = donGia;
         this.giamGia = giamGia;
         this.id_Loai = id_Loai;
+        this.slDaBan = slDaBan;
         this.hetMon = hetMon;
     }
 
@@ -74,6 +75,14 @@ public class Mon {
 
     public void setId_Loai(Integer id_Loai) {
         this.id_Loai = id_Loai;
+    }
+
+    public Integer getSlDaBan() {
+        return slDaBan;
+    }
+
+    public void setSlDaBan(Integer slDaBan) {
+        this.slDaBan = slDaBan;
     }
 
     public Boolean getHetMon() {

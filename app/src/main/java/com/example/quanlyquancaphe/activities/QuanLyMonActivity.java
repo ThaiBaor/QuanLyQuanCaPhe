@@ -46,7 +46,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class QuanLyMonActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class QuanLyMonActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     Toolbar toolBar;
     TextView tvBug;
     EditText edtSearchBox;
@@ -79,6 +79,7 @@ public class QuanLyMonActivity extends AppCompatActivity implements NavigationVi
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         loadDataSpinner();
+        //initalData();
         //loadData();
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +109,7 @@ public class QuanLyMonActivity extends AppCompatActivity implements NavigationVi
                         }
                     });
                 } else {
-                    loadDataTheoLoaiVaTimKiem(spnLoai.getSelectedItemPosition(), edtSearchBox.getText());
+                    loadDataTheoLoaiVaTimKiem(spnLoai.getSelectedItemPosition(), edtSearchBox.getText().toString().toLowerCase().trim());
                     sortCount = 0;
                 }
                 adapter.notifyDataSetChanged();
@@ -157,7 +158,7 @@ public class QuanLyMonActivity extends AppCompatActivity implements NavigationVi
         spnLoai.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                loadDataTheoLoaiVaTimKiem(i, edtSearchBox.getText());
+                loadDataTheoLoaiVaTimKiem(i, edtSearchBox.getText().toString().toLowerCase().trim());
             }
 
             @Override
@@ -173,7 +174,7 @@ public class QuanLyMonActivity extends AppCompatActivity implements NavigationVi
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                loadDataTheoLoaiVaTimKiem(spnLoai.getSelectedItemPosition(), edtSearchBox.getText());
+                loadDataTheoLoaiVaTimKiem(spnLoai.getSelectedItemPosition(), edtSearchBox.getText().toString().toLowerCase().trim());
             }
 
             @Override
@@ -190,7 +191,7 @@ public class QuanLyMonActivity extends AppCompatActivity implements NavigationVi
         adapter.notifyDataSetChanged();
     }
 
-    private void loadDataTheoLoaiVaTimKiem(Integer i, CharSequence key) {
+    private void loadDataTheoLoaiVaTimKiem(Integer i, String key) {
         AlertDialog.Builder builder = new AlertDialog.Builder(QuanLyMonActivity.this).setTitle("").setMessage("Đang tải dữ liệu...");
         builder.setCancelable(false);
         AlertDialog dialog = builder.create();
@@ -203,25 +204,22 @@ public class QuanLyMonActivity extends AppCompatActivity implements NavigationVi
                 if (i != 3) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Mon mon = dataSnapshot.getValue(Mon.class);
-                        if (mon.getId_Loai() == i && mon.getTenMon().contains(key)) {
+                        if (mon.getId_Loai() == i && mon.getTenMon().toLowerCase().trim().contains(key)) {
                             data.add(mon);
                         }
                     }
                 } else {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Mon mon = dataSnapshot.getValue(Mon.class);
-                        if (mon.getTenMon().contains(key)) {
+                        if (mon.getTenMon().toLowerCase().trim().contains(key)) {
                             data.add(mon);
                         }
-
                     }
                 }
                 adapter = new QuanLyMonAdapter(data, QuanLyMonActivity.this);
                 recyclerView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 dialog.dismiss();
@@ -293,13 +291,14 @@ public class QuanLyMonActivity extends AppCompatActivity implements NavigationVi
             }
         });
     }
-    private void setdrawer(){
+
+    private void setdrawer() {
         toolBar = findViewById(R.id.toolBar);
         drawerLayout = findViewById(R.id.nav_drawer_chucnang_admin);
         navigationView = findViewById(R.id.nav_view);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,toolBar,R.string.open_nav,R.string.close_nav);
-        //setSupportActionBar(toolbar);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolBar, R.string.open_nav, R.string.close_nav);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_qlmon);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
     }
@@ -307,7 +306,7 @@ public class QuanLyMonActivity extends AppCompatActivity implements NavigationVi
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         MenuSideBarAdmin menuSideBarAdmin = new MenuSideBarAdmin();
-        menuSideBarAdmin.chonManHinh(item.getItemId(),QuanLyMonActivity.this);
+        menuSideBarAdmin.chonManHinh(item.getItemId(), QuanLyMonActivity.this);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
