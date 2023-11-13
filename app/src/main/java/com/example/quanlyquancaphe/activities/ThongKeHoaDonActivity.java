@@ -322,27 +322,19 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
     private void setArrHoaDonKH(ArrayList arrHoaDonKHGet){
         for (int i = 0; i < dataBan.size(); i++) {
             for (int j = 0; j < arrIdHoaDon.size(); j ++){
-                String idHD = "";
-                Boolean kiemTra = false;
-                if(idHD.equals(arrIdHoaDon.get(j).toString()) == false){
-                    idHD = arrIdHoaDon.get(j).toString();
-                    kiemTra = true;
-                }
+                String idHD = arrIdHoaDon.get(j).toString();
                 for (int k = 0;k < arrIdThoiGianGoiMon.size(); k++){
                     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                     DatabaseReference databaseReference = firebaseDatabase.getReference().child("ChiTietMon").child(dataBan.get(i).getId_Ban()).child("QK").child(arrIdHoaDon.get(j).toString()).child(arrIdThoiGianGoiMon.get(k).toString());
-                    Boolean finalKiemTra = kiemTra;
-                    String finalIdHD = idHD;
                     databaseReference.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             for (DataSnapshot item : snapshot.getChildren()){
-                                if (finalKiemTra == true){
-                                    HoaDonKhachHang hoaDonKhachHang = new HoaDonKhachHang(finalIdHD, item.child("tenKH").getValue().toString());
-                                    arrHoaDonKHGet.add(hoaDonKhachHang);
-                                }
+                                    HoaDonKhachHang hoaDonKhachHang = new HoaDonKhachHang(idHD, item.child("tenKH").getValue().toString());
+                                    if(arrHoaDonKHGet == null){
+                                        arrHoaDonKHGet.add(hoaDonKhachHang);
+                                    }
                             }
-                            System.out.println(hoaDonKhachHangs.size() + "km");
                         }
 
                         @Override
