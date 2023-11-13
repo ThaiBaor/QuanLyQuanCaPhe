@@ -145,7 +145,7 @@ public class GioHangActivity extends AppCompatActivity implements GioHangInterfa
             databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(id_Ban);
         }
         if (!tenKH.equals(" ")) {
-            databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(tenKH + time);
+            databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(time + "-" + tenKH);
         }
         for (ChiTietMon _chiTietMon : currentData) {
             _chiTietMon.setId_Ban(id_Ban);
