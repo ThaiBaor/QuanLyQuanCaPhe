@@ -1,15 +1,25 @@
 package com.example.quanlyquancaphe.models;
 
-public class ChiTietMon_TaiBan {
-    private String id_DSMon_TaiBan, id_Mon, hinh, ghiChu, tenMon;
-    private Integer id_TrangThai, sl, gia;
+public class ChiTietMon {
+    private String id_Mon, id_Ban = " ", tenKH = " ", ngayGoiMon, gioGoiMon, ghiChu = " ", hinh, tenMon;
+    private Integer id_TrangThai = 0, sl = 0;
+    private Double gia;
 
-    public String getId_DSMon_TaiBan() {
-        return id_DSMon_TaiBan;
+    public ChiTietMon() {
     }
 
-    public void setId_DSMon_TaiBan(String id_DSMon_TaiBan) {
-        this.id_DSMon_TaiBan = id_DSMon_TaiBan;
+    public ChiTietMon(String id_Mon, String id_Ban, String tenKH, String ngayGoiMon, String gioGoiMon, String ghiChu, String hinh, String tenMon, Integer id_TrangThai, Integer sl, Double gia) {
+        this.id_Mon = id_Mon;
+        this.id_Ban = id_Ban;
+        this.ngayGoiMon = ngayGoiMon;
+        this.gioGoiMon = gioGoiMon;
+        this.ghiChu = ghiChu;
+        this.hinh = hinh;
+        this.tenMon = tenMon;
+        this.id_TrangThai = id_TrangThai;
+        this.sl = sl;
+        this.gia = gia;
+        this.tenKH = tenKH;
     }
 
     public String getId_Mon() {
@@ -20,13 +30,6 @@ public class ChiTietMon_TaiBan {
         this.id_Mon = id_Mon;
     }
 
-    public String getHinh() {
-        return hinh;
-    }
-
-    public void setHinh(String hinh) {
-        this.hinh = hinh;
-    }
 
     public String getGhiChu() {
         return ghiChu;
@@ -34,14 +37,6 @@ public class ChiTietMon_TaiBan {
 
     public void setGhiChu(String ghiChu) {
         this.ghiChu = ghiChu;
-    }
-
-    public String getTenMon() {
-        return tenMon;
-    }
-
-    public void setTenMon(String tenMon) {
-        this.tenMon = tenMon;
     }
 
     public Integer getId_TrangThai() {
@@ -60,25 +55,84 @@ public class ChiTietMon_TaiBan {
         this.sl = sl;
     }
 
-    public Integer getGia() {
+    public String getHinh() {
+        return hinh;
+    }
+
+    public void setHinh(String hinh) {
+        this.hinh = hinh;
+    }
+
+    public String getTenMon() {
+        return tenMon;
+    }
+
+    public void setTenMon(String tenMon) {
+        this.tenMon = tenMon;
+    }
+
+    public Double getGia() {
         return gia;
     }
 
-    public void setGia(Integer gia) {
+    public void setGia(Double gia) {
         this.gia = gia;
     }
 
-    public ChiTietMon_TaiBan(String id_DSMon_TaiBan, String id_Mon, String hinh, String ghiChu, String tenMon, Integer id_TrangThai, Integer sl, Integer gia) {
-        this.id_DSMon_TaiBan = id_DSMon_TaiBan;
-        this.id_Mon = id_Mon;
-        this.hinh = hinh;
-        this.ghiChu = ghiChu;
-        this.tenMon = tenMon;
-        this.id_TrangThai = id_TrangThai;
-        this.sl = sl;
-        this.gia = gia;
+    public String getId_Ban() {
+        return id_Ban;
     }
 
-    public ChiTietMon_TaiBan() {
+    public void setId_Ban(String id_Ban) {
+        this.id_Ban = id_Ban;
+    }
+
+    public String getTenKH() {
+        return tenKH;
+    }
+
+    public void setTenKH(String tenKH) {
+        this.tenKH = tenKH;
+    }
+
+    public String getNgayGoiMon() {
+        return ngayGoiMon;
+    }
+
+    public void setNgayGoiMon(String ngayGoiMon) {
+        this.ngayGoiMon = ngayGoiMon;
+    }
+
+    public String getGioGoiMon() {
+        return gioGoiMon;
+    }
+
+    public void setGioGoiMon(String gioGoiMon) {
+        this.gioGoiMon = gioGoiMon;
+    }
+
+    public void tang() {
+        if (this.sl < 99) {
+            ++this.sl;
+        }
+    }
+
+    public void giam() {
+        if (this.sl > 1) {
+            --this.sl;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "ChiTietMon_TaiBan{" +
+                "id_Mon='" + id_Mon + '\'' +
+                ", ghiChu='" + ghiChu + '\'' +
+                ", hinh='" + hinh + '\'' +
+                ", tenMon='" + tenMon + '\'' +
+                ", id_TrangThai=" + id_TrangThai +
+                ", sl=" + sl +
+                ", gia=" + gia +
+                '}';
     }
 }

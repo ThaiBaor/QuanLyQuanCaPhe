@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
+    android:background="@drawable/background"
     tools:context=".activities.HoaDonTaiBanActivity"
     tools:openDrawer="start">
 
@@ -25,8 +26,8 @@
             android:hint="Search" />
     </LinearLayout>
 
-    <com.tsuryo.swipeablerv.SwipeableRecyclerView
-        android:id="@+id/recyclerview"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerviewHDTB"
         style="@style/quanly_recycleview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -1,8 +1,9 @@
 package com.example.quanlyquancaphe.models;
 
-public class HoaDonTaiBan {
-    private String id_HoaDon, id_DSMon_TaiBan;
+public class HoaDon {
+    private String id_HoaDon, id_Ban;
     private String thoiGian_ThanhToan;
+    private String ngayThanhToan;
     private Double tongTien;
     private Boolean daThanhToan;
 
@@ -14,12 +15,12 @@ public class HoaDonTaiBan {
         this.id_HoaDon = id_HoaDon;
     }
 
-    public String getId_DSMon_TaiBan() {
-        return id_DSMon_TaiBan;
+    public String getId_Ban() {
+        return id_Ban;
     }
 
-    public void setId_DSMon_TaiBan(String id_DSMon_TaiBan) {
-        this.id_DSMon_TaiBan = id_DSMon_TaiBan;
+    public void setId_Ban(String id_Ban) {
+        this.id_Ban = id_Ban;
     }
 
     public String getThoiGian_ThanhToan() {
@@ -28,6 +29,14 @@ public class HoaDonTaiBan {
 
     public void setThoiGian_ThanhToan(String thoiGian_ThanhToan) {
         this.thoiGian_ThanhToan = thoiGian_ThanhToan;
+    }
+
+    public String getNgayThanhToan() {
+        return ngayThanhToan;
+    }
+
+    public void setNgayThanhToan(String ngayThanhToan) {
+        this.ngayThanhToan = ngayThanhToan;
     }
 
     public Double getTongTien() {
@@ -46,14 +55,15 @@ public class HoaDonTaiBan {
         this.daThanhToan = daThanhToan;
     }
 
-    public HoaDonTaiBan() {
-    }
-
-    public HoaDonTaiBan(String maHD, String maDSMon_TaiBan, String thoiGian_ThanhToan, Double tongTien, Boolean daThanhToan) {
-        this.id_HoaDon = maHD;
-        this.id_DSMon_TaiBan = maDSMon_TaiBan;
+    public HoaDon(String id_HoaDon, String id_Ban, String thoiGian_ThanhToan, String ngayThanhToan, Double tongTien, Boolean daThanhToan) {
+        this.id_HoaDon = id_HoaDon;
+        this.id_Ban = id_Ban;
         this.thoiGian_ThanhToan = thoiGian_ThanhToan;
+        this.ngayThanhToan = ngayThanhToan;
         this.tongTien = tongTien;
         this.daThanhToan = daThanhToan;
+    }
+
+    public HoaDon() {
     }
 }
