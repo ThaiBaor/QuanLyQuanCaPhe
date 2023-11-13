@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".services.NotificationService"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -71,20 +70,7 @@
         </activity>
 
         <activity
-            android:name=".activities.DangNhapActivity"
-            android:exported="true">
-
-        </activity>
-
-        <activity
-            android:name=".activities.MenuChucNangQuanLyActicity"
-            android:exported="true"></activity>
-
-        <activity
-            android:name=".activities.CapNhatDatBanActivity"
-            android:exported="true"></activity>
-        <activity
-            android:name=".activities.DanhSachBanActivity"
+            android:name=".activities.HoaDonTaiBanActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -103,6 +89,10 @@
             android:exported="true"></activity>
         <activity
             android:name=".activities.DanhSachMonPhucVuActivity"
+            android:exported="true"></activity>
+
+        <activity
+            android:name=".activities.PhieuHoaDonActivity"
             android:exported="true"></activity>
     </application>
 

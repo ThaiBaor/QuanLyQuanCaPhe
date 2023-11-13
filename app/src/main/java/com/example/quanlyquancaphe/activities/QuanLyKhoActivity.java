@@ -197,7 +197,6 @@ public class QuanLyKhoActivity extends AppCompatActivity implements NavigationVi
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 data.clear();
                 for (DataSnapshot item: snapshot.getChildren()){
-
                     String maNguyenLieu = item.child("maNguyenLieu").getValue().toString();
                     String ngayNhap = item.child("ngayNhap").getValue().toString();
                     Double soLuongNhap = Double.parseDouble(item.child("soLuongNhap").getValue().toString());
