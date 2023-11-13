@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,23 +13,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.activities.DanhSachMonTrongOrderPhaChe_Activity;
 import com.example.quanlyquancaphe.models.ChiTietMon;
+import com.example.quanlyquancaphe.models.DanhSachOder;
 import com.example.quanlyquancaphe.viewholders.DanhSachOrderPhaCheViewholder;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DanhSachOrderPhaCheAdapter extends RecyclerView.Adapter<DanhSachOrderPhaCheViewholder> {
     private Context context;
-    private List<String> data;
-    private List<ChiTietMon> data_Mon;
-    private List<String> id_key;
-
-    public DanhSachOrderPhaCheAdapter(Context context, List<String> data, List<ChiTietMon> data_Mon, List<String> id_key) {
+    private List<DanhSachOder> list_DanhSachOder;
+    public DanhSachOrderPhaCheAdapter(Context context, List<DanhSachOder> list_DanhSachOder) {
         this.context = context;
-        this.data = data;
-        this.data_Mon = data_Mon;
-        this.id_key = id_key;
+        this.list_DanhSachOder = list_DanhSachOder;
     }
-
     @NonNull
     @Override
     public DanhSachOrderPhaCheViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -37,13 +43,31 @@ public class DanhSachOrderPhaCheAdapter extends RecyclerView.Adapter<DanhSachOrd
     }
     @Override
     public void onBindViewHolder(@NonNull DanhSachOrderPhaCheViewholder holder, int position) {
-        holder.tvMaBan.setText(data.get(position) + 1);
-        holder.tvThoiGian.setText(data_Mon.get(position).getGioGoiMon());
+        /* lấy tên bàn  */
+        DatabaseReference referenceBan = FirebaseDatabase.getInstance().getReference("Ban");
+        referenceBan.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    String id_Ban = dataSnapshot.child("id_Ban").getValue(String.class);
+                    if (id_Ban.equals(list_DanhSachOder.get(holder.getAdapterPosition()).getId_Ban())){
+                      String tenBan = dataSnapshot.child("tenBan").getValue(String.class);
+                      holder.tvMaBan.setText(tenBan.toString());
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        holder.tvMaBan.setText(list_DanhSachOder.get(position).getId_Ban());
+        holder.tvThoiGian.setText(list_DanhSachOder.get(position).getGioGoiMon());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DanhSachMonTrongOrderPhaChe_Activity.class);
-                intent.putExtra("key", id_key.get(holder.getAdapterPosition()));
+                intent.putExtra("key", list_DanhSachOder.get(holder.getAdapterPosition()).getId_Ban());
                 context.startActivity(intent);
             }
         });
@@ -51,7 +75,7 @@ public class DanhSachOrderPhaCheAdapter extends RecyclerView.Adapter<DanhSachOrd
     }
     @Override
     public int getItemCount() {
-        return data_Mon.size();
+        return list_DanhSachOder.size();
     }
 }
 
