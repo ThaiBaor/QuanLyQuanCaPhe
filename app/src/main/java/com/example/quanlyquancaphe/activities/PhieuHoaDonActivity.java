@@ -46,8 +46,6 @@ public class PhieuHoaDonActivity extends AppCompatActivity {
     ImageView ivHinh;
     RecyclerView recyclerView;
     Bundle bundle;
-    ArrayList<HoaDon> data = new ArrayList<>();
-    ArrayList<Ban> dataBan = new ArrayList<>();
     String id_Ban = "";
     ArrayList<ChiTietMon> dataChiTietMon = new ArrayList<>();
     HoaDon hoaDonTaiBan = new HoaDon();
@@ -56,7 +54,6 @@ public class PhieuHoaDonActivity extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     PhieuHoaDonAdapter adapter;
-    ValueEventListener ValueEventListener;
     StorageReference storageReference;
 
     @Override
@@ -98,22 +95,6 @@ public class PhieuHoaDonActivity extends AppCompatActivity {
 
                         }
                     });
-//                    if (hoaDonTaiBan.getDaThanhToan() == false){
-//                        HoaDon hoaDon = new HoaDon();
-//                        hoaDon.setDaThanhToan(true);
-//                        databaseReference.child(hoaDon.getDaThanhToan()+"").setValue(hoaDon).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<Void> task) {
-//                                Toast.makeText(PhieuHoaDonActivity.this, "Thanh toán thành công", Toast.LENGTH_SHORT).show();
-//                            }
-//                        }).addOnFailureListener(new OnFailureListener() {
-//                            @Override
-//                            public void onFailure(@NonNull Exception e) {
-//                                Toast.makeText(PhieuHoaDonActivity.this, "Thanh toán Thất bại", Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//                    }
-//                    else return;
                 }
                 dataChiTietMon.clear();
             }
