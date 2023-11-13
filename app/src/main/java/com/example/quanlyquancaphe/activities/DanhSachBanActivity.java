@@ -28,6 +28,7 @@ import com.example.quanlyquancaphe.adapters.DanhSachBanAdapter;
 import com.example.quanlyquancaphe.models.Ban;
 import com.example.quanlyquancaphe.models.DatBan;
 import com.example.quanlyquancaphe.models.Khu;
+import com.example.quanlyquancaphe.ultilities.NotificationUtility;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,6 +50,7 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
     Button btnbanDaDat;
     RecyclerView listBan;
     Toolbar toolbar;
+    boolean firstNoti = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +128,7 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
         GetDataBan();
         GetDataKhu();
         GetDataSpinner();
+        getNotification();
         //Set title toolbar
         toolbar.setTitle("Danh sách bàn");
         //Thay đổi bàn dựa theo khu
@@ -191,7 +194,7 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
                                 public boolean onMenuItemClick(@NonNull MenuItem item) {
                                     Intent intent = new Intent(DanhSachBanActivity.this, DatBanActivity.class);
                                     // Gắn id_Ban cho giỏ hàng
-                                    GioHangActivity.id_Ban =  dataBan.get(position).getId_Ban();
+                                    GioHangActivity.id_Ban = dataBan.get(position).getId_Ban();
                                     startActivity(intent);
                                     return true;
                                 }
@@ -218,7 +221,7 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
                                     //chuyển sang màn hình gọi món
                                     Intent intent = new Intent(DanhSachBanActivity.this, DanhSachMonPhucVuActivity.class);
                                     // Gắn id_Ban cho giỏ hàng
-                                    GioHangActivity.id_Ban =  dataBan.get(position).getId_Ban();
+                                    GioHangActivity.id_Ban = dataBan.get(position).getId_Ban();
                                     startActivity(intent);
                                     return true;
                                 }
@@ -235,7 +238,7 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
                                     //chuyển sang màn hình gọi món
                                     Intent intent = new Intent(DanhSachBanActivity.this, DanhSachMonPhucVuActivity.class);
                                     // Gắn id_Ban cho giỏ hàng
-                                    GioHangActivity.id_Ban =  dataBan.get(position).getId_Ban();
+                                    GioHangActivity.id_Ban = dataBan.get(position).getId_Ban();
                                     startActivity(intent);
                                     return true;
                                 }
@@ -317,6 +320,25 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("Ban");
         databaseReference.child(maBan).child("id_TrangThaiBan").setValue(trangThai);
+    }
+
+    private void getNotification() {
+        reference = FirebaseDatabase.getInstance().getReference("ThongBao");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (firstNoti) {
+                    firstNoti = false;
+                    return;
+                }
+                if (snapshot.child("id").getValue(Integer.class) == 2) {
+                    NotificationUtility.pushNotification(DanhSachBanActivity.this, snapshot.child("contentText").getValue(String.class));
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
 
     private void setConTrol() {

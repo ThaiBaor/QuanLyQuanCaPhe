@@ -1,7 +1,8 @@
 <resources>
-    <string name="app_name">QuanLyQuanCaPhe</string>
+    <string name="app_name">Quản lý quán cà phê</string>
     <string name="open_nav">Open Navigation Drawer</string>
     <string name="close_nav">Close Navigation Drawer</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="channel_name">Channel</string>
+    <string name="channel_description">Description</string>
 </resources>
