@@ -153,9 +153,7 @@ public class QuanLyNhanVienActivity extends AppCompatActivity implements Navigat
             }
         });
 
-
     }
-
     @Override
     protected void onRestart() {
         adapter.notifyDataSetChanged();
@@ -190,7 +188,6 @@ public class QuanLyNhanVienActivity extends AppCompatActivity implements Navigat
             @Override
             public void onSuccess(Void unused) {
                 reference.child(key).removeValue();
-                Toast.makeText(QuanLyNhanVienActivity.this, "Xoa Thanh cong", Toast.LENGTH_SHORT).show();
             }
         });
         StorageReference deleteCCCDT = FirebaseStorage.getInstance().getReferenceFromUrl(nhanVien.getImageCCCDT().toString());
@@ -198,7 +195,6 @@ public class QuanLyNhanVienActivity extends AppCompatActivity implements Navigat
             @Override
             public void onSuccess(Void unused) {
                 reference.child(key).removeValue();
-                Toast.makeText(QuanLyNhanVienActivity.this, "Xoa Thanh cong", Toast.LENGTH_SHORT).show();
             }
         });
         StorageReference deleteCCCDS = FirebaseStorage.getInstance().getReferenceFromUrl(nhanVien.getImageCCCDS().toString());
@@ -206,7 +202,6 @@ public class QuanLyNhanVienActivity extends AppCompatActivity implements Navigat
             @Override
             public void onSuccess(Void unused) {
                 reference.child(key).removeValue();
-                Toast.makeText(QuanLyNhanVienActivity.this, "Xoa Thanh cong", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -238,7 +233,6 @@ public class QuanLyNhanVienActivity extends AppCompatActivity implements Navigat
         drawerLayout = findViewById(R.id.nav_drawer_chucnang_admin);
         navigationView = findViewById(R.id.nav_view);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,toolBar,R.string.open_nav,R.string.close_nav);
-        //setSupportActionBar(toolbar);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_qlnhanvien);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);

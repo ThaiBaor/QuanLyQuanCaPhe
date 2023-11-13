@@ -79,12 +79,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.DangNhapActivity"
-            android:exported="true">
-        </activity>
-
+            android:name=".activities.DatBanActivity"
+            android:exported="true"></activity>
         <activity
-            android:name=".activities.MenuChucNangQuanLyActicity"
+            android:name=".activities.DSBanDaDatActivity"
+            android:exported="true"></activity>
+        <activity
+            android:name=".activities.GioHangActivity"
+            android:exported="true"></activity>
+        <activity
+            android:name=".activities.DanhSachMonPhucVuActivity"
             android:exported="true"></activity>
 
         <activity

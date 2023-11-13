@@ -1,5 +1,6 @@
 package com.example.quanlyquancaphe.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -35,10 +36,11 @@ public class QuanLyMonAdapter extends RecyclerView.Adapter<QuanLyMonViewHolder> 
         return new QuanLyMonViewHolder(LayoutInflater.from(context).inflate(R.layout.item_quanlymon_layout, parent, false));
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull QuanLyMonViewHolder holder, int position) {
         NumberFormat nf = NumberFormat.getNumberInstance();
-        Mon mon = data.get(position);
+        Mon mon = data.get(holder.getLayoutPosition());
         holder.tenMon.setText(mon.getTenMon());
         holder.moTa.setText(mon.getMoTa());
         holder.donGia.setTextSize(17);
@@ -52,7 +54,7 @@ public class QuanLyMonAdapter extends RecyclerView.Adapter<QuanLyMonViewHolder> 
             holder.giamGia.setText("Giảm: " + mon.getGiamGia() + "%");
             holder.giamGia.setTextSize(17);
         }
-        Glide.with(context).load(data.get(position).getHinh()).into(holder.hinh);
+        Glide.with(context).load(mon.getHinh()).into(holder.hinh);
     }
 
     @Override

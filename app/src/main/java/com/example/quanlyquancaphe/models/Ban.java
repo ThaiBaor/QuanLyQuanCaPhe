@@ -59,10 +59,18 @@ public class Ban {
         this.soChoNgoi = soChoNgoi;
     }
 
+    public String getId_DSMon_TaiBan() {
+        return id_DSMon_TaiBan;
+    }
+
+    public void setId_DSMon_TaiBan(String id_DSMon_TaiBan) {
+        this.id_DSMon_TaiBan = id_DSMon_TaiBan;
+    }
+
     public Ban() {
     }
 
-    private String id_Ban, tenBan;
+    private String id_Ban, tenBan, id_DSMon_TaiBan=" ";
     private Integer soChoNgoi, id_Khu, id_TrangThaiBan;
 
     @Override
