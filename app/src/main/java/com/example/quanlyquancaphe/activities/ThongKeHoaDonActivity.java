@@ -27,6 +27,7 @@ import com.example.quanlyquancaphe.adapters.ThongKeHoaDonAdapter;
 import com.example.quanlyquancaphe.models.Ban;
 import com.example.quanlyquancaphe.models.ThongKeHoaDon;
 import com.example.quanlyquancaphe.services.MenuSideBarAdmin;
+import com.example.quanlyquancaphe.services.MenuSideBarThuNgan;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -44,6 +45,8 @@ import java.util.Date;
 public class ThongKeHoaDonActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     ArrayList<ThongKeHoaDon> data = new ArrayList<>();
+
+    ArrayList<Ban> dataBan = new ArrayList<>();
     ArrayList<ThongKeHoaDon> dataFilter = new ArrayList<>();
     ThongKeHoaDonAdapter thongKeHoaDonAdapter ;
     FirebaseDatabase firebaseDatabase;
@@ -64,6 +67,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
         setControl();
         setEvent();
         setdrawer();
+        initDataBan();
         getDataHoaDon();
         filterHoaDon();
     }
@@ -223,7 +227,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                     Double tongTien = Double.parseDouble(item.child("tongTien").getValue().toString());
                     Boolean daThanhToan = Boolean.parseBoolean(item.child("daThanhToan").getValue().toString());
                     String tenKhachHang = "Không có";
-                    Toast.makeText(ThongKeHoaDonActivity.this,ngayThanhToan + " " + thoiGian_thanhtoan, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(ThongKeHoaDonActivity.this,ngayThanhToan + " " + thoiGian_thanhtoan, Toast.LENGTH_SHORT).show();
                     thongKeHoaDon = new ThongKeHoaDon(id_MaHoaDon, id_Ban,ngayThanhToan, thoiGian_thanhtoan, tongTien, daThanhToan, tenKhachHang);
                     data.add(thongKeHoaDon);
                 }
@@ -239,6 +243,15 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
         });
     }
 
+    private String getTenKH(){
+        for (Ban ban : dataBan){
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            DatabaseReference databaseReference = firebaseDatabase.getReference().child("ChiTietMon").child(ban.getId_Ban()).child("QK");
+
+        }
+       return "yes";
+    }
+
     private void setdrawer(){
         toolBar = findViewById(R.id.toolBar);
         toolBar.setTitle("Thống kê hóa đơn");
@@ -250,6 +263,26 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
         navigationView.setCheckedItem(R.id.nav_thongkehoadon);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
+    }
+
+    private void initDataBan() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference().child("Ban");
+        valueEventListener = reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dataBan.clear();
+                for (DataSnapshot item : snapshot.getChildren()) {
+                    Ban ban = item.getValue(Ban.class);
+                    dataBan.add(ban);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void filterHoaDon(){
@@ -344,8 +377,9 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        MenuSideBarAdmin menuSideBarAdmin = new MenuSideBarAdmin();
-        menuSideBarAdmin.chonManHinh(item.getItemId(), ThongKeHoaDonActivity.this);
+        MenuSideBarThuNgan menuSideBarThuNgan = new MenuSideBarThuNgan();
+        menuSideBarThuNgan.chonManHinh(item.getItemId(), ThongKeHoaDonActivity.this);
+        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 

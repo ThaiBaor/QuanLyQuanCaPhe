@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.activities.DanhSachBanActivity;
+import com.example.quanlyquancaphe.activities.DoiMatKhauActivity;
 import com.example.quanlyquancaphe.activities.QuanLyBanActivity;
 import com.example.quanlyquancaphe.activities.QuanLyKhoActivity;
 import com.example.quanlyquancaphe.activities.QuanLyKhuActivity;
@@ -35,6 +36,7 @@ public class MenuSideBarPhucVu {
             case R.id.nav_dsmonhoanthanh:
                 break;
             case R.id.nav_doimatkhau:
+                chonManHinh(activity, DoiMatKhauActivity.class);
                 break;
             case R.id.nav_dangxuat:
                 break;

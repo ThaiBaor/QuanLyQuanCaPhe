@@ -41,6 +41,7 @@ import com.example.quanlyquancaphe.models.Ban;
 import com.example.quanlyquancaphe.models.DatBan;
 import com.example.quanlyquancaphe.models.Khu;
 import com.example.quanlyquancaphe.services.MenuSideBarAdmin;
+import com.example.quanlyquancaphe.services.MenuSideBarPhucVu;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -404,8 +405,8 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        MenuSideBarAdmin menuSideBarAdmin = new MenuSideBarAdmin();
-        menuSideBarAdmin.chonManHinh(item.getItemId(), DanhSachBanActivity.this);
+        MenuSideBarPhucVu menuSideBarPhucVu = new MenuSideBarPhucVu();
+        menuSideBarPhucVu.chonManHinh(item.getItemId(), DanhSachBanActivity.this);
         if (item.getItemId() == R.id.nav_mangve){
             openCustomDialog();
         }
