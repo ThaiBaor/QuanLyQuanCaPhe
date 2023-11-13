@@ -16,7 +16,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.quanlyquancaphe.R;
-
+import com.example.quanlyquancaphe.models.Ban;
 import com.example.quanlyquancaphe.models.DatBan;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -26,7 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
+import java.util.SimpleTimeZone;
 
 public class DatBanActivity extends AppCompatActivity {
     Toolbar toolbar;

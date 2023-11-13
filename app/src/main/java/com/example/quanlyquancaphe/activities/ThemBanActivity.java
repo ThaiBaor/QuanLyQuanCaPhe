@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.quanlyquancaphe.R;
+import com.example.quanlyquancaphe.adapters.BanAdapter;
 import com.example.quanlyquancaphe.models.Ban;
 import com.example.quanlyquancaphe.models.Khu;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -41,7 +42,8 @@ public class ThemBanActivity extends AppCompatActivity {
     DatabaseReference reference;
     ValueEventListener eventListener;
     Drawable draRe;
-    Ban ban;
+    ArrayList<Ban> dataBan = new ArrayList<>();
+    BanAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +67,7 @@ public class ThemBanActivity extends AppCompatActivity {
             }
         });
         DataSpinner();
-
+        getDataBan();
 
         spKhu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -83,6 +85,7 @@ public class ThemBanActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (validate() == true) {
                     AddData();
+                    finish();
                 }
             }
         });
@@ -123,6 +126,13 @@ public class ThemBanActivity extends AppCompatActivity {
             edtMaBan.setError("Empty");
             return false;
         }
+        for (Ban item : dataBan){
+            if (edtMaBan.getText().toString().equals(item.getId_Ban())){
+                edtMaBan.requestFocus();
+                edtMaBan.setError("Trùng mã bàn");
+                return false;
+            }
+        }
         if (edtTenBan.getText().toString().isEmpty()) {
             edtTenBan.requestFocus();
             edtTenBan.setError("Empty");
@@ -135,6 +145,8 @@ public class ThemBanActivity extends AppCompatActivity {
         }
         return true;
     }
+    //Cập nhật data bàn
+
     private void AddData(){
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("Ban");
@@ -160,12 +172,29 @@ public class ThemBanActivity extends AppCompatActivity {
         edtSoChoNgoi.setText("");
         spKhu.setSelection(0);
     }
-
-
+    private void getDataBan(){
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference().child("Ban");
+        eventListener = reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dataBan.clear();
+                for (DataSnapshot item : snapshot.getChildren()) {
+                    Ban ban = item.getValue(Ban.class);
+                    dataBan.add(ban);
+                }
+                //adapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
     private void setControl() {
         edtMaBan = findViewById(R.id.edtMaBan);
         edtTenBan = findViewById(R.id.edtTenBan);
-        edtSoChoNgoi = findViewById(R.id.edtSoChoNgoi);spKhu = findViewById(R.id.spKhu);
+        edtSoChoNgoi = findViewById(R.id.edtSoChoNgoi);
+        spKhu = findViewById(R.id.spKhu);
         btnAddBan = findViewById(R.id.btnAddBan);
         toolBar = findViewById(R.id.toolBar);
         toolBar = findViewById(R.id.toolBar);
