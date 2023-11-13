@@ -75,7 +75,7 @@ public class ThemNguyenLieuActivity extends AppCompatActivity {
         int yearNow = calendar.get(Calendar.YEAR);
         int monthNow = calendar.get(Calendar.MONTH);
         int dayNow = calendar.get(Calendar.DAY_OF_MONTH);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
@@ -115,8 +115,8 @@ public class ThemNguyenLieuActivity extends AppCompatActivity {
         nguyenLieu.setTenNguyenLieu(edtTenNguyenLieu.getText().toString());
         nguyenLieu.setDonVi(edtDonVi.getText().toString());
         nguyenLieu.setNgayNhap(edtNgayNhap.getText().toString());
-        nguyenLieu.setSoLuongNhap(Double.parseDouble(edtSoLuongNhap.getText().toString()));
-        nguyenLieu.setTonKho(Double.parseDouble(edtTonKho.getText().toString()));
+        nguyenLieu.setSoLuongNhap( Double.parseDouble(edtSoLuongNhap.getText().toString()));
+        nguyenLieu.setTonKho(Double.parseDouble(edtTonKho.getText().toString()) + Double.parseDouble(edtSoLuongNhap.getText().toString()));
     }
 
     private void addNguyenLieu(){
