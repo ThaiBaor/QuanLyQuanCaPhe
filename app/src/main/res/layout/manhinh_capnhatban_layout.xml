@@ -45,7 +45,8 @@
             android:layout_weight="1"
             android:background="@drawable/quanly_edittext_background"
             android:hint="Tên bàn"
-            android:paddingLeft="10dp" />
+            android:paddingLeft="10dp"
+            android:inputType="text"/>
     </LinearLayout>
 
     <LinearLayout

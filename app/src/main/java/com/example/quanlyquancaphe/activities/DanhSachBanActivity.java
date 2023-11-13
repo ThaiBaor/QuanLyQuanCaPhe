@@ -2,23 +2,35 @@ package com.example.quanlyquancaphe.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -29,16 +41,22 @@ import com.example.quanlyquancaphe.models.Ban;
 import com.example.quanlyquancaphe.models.DatBan;
 import com.example.quanlyquancaphe.models.Khu;
 import com.example.quanlyquancaphe.ultilities.NotificationUtility;
+import com.example.quanlyquancaphe.services.MenuSideBarAdmin;
+import com.example.quanlyquancaphe.services.MenuSideBarPhucVu;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DanhSachBanActivity extends AppCompatActivity implements View.OnCreateContextMenuListener {
+public class DanhSachBanActivity extends AppCompatActivity implements View.OnCreateContextMenuListener, NavigationView.OnNavigationItemSelectedListener {
     FirebaseDatabase database;
     DatabaseReference reference;
     ValueEventListener valueEventListener;
@@ -49,14 +67,19 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
     Spinner spKhu;
     Button btnbanDaDat;
     RecyclerView listBan;
-    Toolbar toolbar;
     boolean firstNoti = true;
+    Toolbar toolBar;
+
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    ActionBarDrawerToggle actionBarDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manhinh_danhsachban_layout);
         setConTrol();
+        setdrawer();
         setEvent();
 
     }
@@ -125,12 +148,13 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
     }
 
     private void setEvent() {
+        GioHangActivity.tenKH = " ";
         GetDataBan();
         GetDataKhu();
         GetDataSpinner();
         getNotification();
         //Set title toolbar
-        toolbar.setTitle("Danh sách bàn");
+        toolBar.setTitle("Danh sách bàn");
         //Thay đổi bàn dựa theo khu
         spKhu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -208,9 +232,27 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
                             menu.getItem(2).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                                 @Override
                                 public boolean onMenuItemClick(@NonNull MenuItem item) {
-                                    //hủy đặt bàn, chuyển trạng thái về 0: bàn trống
-                                    ChuyenTrangThaiBan(dataBan.get(position).getId_Ban(), 0);
-                                    Toast.makeText(DanhSachBanActivity.this, "Hủy đặt bàn thành công", Toast.LENGTH_SHORT).show();
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(DanhSachBanActivity.this);
+                                    builder.setCancelable(true);
+                                    builder.setTitle("Thông báo");
+                                    builder.setMessage("Bạn có muốn hủy đặt " + dataBan.get(position).getTenBan() + " không?");
+                                    builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            //hủy đặt bàn, chuyển trạng thái về 0: bàn trống
+                                            ChuyenTrangThaiBan(dataBan.get(position).getId_Ban(), 0);
+                                            DeleteItemDatabase(dataBan.get(position).getId_Ban(), "DatBan");
+                                            Toast.makeText(DanhSachBanActivity.this, "Hủy đặt bàn thành công", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                    builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+                                    });
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
                                     return true;
                                 }
                             });
@@ -269,7 +311,6 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DanhSachBanActivity.this, DSBanDaDatActivity.class);
-
                 startActivity(intent);
             }
         });
@@ -322,6 +363,52 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
         databaseReference.child(maBan).child("id_TrangThaiBan").setValue(trangThai);
     }
 
+    private void DeleteItemDatabase(String key, String tenBang) {
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference(tenBang);
+        reference.child(key).removeValue();
+        adapter.notifyDataSetChanged();
+    }
+
+    private void openCustomDialog() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_dialog);
+        dialog.setCancelable(false);
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            WindowManager.LayoutParams layoutParams = window.getAttributes();
+            layoutParams.gravity = Gravity.CENTER;
+            window.setAttributes(layoutParams);
+        }
+        Button btnHuy = dialog.findViewById(R.id.btnHuy);
+        Button btnTiep = dialog.findViewById(R.id.btnTiep);
+        EditText edtTenKH = dialog.findViewById(R.id.edtTenKH);
+        btnHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        btnTiep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edtTenKH.getText().toString().equals("")) {
+                    edtTenKH.requestFocus();
+                    edtTenKH.setError("Phải nhập tên khách hàng");
+                } else {
+                    GioHangActivity.tenKH = edtTenKH.getText().toString();
+                    Intent intent = new Intent(DanhSachBanActivity.this, DanhSachMonPhucVuActivity.class);
+                    startActivity(intent);
+                    dialog.dismiss();
+                }
+            }
+        });
+        dialog.show();
+
+    }
+
     private void getNotification() {
         reference = FirebaseDatabase.getInstance().getReference("ThongBao");
         reference.addValueEventListener(new ValueEventListener() {
@@ -335,16 +422,40 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
                     NotificationUtility.pushNotification(DanhSachBanActivity.this, snapshot.child("contentText").getValue(String.class));
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
     }
 
+    private void setdrawer() {
+        toolBar = findViewById(R.id.toolBar);
+        drawerLayout = findViewById(R.id.nav_drawer_chucnang_phuc_vu);
+        navigationView = findViewById(R.id.nav_view);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolBar, R.string.open_nav, R.string.close_nav);
+        //setSupportActionBar(toolbar);
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_danhsachban);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        MenuSideBarPhucVu menuSideBarPhucVu = new MenuSideBarPhucVu();
+        menuSideBarPhucVu.chonManHinh(item.getItemId(), DanhSachBanActivity.this);
+        if (item.getItemId() == R.id.nav_mangve) {
+            openCustomDialog();
+        }
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
     private void setConTrol() {
         btnbanDaDat = findViewById(R.id.btnBanDaDat);
         listBan = findViewById(R.id.listBan);
         spKhu = findViewById(R.id.spKhu1);
-        toolbar = findViewById(R.id.toolBar);
+        toolBar = findViewById(R.id.toolBar);
     }
 }

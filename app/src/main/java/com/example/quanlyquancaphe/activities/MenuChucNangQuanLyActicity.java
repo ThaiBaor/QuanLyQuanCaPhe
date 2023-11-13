@@ -27,7 +27,7 @@ public class MenuChucNangQuanLyActicity extends AppCompatActivity implements Nav
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.menuchucnang_phucvu_layout);
+        setContentView(R.layout.menuchucnang_thungan_layout);
         setControl();
         setEvent();
         setdrawer();
@@ -43,7 +43,7 @@ public class MenuChucNangQuanLyActicity extends AppCompatActivity implements Nav
 
     private void setdrawer(){
         toolBar = findViewById(R.id.toolBar);
-        drawerLayout = findViewById(R.id.nav_drawer_chucnang_phuc_vu);
+        drawerLayout = findViewById(R.id.nav_drawer_chucnang_thungan);
         navigationView = findViewById(R.id.nav_view);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,toolBar,R.string.open_nav,R.string.close_nav);
         //setSupportActionBar(toolbar);
