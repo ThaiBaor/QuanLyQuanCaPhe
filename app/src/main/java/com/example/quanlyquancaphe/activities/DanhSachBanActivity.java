@@ -388,6 +388,7 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
         btnHuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                navigationView.setCheckedItem(R.id.nav_danhsachban);
                 dialog.dismiss();
             }
         });

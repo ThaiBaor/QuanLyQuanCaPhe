@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.quanlyquancaphe.R;
+import com.example.quanlyquancaphe.activities.DangNhapActivity;
 import com.example.quanlyquancaphe.activities.DanhSachBanActivity;
 import com.example.quanlyquancaphe.activities.DanhSachMonHoanThanh_Activity;
 import com.example.quanlyquancaphe.activities.DoiMatKhauActivity;
@@ -43,6 +44,7 @@ public class MenuSideBarPhucVu {
                 activity.startActivity(intent);
                 break;
             case R.id.nav_dangxuat:
+                chonManHinh(activity, DangNhapActivity.class);
                 break;
         }
         return true;

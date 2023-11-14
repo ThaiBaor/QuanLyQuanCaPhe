@@ -62,6 +62,7 @@ public class DangNhapActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.exists() == false){
                     Toast.makeText(DangNhapActivity.this, "Tài khoản không tồn tài trên hệ thống. Vui lòng kiểm tra lại.", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
                 }
                 else {
                     String taiKhoanData = snapshot.child("maNhanVien").getValue(String.class);
@@ -73,6 +74,7 @@ public class DangNhapActivity extends AppCompatActivity {
                     }
                     else {
                         Toast.makeText(DangNhapActivity.this, "Mật khẩu sai. Vui lòng kiểm tra lại", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
                     }
                     dialog.dismiss();
                 }
@@ -80,7 +82,7 @@ public class DangNhapActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError error) {
                 dialog.dismiss();
-                Toast.makeText(DangNhapActivity.this, "apvbapva", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DangNhapActivity.this, "Lỗi!!! Vui lòng kiểm tra kết nối", Toast.LENGTH_SHORT).show();
             }
         });
     }
