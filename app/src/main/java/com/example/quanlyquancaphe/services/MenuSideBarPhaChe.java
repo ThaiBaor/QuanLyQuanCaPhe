@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.example.quanlyquancaphe.R;
+import com.example.quanlyquancaphe.activities.DanhSachMonKhaDungActivity;
+import com.example.quanlyquancaphe.activities.DanhSachOderPhaCheActivity;
 import com.example.quanlyquancaphe.activities.QuanLyBanActivity;
 import com.example.quanlyquancaphe.activities.QuanLyKhoActivity;
 import com.example.quanlyquancaphe.activities.QuanLyKhuActivity;
@@ -16,9 +18,10 @@ public class MenuSideBarPhaChe {
     public boolean chonManHinh(int layout, Activity activity){
         switch (layout){
             case R.id.nav_danhsachmonkhadung:
+                chonManHinh(activity, DanhSachMonKhaDungActivity.class);
                 break;
             case R.id.nav_danhsachorder:
-                chonManHinh(activity, QuanLyNhanVienActivity.class);
+                chonManHinh(activity, DanhSachOderPhaCheActivity.class);
                 break;
             case R.id.nav_doimatkhau:
                 chonManHinh(activity, QuanLyBanActivity.class);

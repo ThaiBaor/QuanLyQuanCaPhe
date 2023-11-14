@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +18,7 @@ import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.adapters.GioHangAdapter;
 import com.example.quanlyquancaphe.interfaces.GioHangInterface;
 import com.example.quanlyquancaphe.models.ChiTietMon;
+import com.example.quanlyquancaphe.ultilities.NotificationUtility;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,7 +37,7 @@ public class GioHangActivity extends AppCompatActivity implements GioHangInterfa
     Button btnXacNhan;
     DatabaseReference databaseReference;
     GioHangAdapter adapter;
-
+    boolean firstNoti = true;
     public static ArrayList<ChiTietMon> currentData = new ArrayList<>();
     public static String id_Ban = " ", tenKH = " ";
     private ArrayList<ChiTietMon> dataOnFB = new ArrayList<>();
@@ -53,8 +53,31 @@ public class GioHangActivity extends AppCompatActivity implements GioHangInterfa
         rv.setLayoutManager(new LinearLayoutManager(this));
         getDataAdapter();
         toolBar.setNavigationOnClickListener(view -> finish());
-        btnXacNhan.setOnClickListener(view -> luuGioHang());
+        btnXacNhan.setOnClickListener(view -> {
+            luuGioHang();
+            NotificationUtility.updateNotiOnFirebase(0, "có đơn hàng mới");
+        });
+        getNotification();
+    }
 
+    private void getNotification() {
+        databaseReference = FirebaseDatabase.getInstance().getReference("ThongBao");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (firstNoti) {
+                    firstNoti = false;
+                    return;
+                }
+                if (snapshot.child("id").getValue(Integer.class) == 0) {
+                    NotificationUtility.pushNotification(GioHangActivity.this, snapshot.child("contentText").getValue(String.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
 
     private void getDataAdapter() {
@@ -65,7 +88,7 @@ public class GioHangActivity extends AppCompatActivity implements GioHangInterfa
         if (!tenKH.equals(" ")) {
             databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(tenKH);
         }
-        // Lấy dũ liệu danh sách món hiện có
+        // Lấy dữ liệu danh sách món hiện có
         databaseReference.child("HT").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -122,7 +145,7 @@ public class GioHangActivity extends AppCompatActivity implements GioHangInterfa
             databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(id_Ban);
         }
         if (!tenKH.equals(" ")) {
-            databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(tenKH + time);
+            databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(time + "-" + tenKH);
         }
         for (ChiTietMon _chiTietMon : currentData) {
             _chiTietMon.setId_Ban(id_Ban);
@@ -216,8 +239,17 @@ public class GioHangActivity extends AppCompatActivity implements GioHangInterfa
         }
         // Trường hợp chỉ xóa dữ liệu ở danh sách tạm thời
         if (currentData.size() != 0 && dataOnFB.size() == 0) {
-            currentData.remove(finalData.get((int) position));
-
+            String removeID = "";
+            int _c = 0;
+            for (int c = 0; c < currentData.size(); ++c) {
+                if (currentData.get(c).getId_Mon().equals(finalData.get(position).getId_Mon())) {
+                    _c = c;
+                    break;
+                }
+            }
+            currentData.remove(_c);
+            finalData.remove((int) position);
+            adapter.notifyItemRemoved(position);
             return;
         }
 
@@ -267,8 +299,9 @@ public class GioHangActivity extends AppCompatActivity implements GioHangInterfa
     }
 
     @Override
-    public void onQtyChange(Integer position, Integer qty) {
+    public void onQtyChange(Integer position, Integer qty, TextView tvGia) {
+        NumberFormat nf = NumberFormat.getNumberInstance();
         finalData.get(position).setSl(qty);
+        tvGia.setText(nf.format(finalData.get(position).getSl() * finalData.get(position).getGia()) + "đ");
     }
-
 }

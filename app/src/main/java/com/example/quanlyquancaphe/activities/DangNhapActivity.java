@@ -91,8 +91,10 @@ public class DangNhapActivity extends AppCompatActivity {
                 chuyenManHinhTheoRole(DangNhapActivity.this, DanhSachBanActivity.class);
                 break;
             case "Pha chế":
+                //chuyenManHinhTheoRole(DangNhapActivity.this, DanhSachBanActivity.class);
                 break;
             case "Thu ngân":
+                //chuyenManHinhTheoRole(DangNhapActivity.this, DanhSachBanActivity.class);
                 break;
             case "Quản lý":
                 chuyenManHinhTheoRole(DangNhapActivity.this, QuanLyMonActivity.class);

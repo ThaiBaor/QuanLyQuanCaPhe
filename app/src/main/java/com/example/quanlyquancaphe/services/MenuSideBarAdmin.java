@@ -17,7 +17,6 @@ public class MenuSideBarAdmin {
     public boolean chonManHinh(int layout, Activity activity){
         switch (layout){
             case R.id.nav_thongke:
-                chonManHinh(activity, DanhSachMonPhucVuActivity.class);
                 break;
             case R.id.nav_qlnhanvien:
                 chonManHinh(activity, QuanLyNhanVienActivity.class);

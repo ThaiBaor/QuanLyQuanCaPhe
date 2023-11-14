@@ -72,10 +72,10 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
         setControl();
         setEvent();
         setdrawer();
+        initDataBan();
 
-
-        getDataHoaDon();
-        filterHoaDon();
+        //getDataHoaDon();
+        //filterHoaDon();
     }
 
     private void setEvent() {
@@ -234,14 +234,17 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                     Double tongTien = Double.parseDouble(item.child("tongTien").getValue().toString());
                     Boolean daThanhToan = Boolean.parseBoolean(item.child("daThanhToan").getValue().toString());
                     String tenKhachHang = "Không có";
+                    for (HoaDonKhachHang hoaDonKhachHang : hoaDonKhachHangs){
+                        if(id_MaHoaDon.equals(hoaDonKhachHang.getId_HoaDon())){
+                            tenKhachHang = hoaDonKhachHang.getTenKH();
+                        }
+                    }
                     //Toast.makeText(ThongKeHoaDonActivity.this,ngayThanhToan + " " + thoiGian_thanhtoan, Toast.LENGTH_SHORT).show();
                     thongKeHoaDon = new ThongKeHoaDon(id_MaHoaDon, id_Ban,ngayThanhToan, thoiGian_thanhtoan, tongTien, daThanhToan, tenKhachHang);
                     data.add(thongKeHoaDon);
                 }
-                initDataBan();
                 thongKeHoaDonAdapter.notifyDataSetChanged();
                 dialog.dismiss();
-                Toast.makeText(ThongKeHoaDonActivity.this, hoaDonKhachHangs.size() + "", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -253,7 +256,6 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
     }
 
     private void getDataIdHoaDon(ArrayList arrIdHoaDonGet) {
-        Toast.makeText(this, dataBan.size() + "hd", Toast.LENGTH_SHORT).show();
         for (int i = 0; i < dataBan.size(); i++) {
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             DatabaseReference databaseReference = firebaseDatabase.getReference().child("ChiTietMon").child(dataBan.get(i).getId_Ban()).child("QK");
@@ -272,6 +274,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                 }
             });
         }
+
     }
 
     private void initDataBan() {
@@ -286,6 +289,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                     dataBan.add(ban);
                 }
                 getDataIdHoaDon(arrIdHoaDon);
+
             }
 
             @Override
@@ -293,6 +297,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
 
             }
         });
+
     }
     private void getIdThoiGianGoiMon(ArrayList arrIdThoiGianGoiMonGet){
         for (int i = 0; i < dataBan.size(); i++) {
@@ -307,7 +312,6 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                                 arrIdThoiGianGoiMonGet.add(item.getKey());
                             }
                         }
-                        setArrHoaDonKH(hoaDonKhachHangs);
                     }
 
                     @Override
@@ -317,12 +321,14 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                 });
             }
         }
+        setArrHoaDonKH(hoaDonKhachHangs);
     }
 
-    private void setArrHoaDonKH(ArrayList arrHoaDonKHGet){
+    private void setArrHoaDonKH(ArrayList<HoaDonKhachHang> arrHoaDonKHGet){
         for (int i = 0; i < dataBan.size(); i++) {
             for (int j = 0; j < arrIdHoaDon.size(); j ++){
                 String idHD = arrIdHoaDon.get(j).toString();
+                final String[] add = {"0"};
                 for (int k = 0;k < arrIdThoiGianGoiMon.size(); k++){
                     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                     DatabaseReference databaseReference = firebaseDatabase.getReference().child("ChiTietMon").child(dataBan.get(i).getId_Ban()).child("QK").child(arrIdHoaDon.get(j).toString()).child(arrIdThoiGianGoiMon.get(k).toString());
@@ -331,10 +337,12 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             for (DataSnapshot item : snapshot.getChildren()){
                                     HoaDonKhachHang hoaDonKhachHang = new HoaDonKhachHang(idHD, item.child("tenKH").getValue().toString());
-                                    if(arrHoaDonKHGet == null){
+                                    if(add[0].equals("0") == true){
                                         arrHoaDonKHGet.add(hoaDonKhachHang);
+                                        add[0] = "1";
                                     }
                             }
+
                         }
 
                         @Override
@@ -345,6 +353,8 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                 }
             }
         }
+        getDataHoaDon();
+        filterHoaDon();
     }
 
     private void setdrawer(){
@@ -366,7 +376,6 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         dataFilter.clear();
         for (ThongKeHoaDon item : data){
-            //Toast.makeText(this, item.getThoiGian_thanhtoan() + " " + item.getNgayThanhToan(), Toast.LENGTH_SHORT).show();
             Date dateData = chuyenNgayGioData(item.getThoiGian_thanhtoan() + " " + item.getNgayThanhToan());
             if (dateData.compareTo(chuyenNgayGioThongKeThuNhat()) >= 0 && dateData.compareTo(chuyenNgayGioThongKeThuHai()) <= 0 ){
                 dataFilter.add(item);
@@ -422,7 +431,6 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         try{
-            Toast.makeText(this, dateString, Toast.LENGTH_SHORT).show();
             date = dateFormat.parse(dateString);
         } catch (ParseException e) {
             Toast.makeText(this, "Loi tg data", Toast.LENGTH_SHORT).show();
@@ -456,6 +464,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         MenuSideBarThuNgan menuSideBarThuNgan = new MenuSideBarThuNgan();
         menuSideBarThuNgan.chonManHinh(item.getItemId(), ThongKeHoaDonActivity.this);
+        navigationView.setCheckedItem(item.getItemId());
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
