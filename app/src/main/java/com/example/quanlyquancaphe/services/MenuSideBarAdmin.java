@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.example.quanlyquancaphe.R;
+import com.example.quanlyquancaphe.activities.DangNhapActivity;
 import com.example.quanlyquancaphe.activities.DanhSachMonPhucVuActivity;
 import com.example.quanlyquancaphe.activities.QuanLyBanActivity;
 import com.example.quanlyquancaphe.activities.QuanLyKhoActivity;
@@ -34,6 +35,7 @@ public class MenuSideBarAdmin {
                 chonManHinh(activity, QuanLyKhoActivity.class);
                 break;
             case R.id.nav_dangxuat:
+                chonManHinh(activity, DangNhapActivity.class);
                 break;
         }
         return true;

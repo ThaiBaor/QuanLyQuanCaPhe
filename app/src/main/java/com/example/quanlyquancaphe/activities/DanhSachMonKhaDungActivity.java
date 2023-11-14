@@ -119,7 +119,7 @@ public class DanhSachMonKhaDungActivity extends AppCompatActivity implements Nav
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolBar,R.string.open_nav,R.string.close_nav);
         //setSupportActionBar(toolbar);
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_qlkho);
+        navigationView.setCheckedItem(R.id.nav_danhsachmonkhadung);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
     }

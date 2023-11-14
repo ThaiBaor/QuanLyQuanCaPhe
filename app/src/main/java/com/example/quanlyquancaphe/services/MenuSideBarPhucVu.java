@@ -14,7 +14,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.quanlyquancaphe.R;
+import com.example.quanlyquancaphe.activities.DangNhapActivity;
 import com.example.quanlyquancaphe.activities.DanhSachBanActivity;
+import com.example.quanlyquancaphe.activities.DanhSachMonHoanThanh_Activity;
 import com.example.quanlyquancaphe.activities.DoiMatKhauActivity;
 import com.example.quanlyquancaphe.activities.QuanLyBanActivity;
 import com.example.quanlyquancaphe.activities.QuanLyKhoActivity;
@@ -34,6 +36,7 @@ public class MenuSideBarPhucVu {
             case R.id.nav_mangve:
                 break;
             case R.id.nav_dsmonhoanthanh:
+                chonManHinh(activity, DanhSachMonHoanThanh_Activity.class);
                 break;
             case R.id.nav_doimatkhau:
                 Intent intent = new Intent(activity, DoiMatKhauActivity.class);
@@ -41,6 +44,7 @@ public class MenuSideBarPhucVu {
                 activity.startActivity(intent);
                 break;
             case R.id.nav_dangxuat:
+                chonManHinh(activity, DangNhapActivity.class);
                 break;
         }
         return true;

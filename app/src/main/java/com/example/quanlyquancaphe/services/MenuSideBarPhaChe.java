@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.example.quanlyquancaphe.R;
+import com.example.quanlyquancaphe.activities.DangNhapActivity;
 import com.example.quanlyquancaphe.activities.DanhSachMonKhaDungActivity;
 import com.example.quanlyquancaphe.activities.DanhSachOderPhaCheActivity;
 import com.example.quanlyquancaphe.activities.DoiMatKhauActivity;
@@ -30,6 +31,7 @@ public class MenuSideBarPhaChe {
                 activity.startActivity(intent);
                 break;
             case R.id.nav_dangxuat:
+                chonManHinh(activity, DangNhapActivity.class);
                 break;
         }
         return true;
