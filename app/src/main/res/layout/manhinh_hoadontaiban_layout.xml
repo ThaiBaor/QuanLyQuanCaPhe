@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:openDrawer="start"
     android:fitsSystemWindows="true"
+    android:background="@drawable/background"
     tools:context=".activities.HoaDonTaiBanActivity"
     android:orientation="vertical">
     <include layout="@layout/toolbar"/>

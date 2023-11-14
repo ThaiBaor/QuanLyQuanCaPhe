@@ -4,12 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:openDrawer="start"
+    android:fitsSystemWindows="true"
+    tools:context=".activities.DanhSachOderPhaCheActivity"
     android:orientation="vertical"
-    android:background="@drawable/background"
-    tools:context=".activities.DanhSachOderPhaCheActivity">
+    android:background="@drawable/background">
     <include layout="@layout/toolbar"/>
-<androidx.recyclerview.widget.RecyclerView
-    android:layout_width="match_parent"
-    android:id="@+id/recycleDanhSachOrderPhaChe"
-    android:layout_height="match_parent"/>
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/nav_drawer_chucnang_phache">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:id="@+id/recycleDanhSachOrderPhaChe"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/nav_view"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/nav_drawer_header"
+            app:menu="@menu/nav_drawer_menu_pha_che"
+            >
+        </com.google.android.material.navigation.NavigationView>
+    </androidx.drawerlayout.widget.DrawerLayout>
+
 </LinearLayout>

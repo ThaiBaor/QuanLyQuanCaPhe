@@ -1,17 +1,24 @@
 package com.example.quanlyquancaphe.activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.adapters.DanhSachMonHoanThanhAdapter;
 import com.example.quanlyquancaphe.models.ChiTietMon;
+import com.example.quanlyquancaphe.services.MenuSideBarPhaChe;
+import com.example.quanlyquancaphe.services.MenuSideBarPhucVu;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,25 +28,25 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DanhSachMonHoanThanh_Activity extends AppCompatActivity {
+public class DanhSachMonHoanThanh_Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     RecyclerView recyclerView;
     ValueEventListener listener;
     List<String> key_node_CT = new ArrayList<>();
     DanhSachMonHoanThanhAdapter adapter;
     List<ChiTietMon> CT_TaiBan = new ArrayList<>();
     Toolbar toolBar;
+
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    ActionBarDrawerToggle actionBarDrawerToggle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manhinh_monhoanthanh_layout);
         setControl();
         toolBar.setTitle("Danh Sách Món Hoàn Thành");
-        toolBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        toolBar.setNavigationIcon(R.drawable.menu_icon);
+        setdrawer();
         getKey();
     }
     private void getData(List<String> CT) {
@@ -95,5 +102,25 @@ public class DanhSachMonHoanThanh_Activity extends AppCompatActivity {
     private void setControl() {
         toolBar = findViewById(R.id.toolBar);
         recyclerView = findViewById(R.id.recycleMonHoanThanh);
+    }
+
+    private void setdrawer(){
+        drawerLayout = findViewById(R.id.nav_drawer_chucnang_phuc_vu);
+        navigationView = findViewById(R.id.nav_view);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolBar,R.string.open_nav,R.string.close_nav);
+        //setSupportActionBar(toolbar);
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_dsmonhoanthanh);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        MenuSideBarPhucVu menuSideBarPhucVu = new MenuSideBarPhucVu();
+        menuSideBarPhucVu.chonManHinh(item.getItemId(), DanhSachMonHoanThanh_Activity.this);
+        navigationView.setCheckedItem(item.getItemId());
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 }
