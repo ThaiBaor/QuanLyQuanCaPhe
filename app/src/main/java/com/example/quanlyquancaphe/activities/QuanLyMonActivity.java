@@ -307,6 +307,7 @@ public class QuanLyMonActivity extends AppCompatActivity implements NavigationVi
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         MenuSideBarAdmin menuSideBarAdmin = new MenuSideBarAdmin();
         menuSideBarAdmin.chonManHinh(item.getItemId(), QuanLyMonActivity.this);
+        navigationView.setCheckedItem(item.getItemId());
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
