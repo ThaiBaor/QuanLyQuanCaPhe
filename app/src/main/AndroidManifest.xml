@@ -104,6 +104,13 @@
         <activity
             android:name=".activities.PhieuHoaDonActivity"
             android:exported="true"></activity>
+        <activity
+            android:name=".activities.DanhSachMonKhaDungActivity"
+            android:exported="true"></activity>
+        <activity
+            android:name=".activities.HoaDonTaiBanActivity"
+            android:exported="true"></activity>
+
     </application>
 
 </manifest>

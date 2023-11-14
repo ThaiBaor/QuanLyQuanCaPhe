@@ -2,6 +2,7 @@ package com.example.quanlyquancaphe.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -27,6 +28,7 @@ import java.util.regex.Pattern;
 public class DoiMatKhauActivity extends AppCompatActivity {
     EditText edtTenDangNhap, edtMatKhauHienTai, edtMatKhauMoi, edtXacNhanMatKhauMoi;
     Button btnXacNhan;
+    Toolbar toolBar;
     boolean xacNhan = true;
     boolean kiemTraTaiKhoan = false;
 
@@ -117,6 +119,14 @@ public class DoiMatKhauActivity extends AppCompatActivity {
                 }
             }
         });
+
+        toolBar.setTitle("Đổi mật khẩu");
+        toolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     private void kiemTraDuLieuNhap() {
@@ -132,7 +142,8 @@ public class DoiMatKhauActivity extends AppCompatActivity {
         edtMatKhauMoi = findViewById(R.id.edtMatKhauMoi);
         edtXacNhanMatKhauMoi = findViewById(R.id.edtXacNhanMatKhauMoi);
         btnXacNhan = findViewById(R.id.btnXacNhan);
-        
+        toolBar = findViewById(R.id.toolBar);
+
     }
 
     private void doiMatKhau(String tenDangNhap, String matKhau){
