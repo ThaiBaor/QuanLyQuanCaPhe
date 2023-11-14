@@ -244,6 +244,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                     data.add(thongKeHoaDon);
                 }
                 thongKeHoaDonAdapter.notifyDataSetChanged();
+                filterHoaDon();
                 dialog.dismiss();
             }
 
@@ -375,9 +376,10 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
     private void filterHoaDon(){
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         dataFilter.clear();
+        Boolean kq = true;
         for (ThongKeHoaDon item : data){
             Date dateData = chuyenNgayGioData(item.getThoiGian_thanhtoan() + " " + item.getNgayThanhToan());
-            if (dateData.compareTo(chuyenNgayGioThongKeThuNhat()) >= 0 && dateData.compareTo(chuyenNgayGioThongKeThuHai()) <= 0 ){
+            if (dateData.compareTo(chuyenNgayGioThongKeThuNhat()) >= 0 && dateData.compareTo(chuyenNgayGioThongKeThuHai()) <= 0 && item.getDaThanhToan().equals(kq)){
                 dataFilter.add(item);
             }
             else {
