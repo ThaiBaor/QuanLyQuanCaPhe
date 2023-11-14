@@ -23,6 +23,7 @@ import com.example.quanlyquancaphe.adapters.NguyenLieuAdapter;
 import com.example.quanlyquancaphe.models.Mon;
 import com.example.quanlyquancaphe.models.NguyenLieu;
 import com.example.quanlyquancaphe.services.MenuSideBarAdmin;
+import com.example.quanlyquancaphe.services.MenuSideBarPhaChe;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -140,8 +141,8 @@ public class DanhSachMonKhaDungActivity extends AppCompatActivity implements Nav
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        MenuSideBarAdmin menuSideBarAdmin = new MenuSideBarAdmin();
-        menuSideBarAdmin.chonManHinh(item.getItemId(), DanhSachMonKhaDungActivity.this);
+        MenuSideBarPhaChe menuSideBarPhaChe = new MenuSideBarPhaChe();
+        menuSideBarPhaChe.chonManHinh(item.getItemId(), DanhSachMonKhaDungActivity.this);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }

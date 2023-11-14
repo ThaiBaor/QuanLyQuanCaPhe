@@ -36,7 +36,9 @@ public class MenuSideBarPhucVu {
             case R.id.nav_dsmonhoanthanh:
                 break;
             case R.id.nav_doimatkhau:
-                chonManHinh(activity, DoiMatKhauActivity.class);
+                Intent intent = new Intent(activity, DoiMatKhauActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                activity.startActivity(intent);
                 break;
             case R.id.nav_dangxuat:
                 break;

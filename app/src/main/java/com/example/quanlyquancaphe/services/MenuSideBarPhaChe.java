@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.activities.DanhSachMonKhaDungActivity;
 import com.example.quanlyquancaphe.activities.DanhSachOderPhaCheActivity;
+import com.example.quanlyquancaphe.activities.DoiMatKhauActivity;
 import com.example.quanlyquancaphe.activities.QuanLyBanActivity;
 import com.example.quanlyquancaphe.activities.QuanLyKhoActivity;
 import com.example.quanlyquancaphe.activities.QuanLyKhuActivity;
@@ -24,7 +25,9 @@ public class MenuSideBarPhaChe {
                 chonManHinh(activity, DanhSachOderPhaCheActivity.class);
                 break;
             case R.id.nav_doimatkhau:
-                chonManHinh(activity, QuanLyBanActivity.class);
+                Intent intent = new Intent(activity, DoiMatKhauActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                activity.startActivity(intent);
                 break;
             case R.id.nav_dangxuat:
                 break;

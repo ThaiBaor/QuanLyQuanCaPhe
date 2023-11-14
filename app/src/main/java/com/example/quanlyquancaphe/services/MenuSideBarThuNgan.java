@@ -6,12 +6,14 @@ import android.content.Intent;
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.activities.DanhSachMonPhucVuActivity;
 import com.example.quanlyquancaphe.activities.DoiMatKhauActivity;
+import com.example.quanlyquancaphe.activities.HoaDonTaiBanActivity;
 import com.example.quanlyquancaphe.activities.QuanLyBanActivity;
 import com.example.quanlyquancaphe.activities.QuanLyKhoActivity;
 import com.example.quanlyquancaphe.activities.QuanLyKhuActivity;
 import com.example.quanlyquancaphe.activities.QuanLyMonActivity;
 import com.example.quanlyquancaphe.activities.QuanLyNhanVienActivity;
 import com.example.quanlyquancaphe.activities.ThongKeHoaDonActivity;
+import com.example.quanlyquancaphe.models.HoaDonTaiBan;
 
 public class MenuSideBarThuNgan {
     public MenuSideBarThuNgan(){
@@ -23,11 +25,14 @@ public class MenuSideBarThuNgan {
                 chonManHinh(activity, ThongKeHoaDonActivity.class);
                 break;
             case R.id.nav_thanhtoantaiban:
+                chonManHinh(activity, HoaDonTaiBanActivity.class);
                 break;
             case R.id.nav_thanhtoanmangdi:
                 break;
             case R.id.nav_doimatkhau:
-                chonManHinh(activity, DoiMatKhauActivity.class);
+                Intent intent = new Intent(activity, DoiMatKhauActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                activity.startActivity(intent);
                 break;
             case R.id.nav_dangxuat:
                 break;
