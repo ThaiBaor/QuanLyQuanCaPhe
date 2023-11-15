@@ -12,6 +12,7 @@ import android.view.View;
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.adapters.DanhSachOrderPhaCheAdapter;
 import com.example.quanlyquancaphe.models.DanhSachOder;
+import com.example.quanlyquancaphe.ultilities.NotificationUtility;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +30,7 @@ public class DanhSachOderPhaCheActivity extends AppCompatActivity {
     DanhSachOrderPhaCheAdapter adapter;
     List<DanhSachOder> list_Order = new ArrayList<>();
     Toolbar toolBar;
+    boolean first = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +45,30 @@ public class DanhSachOderPhaCheActivity extends AppCompatActivity {
             }
         });
         getData();
+        notification();
     }
+    private void notification() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("ThongBao");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (first) {
+                    first = false;
+                    return;
+                }
+                if (snapshot.child("id").getValue(Integer.class) == null){
+                    return;
+                }
+                if (snapshot.child("id").getValue(Integer.class) == 0) {
+                    NotificationUtility.pushNotification(DanhSachOderPhaCheActivity.this, snapshot.child("contentText").getValue(String.class));
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
     private void getData() {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new DanhSachOrderPhaCheAdapter(DanhSachOderPhaCheActivity.this, list_Order);

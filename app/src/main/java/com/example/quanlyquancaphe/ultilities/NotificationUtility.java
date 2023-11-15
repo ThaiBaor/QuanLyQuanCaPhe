@@ -39,7 +39,7 @@ public class NotificationUtility {
                 return id;
             }
 
-            public String getContextText() {
+            public String getContentText() {
                 return contentText;
             }
 

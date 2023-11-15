@@ -91,8 +91,12 @@
         <activity
             android:name=".activities.CapNhatDatBanActivity"
             android:exported="true"></activity>
+        <activity android:name=".activities.DanhSachBanActivity"
+            android:exported="false"/>
+        <activity android:name=".activities.DanhSachMonTrongOrderPhaChe_Activity"
+            android:exported="false"/>
         <activity
-            android:name=".activities.DanhSachBanActivity"
+            android:name=".activities.DanhSachOderPhaCheActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
