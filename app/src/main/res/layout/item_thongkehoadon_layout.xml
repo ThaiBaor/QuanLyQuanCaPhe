@@ -4,27 +4,11 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="@color/white"
-    android:layout_marginBottom="10dp">
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/tvMaHoaDon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hoa don 011"
-            android:textSize="20dp">
-        </TextView>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvTenKhachHang"
-            android:text="Ngân"
-            android:textSize="20dp"></TextView>
-    </LinearLayout>
+    android:layout_marginBottom="10dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,36 +16,118 @@
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:gravity="end">>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mã hóa đơn: "
+                android:textColor="#000"
+                android:textSize="20dp">
+            </TextView>
+            <TextView
+                android:id="@+id/tvMaHoaDon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hoa don 011"
+                android:textColor="#000"
+                android:textSize="20dp">
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tên bàn: "
+                android:textColor="#000"
+                android:textSize="20dp">
+            </TextView>
+
+            <TextView
+                android:id="@+id/tvTenBan"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Mang về"
+                android:textColor="#000"
+                android:textSize="20dp"></TextView>
+        </LinearLayout>
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal">
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Tên khách hàng: "
+               android:textColor="#000"
+               android:textSize="20dp">
+           </TextView>
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:id="@+id/tvTenKhachHang"
+               android:text="Ngân"
+               android:textColor="#000"
+               android:textSize="20dp"></TextView>
+       </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thời gian: "
+                android:textColor="#000"
+                android:textSize="20dp">
+            </TextView>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tvGio"
                 android:text="10:30"
-                android:textSize="30dp"></TextView>
+                android:textColor="#000"
+                android:textSize="20dp"></TextView>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="|"
+                android:textColor="#000"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:textSize="30dp"></TextView>
+                android:textSize="20dp"></TextView>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tvNgay"
+                android:textColor="#000"
                 android:text="10/03/2023"
-                android:textSize="30dp"></TextView>
+                android:textSize="20dp"></TextView>
         </LinearLayout>
-        <TextView
-            android:gravity="end"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tvTongTien"
-            android:text="10000d"
-            android:textSize="20dp"
-            android:textColor="@color/red"></TextView>
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tổng tiền: "
+                android:textColor="#000"
+                android:textSize="20dp">
+            </TextView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvTongTien"
+                android:text="10000d"
+                android:textSize="20dp"
+                android:textColor="@color/red"></TextView>
+        </LinearLayout>
     </LinearLayout>
+
 </LinearLayout>

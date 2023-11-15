@@ -84,7 +84,6 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
             @Override
             public void onClick(View view) {
                 ChonGioThuNhat();
-
             }
         });
 
@@ -215,17 +214,17 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
     }
 
     private void getDataHoaDon(){
-
         AlertDialog.Builder builder = new AlertDialog.Builder(ThongKeHoaDonActivity.this).setTitle("").setMessage("Đang tải dữ liệu...");
         builder.setCancelable(false);
         AlertDialog dialog = builder.create();
         dialog.show();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference().child("HoaDon");
-        valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase firebaseDatabaseTaiBan = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReferenceTaiBan = firebaseDatabaseTaiBan.getReference().child("HoaDon").child("TaiBan");
+        ValueEventListener valueEventListenerTaiBan = databaseReferenceTaiBan.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 data.clear();
+                xoaData();
                 for (DataSnapshot item: snapshot.getChildren()){
                     String id_MaHoaDon = item.child("id_HoaDon").getValue().toString();
                     String id_Ban = item.child("id_Ban").getValue().toString();
@@ -243,6 +242,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                     thongKeHoaDon = new ThongKeHoaDon(id_MaHoaDon, id_Ban,ngayThanhToan, thoiGian_thanhtoan, tongTien, daThanhToan, tenKhachHang);
                     data.add(thongKeHoaDon);
                 }
+                getDataHoaDonMangVe();
                 thongKeHoaDonAdapter.notifyDataSetChanged();
                 filterHoaDon();
                 dialog.dismiss();
@@ -256,6 +256,53 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
         });
     }
 
+    private void getDataHoaDonMangVe(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(ThongKeHoaDonActivity.this).setTitle("").setMessage("Đang tải dữ liệu...");
+        builder.setCancelable(false);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        FirebaseDatabase firebaseDatabaseMangVe = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReferenceMangVe = firebaseDatabaseMangVe.getReference().child("HoaDon").child("MangVe");
+        databaseReferenceMangVe.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                xoaData();
+                for (DataSnapshot item: snapshot.getChildren()){
+                    String id_MaHoaDon = item.child("id_HoaDon").getValue().toString();
+                    String id_Ban = "Mang về";
+                    String thoiGian_thanhtoan = item.child("thoiGian_ThanhToan").getValue().toString();
+                    String ngayThanhToan = item.child("ngayThanhToan").getValue().toString();
+                    Double tongTien = Double.parseDouble(item.child("tongTien").getValue().toString());
+                    Boolean daThanhToan = Boolean.parseBoolean(item.child("daThanhToan").getValue().toString());
+                    String tenKhachHang = item.child("tenKH").getValue().toString();
+                    //Toast.makeText(ThongKeHoaDonActivity.this,ngayThanhToan + " " + thoiGian_thanhtoan, Toast.LENGTH_SHORT).show();
+                    thongKeHoaDon = new ThongKeHoaDon(id_MaHoaDon, id_Ban,ngayThanhToan, thoiGian_thanhtoan, tongTien, daThanhToan, tenKhachHang);
+                    data.add(thongKeHoaDon);
+                }
+                thongKeHoaDonAdapter.notifyDataSetChanged();
+                filterHoaDon();
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                dialog.dismiss();
+                Toast.makeText(ThongKeHoaDonActivity.this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void xoaData(){
+        if (data.isEmpty() == false){
+            for (int i = 0; i < data.size(); i++){
+                if (data.get(i).getId_Ban().equals("Mang về")){
+                    data.remove(i);
+                    i = 0;
+                }
+            }
+        }
+    }
+
     private void getDataIdHoaDon(ArrayList arrIdHoaDonGet) {
         for (int i = 0; i < dataBan.size(); i++) {
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -266,7 +313,6 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                     for (DataSnapshot item: snapshot.getChildren()){
                         arrIdHoaDonGet.add(item.getKey());
                     }
-                    getIdThoiGianGoiMon(arrIdThoiGianGoiMon);
                 }
 
                 @Override
@@ -275,6 +321,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                 }
             });
         }
+        getIdThoiGianGoiMon(arrIdThoiGianGoiMon);
 
     }
 
@@ -290,7 +337,6 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                     dataBan.add(ban);
                 }
                 getDataIdHoaDon(arrIdHoaDon);
-
             }
 
             @Override
@@ -360,7 +406,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
 
     private void setdrawer(){
         toolBar = findViewById(R.id.toolBar);
-        toolBar.setTitle("Thống kê hóa đơn");
+        toolBar.setTitle("Lịch sử hóa đơn");
         drawerLayout = findViewById(R.id.nav_drawer_chucnang_thungan);
         navigationView = findViewById(R.id.nav_view);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolBar,R.string.open_nav,R.string.close_nav);
@@ -374,7 +420,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
 
 
     private void filterHoaDon(){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         dataFilter.clear();
         Boolean kq = true;
         for (ThongKeHoaDon item : data){
@@ -382,15 +428,13 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
             if (dateData.compareTo(chuyenNgayGioThongKeThuNhat()) >= 0 && dateData.compareTo(chuyenNgayGioThongKeThuHai()) <= 0 && item.getDaThanhToan().equals(kq)){
                 dataFilter.add(item);
             }
-            else {
-            }
         }
         if(dataFilter != null){
-            thongKeHoaDonAdapter = new ThongKeHoaDonAdapter(this, dataFilter);
+            thongKeHoaDonAdapter = new ThongKeHoaDonAdapter(this, dataFilter, dataBan);
             recyclerView.setAdapter(thongKeHoaDonAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             tvSoLuongHoaDon.setText(dataFilter.size()+"");
-            //tvTongTien.setText(getTongTien(dataFilter));
+            thongKeHoaDonAdapter.notifyDataSetChanged();
             NumberFormat nf = NumberFormat.getNumberInstance();
             tvTongTien.setText(nf.format(getTongTien(dataFilter)) + "đ");
         }else {
@@ -431,7 +475,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
     }
     private Date chuyenNgayGioData(String dateString){
         Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try{
             date = dateFormat.parse(dateString);
         } catch (ParseException e) {
@@ -460,6 +504,8 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         tvNgayThongKe.setText(dateFormat.format(calendar.getTime()));
+        chuyenNgayGioThongKeThuNhat();
+        chuyenNgayGioThongKeThuHai();
     }
 
     @Override
