@@ -1,7 +1,9 @@
 package com.example.quanlyquancaphe.services;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -44,7 +46,7 @@ public class MenuSideBarPhucVu {
                 activity.startActivity(intent);
                 break;
             case R.id.nav_dangxuat:
-                chonManHinh(activity, DangNhapActivity.class);
+                DangXuat(activity);
                 break;
         }
         return true;
@@ -56,5 +58,24 @@ public class MenuSideBarPhucVu {
         activity.startActivity(intent);
         activity.finish();
     }
+    private void DangXuat(Activity activity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setCancelable(true);
+        builder.setTitle("Thông báo");
+        builder.setMessage("Bạn có muốn đăng xuất không ?");
+        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                chonManHinh(activity, DangNhapActivity.class);
+            }
+        });
+        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
 
+    }
 }
