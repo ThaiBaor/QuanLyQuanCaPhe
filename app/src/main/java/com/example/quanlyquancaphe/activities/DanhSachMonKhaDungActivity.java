@@ -56,12 +56,13 @@ public class DanhSachMonKhaDungActivity extends AppCompatActivity implements Nav
         setdrawer();
         toolBar.setNavigationIcon(R.drawable.menu_icon);
         toolBar.setTitle("Danh sách món khả dụng");
-        danhSachMonKhaDungAdapter = new DanhSachMonKhaDungAdapter(this, data);
-        recyclerView.setAdapter(danhSachMonKhaDungAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
     }
 
     private void setEvent() {
+        danhSachMonKhaDungAdapter = new DanhSachMonKhaDungAdapter(DanhSachMonKhaDungActivity.this, data);
+        recyclerView.setAdapter(danhSachMonKhaDungAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(DanhSachMonKhaDungActivity.this));
         edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -89,14 +90,13 @@ public class DanhSachMonKhaDungActivity extends AppCompatActivity implements Nav
         builder.setCancelable(false);
         AlertDialog dialog = builder.create();
         dialog.show();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference().child("Mon");
-        valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Mon");
+        ValueEventListener valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 data.clear();
                 for (DataSnapshot item: snapshot.getChildren()){
-
                     Mon mon = item.getValue(Mon.class);
                     data.add(mon);
                 }
