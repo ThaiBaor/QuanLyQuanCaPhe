@@ -2,7 +2,7 @@ package com.example.quanlyquancaphe.models;
 
 public class ChiTietMon {
     private String id_Mon, id_Ban = " ", tenKH = " ", ngayGoiMon, gioGoiMon, ghiChu = " ", hinh, tenMon;
-    private Integer id_TrangThai = 0, sl = 0;
+    private Integer id_TrangThai = -1, sl = 0;
     private Double gia;
 
     public ChiTietMon() {
@@ -121,6 +121,9 @@ public class ChiTietMon {
         if (this.sl > 1) {
             --this.sl;
         }
+    }
+    public double tinhTongTien(){
+        return sl*gia;
     }
 
     @Override

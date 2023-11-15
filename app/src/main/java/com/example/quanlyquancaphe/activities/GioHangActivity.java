@@ -18,6 +18,7 @@ import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.adapters.GioHangAdapter;
 import com.example.quanlyquancaphe.interfaces.GioHangInterface;
 import com.example.quanlyquancaphe.models.ChiTietMon;
+import com.example.quanlyquancaphe.ultilities.HoaDonUltility;
 import com.example.quanlyquancaphe.ultilities.NotificationUtility;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,6 +38,7 @@ public class GioHangActivity extends AppCompatActivity implements GioHangInterfa
     Button btnXacNhan;
     DatabaseReference databaseReference;
     GioHangAdapter adapter;
+    String time;
     boolean firstNoti = true;
     public static ArrayList<ChiTietMon> currentData = new ArrayList<>();
     public static String id_Ban = " ", tenKH = " ";
@@ -55,7 +57,7 @@ public class GioHangActivity extends AppCompatActivity implements GioHangInterfa
         toolBar.setNavigationOnClickListener(view -> finish());
         btnXacNhan.setOnClickListener(view -> {
             luuGioHang();
-            NotificationUtility.updateNotiOnFirebase(0, "có đơn hàng mới");
+            NotificationUtility.updateNotiOnFirebase(0, "Có đơn hàng mới");
         });
         getNotification();
     }
@@ -69,7 +71,10 @@ public class GioHangActivity extends AppCompatActivity implements GioHangInterfa
                     firstNoti = false;
                     return;
                 }
-                if (snapshot.child("id").getValue(Integer.class) == 0) {
+                if (snapshot.child("id").getValue(Integer.class) == null) {
+                    return;
+                }
+                if (snapshot.child("id").getValue(Integer.class) == 1) {
                     NotificationUtility.pushNotification(GioHangActivity.this, snapshot.child("contentText").getValue(String.class));
                 }
             }
@@ -140,7 +145,7 @@ public class GioHangActivity extends AppCompatActivity implements GioHangInterfa
         // Lấy ngày và giờ hiện tại
         String ngayGoiMon = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         String gioGoiMon = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-        String time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")).replace(':', '0');
+        time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")).replace(':', '0');
         if (!id_Ban.equals(" ")) {
             databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(id_Ban);
         }
@@ -148,8 +153,9 @@ public class GioHangActivity extends AppCompatActivity implements GioHangInterfa
             databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(time + "-" + tenKH);
         }
         for (ChiTietMon _chiTietMon : currentData) {
+            _chiTietMon.setId_TrangThai(0);
             _chiTietMon.setId_Ban(id_Ban);
-            _chiTietMon.setTenKH(tenKH);
+            _chiTietMon.setTenKH(time + "-" + tenKH);
             _chiTietMon.setNgayGoiMon(ngayGoiMon);
             _chiTietMon.setGioGoiMon(gioGoiMon);
             databaseReference.child("HT").child(time).child(_chiTietMon.getId_Mon()).setValue(_chiTietMon).addOnFailureListener(e -> {
@@ -159,10 +165,18 @@ public class GioHangActivity extends AppCompatActivity implements GioHangInterfa
         }
         Toast.makeText(GioHangActivity.this, "Lưu thành công", Toast.LENGTH_SHORT).show();
         dialog.dismiss();
-        chuyenTrangThaiBan(id_Ban);
+        if (!id_Ban.equals(" ")) {
+            chuyenTrangThaiBan(id_Ban);
+        }
+        if (!tenKH.equals(" ")) {
+            taoHoaDonMangVe();
+        }
         currentData.clear();
         finish();
+    }
 
+    private void taoHoaDonMangVe() {
+        HoaDonUltility.getHdInstance().taoHoaDonMangVe(this, time + "-" + tenKH);
     }
 
     // Đổi trạng thái bàn
@@ -170,31 +184,6 @@ public class GioHangActivity extends AppCompatActivity implements GioHangInterfa
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("Ban");
         databaseReference.child(id_Ban).child("id_TrangThaiBan").setValue(1);
-    }
-
-    private void cong2DanhSach() {
-        int dataOnFBSize = dataOnFB.size();
-        int dataSize = currentData.size();
-        // Duyệt 2 danh sách
-        for (int i = 0; i < dataSize; ++i) {
-            for (int y = 0; y < dataOnFBSize; ++y) {
-                // Trường hợp không trùng id món
-                if (y == dataOnFBSize - 1 && !currentData.get(i).getId_Mon().equals(dataOnFB.get(y).getId_Mon())) {
-                    dataOnFB.add(currentData.get(i));
-                    return;
-                }
-                // Trường hợp trùng id món nhưng món chưa làm
-                if (currentData.get(i).getId_Mon().equals(dataOnFB.get(y).getId_Mon()) && dataOnFB.get(y).getId_TrangThai() == 0) {
-                    dataOnFB.get(y).setSl(dataOnFB.get(y).getSl() + currentData.get(i).getSl());
-                    break;
-                }
-                // Trường hợp trùng id món nhưng món đã làm
-                else if (currentData.get(i).getId_Mon().equals(dataOnFB.get(y).getId_Mon()) && dataOnFB.get(y).getId_TrangThai() != 0) {
-                    dataOnFB.add(currentData.get(i));
-                    break;
-                }
-            }
-        }
     }
 
     private void setControl() {
@@ -211,6 +200,7 @@ public class GioHangActivity extends AppCompatActivity implements GioHangInterfa
             // Xóa dữ liệu tạm thời
             for (int i = 0; i < currentData.size(); ++i) {
                 if (finalData.get(position).getId_Mon().equals(currentData.get(i).getId_Mon()) && finalData.get(position).getGioGoiMon() == null) {
+                    currentData.remove(finalData.get(position));
                     finalData.remove((int) position);
                     adapter.notifyItemRemoved(position);
                     flag = true;
@@ -238,16 +228,13 @@ public class GioHangActivity extends AppCompatActivity implements GioHangInterfa
             return;
         }
         // Trường hợp chỉ xóa dữ liệu ở danh sách tạm thời
-        if (currentData.size() != 0 && dataOnFB.size() == 0) {
-            String removeID = "";
-            int _c = 0;
+        if (currentData.size() != 0) {
             for (int c = 0; c < currentData.size(); ++c) {
                 if (currentData.get(c).getId_Mon().equals(finalData.get(position).getId_Mon())) {
-                    _c = c;
+                    currentData.remove(c);
                     break;
                 }
             }
-            currentData.remove(_c);
             finalData.remove((int) position);
             adapter.notifyItemRemoved(position);
             return;
@@ -280,7 +267,7 @@ public class GioHangActivity extends AppCompatActivity implements GioHangInterfa
         NumberFormat nf = NumberFormat.getNumberInstance();
         finalData.get(position).tang();
         edtSL.setText(String.valueOf(finalData.get(position).getSl()));
-        tvGia.setText(nf.format(finalData.get(position).getSl() * finalData.get(position).getGia()) + "đ");
+        tvGia.setText(nf.format(finalData.get(position).tinhTongTien()) + "đ");
 
     }
 

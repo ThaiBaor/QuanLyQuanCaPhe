@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".services.NotificationService"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -47,23 +48,16 @@
         <activity
             android:name=".activities.CapNhatBanActivity"
             android:exported="false" />
-
+        <!-- ĐẶT BÀN-->
         <activity
             android:name=".activities.CapNhatDatBanActivity"
-            android:exported="true">
-        </activity>
-        <activity
-            android:name=".activities.DanhSachBanActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".activities.DatBanActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".activities.DSBanDaDatActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
         <!-- NHAN VIEN -->
         <activity
             android:name=".activities.CapNhatNhanVienActivity"
@@ -77,25 +71,32 @@
         <activity
             android:name=".activities.QuanLyNhanVienActivity"
             android:exported="true" />
+        <!-- DANH SÁCH BÀN-->
+        <activity
+            android:name=".activities.DanhSachBanActivity"
+            android:exported="true" />
+        <!-- ĐĂNG NHẬP-->
         <activity
             android:name=".activities.DangNhapActivity"
             android:exported="true" />
         <activity
             android:name=".activities.DoiMatKhauActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
+        <!-- MENU -->
         <activity
             android:name=".activities.MenuChucNangQuanLyActicity"
-            android:exported="true"></activity>
+            android:exported="true" />
+        <!-- GIỎ HÀNG -->
         <activity
             android:name=".activities.GioHangActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".activities.DanhSachMonPhucVuActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
+        <!-- HÓA ĐƠN -->
         <activity
             android:name=".activities.PhieuHoaDonTaiBanActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".activities.HoaDonTaiBanActivity"
             android:exported="true">

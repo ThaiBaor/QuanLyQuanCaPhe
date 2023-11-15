@@ -2,6 +2,7 @@ package com.example.quanlyquancaphe.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,21 +47,30 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangViewHolder> {
         ChiTietMon chiTietMon_ = data.get(holder.getLayoutPosition());
 
         switch (chiTietMon_.getId_TrangThai()) {
+            case -1:
+                holder.itemView.setBackgroundColor(Color.parseColor("#ffffff"));
+                holder.btnXoa.setVisibility(View.VISIBLE);
+                hienThiTrangThai(holder.edtSL, holder.edtGhiChu, holder.btnTang, holder.btnGiam, true);
+                break;
             case 0:
+                holder.itemView.setBackgroundColor(Color.parseColor("#a5aeb3"));
                 holder.btnXoa.setVisibility(View.VISIBLE);
                 hienThiTrangThai(holder.edtSL, holder.edtGhiChu, holder.btnTang, holder.btnGiam, true);
                 break;
             case 1:
+                holder.itemView.setBackgroundColor(Color.parseColor("#a5aeb3"));
                 holder.btnXoa.setVisibility(View.INVISIBLE);
                 hienThiTrangThai(holder.edtSL, holder.edtGhiChu, holder.btnTang, holder.btnGiam, false);
-                holder.tvTrangThai.setText("Đã xác nhận");
+                holder.tvTrangThai.setText("Đang làm");
                 break;
             case 2:
+                holder.itemView.setBackgroundColor(Color.parseColor("#a5aeb3"));
                 holder.btnXoa.setVisibility(View.INVISIBLE);
                 hienThiTrangThai(holder.edtSL, holder.edtGhiChu, holder.btnTang, holder.btnGiam, false);
                 holder.tvTrangThai.setText("Đã làm xong");
                 break;
             case 3:
+                holder.itemView.setBackgroundColor(Color.parseColor("#a5aeb3"));
                 holder.btnXoa.setVisibility(View.INVISIBLE);
                 hienThiTrangThai(holder.edtSL, holder.edtGhiChu, holder.btnTang, holder.btnGiam, false);
                 holder.tvTrangThai.setText("Đã nhận");

@@ -39,7 +39,7 @@ public class NotificationUtility {
                 return id;
             }
 
-            public String getContextText() {
+            public String getContentText() {
                 return contentText;
             }
 
@@ -52,8 +52,8 @@ public class NotificationUtility {
                 this.id = id;
             }
 
-            public void setContentText(String contextText) {
-                this.contentText = contextText;
+            public void setContentText(String contentText) {
+                this.contentText = contentText;
             }
         }
         ThongBao thongBao = new ThongBao(id, contentText);

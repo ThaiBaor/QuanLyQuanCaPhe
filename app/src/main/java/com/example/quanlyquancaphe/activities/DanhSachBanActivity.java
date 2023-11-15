@@ -40,6 +40,7 @@ import com.example.quanlyquancaphe.adapters.DanhSachBanAdapter;
 import com.example.quanlyquancaphe.models.Ban;
 import com.example.quanlyquancaphe.models.DatBan;
 import com.example.quanlyquancaphe.models.Khu;
+import com.example.quanlyquancaphe.ultilities.HoaDonUltility;
 import com.example.quanlyquancaphe.ultilities.NotificationUtility;
 import com.example.quanlyquancaphe.services.MenuSideBarAdmin;
 import com.example.quanlyquancaphe.services.MenuSideBarPhucVu;
@@ -147,8 +148,16 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
         });
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        GioHangActivity.tenKH = " ";
+        GioHangActivity.id_Ban = " ";
+    }
+
     private void setEvent() {
         GioHangActivity.tenKH = " ";
+        GioHangActivity.id_Ban = " ";
         GetDataBan();
         GetDataKhu();
         GetDataSpinner();
@@ -289,7 +298,8 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
                             menu.getItem(3).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                                 @Override
                                 public boolean onMenuItemClick(@NonNull MenuItem item) {
-                                    //viet code tai day
+                                    // Tạo hóa đơn cho thu ngân
+                                    HoaDonUltility.getHdInstance().taoHoaDonTaiBan(DanhSachBanActivity.this, dataBan.get(position).getId_Ban());
                                     //sau khi thanh toán, chuyển trạng thái bàn thành 0: bàn trống
                                     ChuyenTrangThaiBan(dataBan.get(position).getId_Ban(), 0);
                                     return true;
@@ -400,8 +410,8 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
                 } else {
                     GioHangActivity.tenKH = edtTenKH.getText().toString();
                     Intent intent = new Intent(DanhSachBanActivity.this, DanhSachMonPhucVuActivity.class);
-                    startActivity(intent);
                     dialog.dismiss();
+                    startActivity(intent);
                 }
             }
         });
@@ -416,6 +426,9 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (firstNoti) {
                     firstNoti = false;
+                    return;
+                }
+                if (snapshot.child("id").getValue(Integer.class) == null) {
                     return;
                 }
                 if (snapshot.child("id").getValue(Integer.class) == 2) {
