@@ -17,21 +17,14 @@
             android:layout_height="wrap_content"
             android:weightSum="13"
             android:orientation="horizontal">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Hóa đơn:"
-                android:textSize="20dp"
-                android:layout_weight="3"
-                ></TextView>
+
             <TextView
                 android:id="@+id/tvMaHD"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="1293"
                 android:textSize="20dp"
-                android:layout_weight="3"
-                ></TextView>
+                android:layout_weight="6" />
             <TextView
                 android:id="@+id/tvGioHD"
                 android:layout_width="0dp"
@@ -39,7 +32,7 @@
                 android:text="10:00"
                 android:textSize="20dp"
                 android:layout_weight="3"
-                ></TextView>
+                />
             <TextView
                 android:id="@+id/tvNgayHD"
                 android:layout_width="0dp"
@@ -48,12 +41,20 @@
                 android:textAlignment="textEnd"
                 android:textSize="20dp"
                 android:layout_weight="4"
-                ></TextView>
+                />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Bàn:"
+                android:textSize="20dp"
+                android:layout_weight="3"
+                android:textAlignment="textEnd"
+                />
             <TextView
                 android:id="@+id/tvBanHD"
                 android:layout_width="0dp"
@@ -61,8 +62,8 @@
                 android:text=""
                 android:textSize="20dp"
                 android:layout_weight="3"
-                android:textAlignment="center"
-                ></TextView>
+                android:textAlignment="textStart"
+                />
             <TextView
                 android:id="@+id/tvGiaHD"
                 android:layout_width="0dp"
@@ -71,7 +72,7 @@
                 android:textSize="20dp"
                 android:layout_weight="7"
                 android:textAlignment="textEnd"
-                ></TextView>
+                />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

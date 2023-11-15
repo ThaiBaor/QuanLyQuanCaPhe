@@ -1,7 +1,6 @@
 package com.example.quanlyquancaphe.activities;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,9 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,10 +17,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -35,14 +29,13 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.quanlyquancaphe.R;
-import com.example.quanlyquancaphe.adapters.BanAdapter;
 import com.example.quanlyquancaphe.adapters.DanhSachBanAdapter;
 import com.example.quanlyquancaphe.models.Ban;
-import com.example.quanlyquancaphe.models.DatBan;
 import com.example.quanlyquancaphe.models.Khu;
+import com.example.quanlyquancaphe.ultilities.HoaDonUltility;
 import com.example.quanlyquancaphe.ultilities.NotificationUtility;
-import com.example.quanlyquancaphe.services.MenuSideBarAdmin;
 import com.example.quanlyquancaphe.services.MenuSideBarPhucVu;
+
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -50,9 +43,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -147,8 +137,16 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
         });
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        GioHangActivity.tenKH = " ";
+        GioHangActivity.id_Ban = " ";
+    }
+
     private void setEvent() {
         GioHangActivity.tenKH = " ";
+        GioHangActivity.id_Ban = " ";
         GetDataBan();
         GetDataKhu();
         GetDataSpinner();
@@ -289,7 +287,8 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
                             menu.getItem(3).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                                 @Override
                                 public boolean onMenuItemClick(@NonNull MenuItem item) {
-                                    //viet code tai day
+                                    // Tạo hóa đơn cho thu ngân
+                                    HoaDonUltility.getHdInstance().taoHoaDonTaiBan(DanhSachBanActivity.this, dataBan.get(position).getId_Ban());
                                     //sau khi thanh toán, chuyển trạng thái bàn thành 0: bàn trống
                                     ChuyenTrangThaiBan(dataBan.get(position).getId_Ban(), 0);
                                     return true;
@@ -401,8 +400,8 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
                 } else {
                     GioHangActivity.tenKH = edtTenKH.getText().toString();
                     Intent intent = new Intent(DanhSachBanActivity.this, DanhSachMonPhucVuActivity.class);
-                    startActivity(intent);
                     dialog.dismiss();
+                    startActivity(intent);
                 }
             }
         });
@@ -417,6 +416,9 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (firstNoti) {
                     firstNoti = false;
+                    return;
+                }
+                if (snapshot.child("id").getValue(Integer.class) == null) {
                     return;
                 }
                 if (snapshot.child("id").getValue(Integer.class) == 2) {

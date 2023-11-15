@@ -3,17 +3,12 @@ package com.example.quanlyquancaphe.adapters;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quanlyquancaphe.R;
-import com.example.quanlyquancaphe.models.Ban;
 import com.example.quanlyquancaphe.models.ChiTietMon;
-import com.example.quanlyquancaphe.models.HoaDon;
-import com.example.quanlyquancaphe.models.Khu;
-import com.example.quanlyquancaphe.models.NhanVien;
 import com.example.quanlyquancaphe.viewholders.PhieuHoaDonViewholder;
 
 import java.text.NumberFormat;
@@ -39,11 +34,12 @@ public class PhieuHoaDonAdapter extends RecyclerView.Adapter<PhieuHoaDonViewhold
 
     @Override
     public void onBindViewHolder(@NonNull PhieuHoaDonViewholder holder, int position) {
+        NumberFormat nf = NumberFormat.getNumberInstance();
         ChiTietMon chiTietMon = dataChiTietMon.get(holder.getAdapterPosition());
         holder.tvTenMon.setText(chiTietMon.getTenMon());
         holder.tvSoLuong.setText(chiTietMon.getSl()+"");
-        tongTien = chiTietMon.getSl() + chiTietMon.getGia();
-        holder.tvThanhTien.setText(tongTien+"");
+        tongTien = chiTietMon.getSl() * chiTietMon.getGia();
+        holder.tvThanhTien.setText(nf.format(tongTien) + "đ");
     }
 
     @Override

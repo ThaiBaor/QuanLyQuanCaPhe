@@ -2,7 +2,7 @@ package com.example.quanlyquancaphe.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.widget.EditText;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,10 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.adapters.HoaDonTaiBanAdapter;
 import com.example.quanlyquancaphe.models.Ban;
-import com.example.quanlyquancaphe.models.ChiTietMon;
-import com.example.quanlyquancaphe.models.HoaDon;
+import com.example.quanlyquancaphe.models.HoaDonTaiBan;
 import com.example.quanlyquancaphe.models.Khu;
-import com.example.quanlyquancaphe.services.MenuSideBarAdmin;
 import com.example.quanlyquancaphe.services.MenuSideBarThuNgan;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -34,20 +32,23 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class HoaDonTaiBanActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    EditText edtSearchBox;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     ValueEventListener ValueEventListener;
     HoaDonTaiBanAdapter adapter;
     RecyclerView recyclerView;
-    ArrayList<HoaDon> data = new ArrayList<>();
+    ArrayList<HoaDonTaiBan> data = new ArrayList<>();
+    ArrayList<HoaDonTaiBan> filterdata = new ArrayList<>();
     ArrayList<Khu> dataKhu = new ArrayList<>();
     ArrayList<Ban> dataBan = new ArrayList<>();
-    TextView tvMHD,tvGioHD,tvNgayHD,tvBanHD,tvGiaHD;
+    TextView tvMHD, tvGioHD, tvNgayHD, tvBanHD, tvGiaHD;
 
     DrawerLayout drawerLayout;
     Toolbar toolBar;
     NavigationView navigationView;
     ActionBarDrawerToggle actionBarDrawerToggle;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manhinh_hoadontaiban_layout);
@@ -58,27 +59,27 @@ public class HoaDonTaiBanActivity extends AppCompatActivity implements Navigatio
         loadDataBan();
         loadDataKhu();
         loadDataHoaDonTaiBan();
+        //tvMHD.setText(cutTextView(tvMHD.toString()));
         adapter = new HoaDonTaiBanAdapter(HoaDonTaiBanActivity.this, data, dataBan, dataKhu, new HoaDonTaiBanAdapter.ItemClickListener() {
             @Override
             public void OnItemClick(int position) {
-                HoaDon hoaDonTaiBan = data.get(position);
-                Intent intent = new Intent(HoaDonTaiBanActivity.this, PhieuHoaDonActivity.class);
+                HoaDonTaiBan hoaDonTaiBan = data.get(position);
+                Intent intent = new Intent(HoaDonTaiBanActivity.this, PhieuHoaDonTaiBanActivity.class);
                 intent.putExtra("id_HoaDon", hoaDonTaiBan.getId_HoaDon());
                 intent.putExtra("id_Ban", hoaDonTaiBan.getId_Ban());
                 intent.putExtra("thoiGian_ThanhToan", hoaDonTaiBan.getThoiGian_ThanhToan());
                 intent.putExtra("ngayThanhToan", hoaDonTaiBan.getNgayThanhToan());
                 intent.putExtra("tongTien", hoaDonTaiBan.getTongTien());
                 intent.putExtra("daThanhToan", hoaDonTaiBan.getDaThanhToan());
-                for (Ban item : dataBan){
-                    if (hoaDonTaiBan.getId_Ban().equals(item.getId_Ban())){
-                        intent.putExtra("tenBan",item.getTenBan());
-                        for (Khu item2 : dataKhu){
-                            if (item2.getId_Khu().equals(item.getId_Khu())){
-                                intent.putExtra("tenKhu",item2.getTenKhu());
+                for (Ban item : dataBan) {
+                    if (hoaDonTaiBan.getId_Ban().equals(item.getId_Ban())) {
+                        intent.putExtra("tenBan", item.getTenBan());
+                        for (Khu item2 : dataKhu) {
+                            if (item2.getId_Khu().equals(item.getId_Khu())) {
+                                intent.putExtra("tenKhu", item2.getTenKhu());
                             }
                         }
                     }
-
                 }
                 startActivity(intent);
             }
@@ -96,57 +97,53 @@ public class HoaDonTaiBanActivity extends AppCompatActivity implements Navigatio
         tvGiaHD = findViewById(R.id.tvGiaHD);
         tvBanHD = findViewById(R.id.tvBanHD);
         tvNgayHD = findViewById(R.id.tvNgayHD);
+        edtSearchBox = findViewById(R.id.edtSearchBox);
     }
 
-    public void loadDataHoaDonTaiBan(){
+    public void loadDataHoaDonTaiBan() {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference().child("HoaDon");
-        ValueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
+
+        ValueEventListener = databaseReference.child("TaiBan").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot item: snapshot.getChildren()){
-                    HoaDon hoaDonTaiBan = item.getValue(HoaDon.class);
-                    data.add(hoaDonTaiBan);
+                data.clear();
+                for (DataSnapshot item : snapshot.getChildren()) {
+                    HoaDonTaiBan hoaDonTaiBan = item.getValue(HoaDonTaiBan.class);
+                    if (!hoaDonTaiBan.getDaThanhToan()) {
+                        data.add(hoaDonTaiBan);
+                    }
                 }
                 adapter.notifyDataSetChanged();
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(HoaDonTaiBanActivity.this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
-    public void loadDataBan(){
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        adapter.notifyDataSetChanged();
+    }
+
+    public void loadDataBan() {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference().child("Ban");
         ValueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot item: snapshot.getChildren()){
+                dataBan.clear();
+                for (DataSnapshot item : snapshot.getChildren()) {
                     Ban ban = item.getValue(Ban.class);
                     dataBan.add(ban);
                 }
                 adapter.notifyDataSetChanged();
             }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(HoaDonTaiBanActivity.this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-    public void loadDataKhu(){
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference().child("Khu");
-        ValueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot item: snapshot.getChildren()){
-                    Khu khu = item.getValue(Khu.class);
-                    dataKhu.add(khu);
-                    Log.e(khu.getId_Khu()+"","loi");
-                }
-                adapter.notifyDataSetChanged();
-            }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(HoaDonTaiBanActivity.this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
@@ -154,11 +151,32 @@ public class HoaDonTaiBanActivity extends AppCompatActivity implements Navigatio
         });
     }
 
-    private void setdrawer(){
+    public void loadDataKhu() {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference().child("Khu");
+        ValueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dataKhu.clear();
+                for (DataSnapshot item : snapshot.getChildren()) {
+                    Khu khu = item.getValue(Khu.class);
+                    dataKhu.add(khu);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(HoaDonTaiBanActivity.this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setdrawer() {
         toolBar = findViewById(R.id.toolBar);
         drawerLayout = findViewById(R.id.nav_drawer_chucnang_thungan);
         navigationView = findViewById(R.id.nav_view);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolBar,R.string.open_nav,R.string.close_nav);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolBar, R.string.open_nav, R.string.close_nav);
         //setSupportActionBar(toolbar);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_thanhtoantaiban);

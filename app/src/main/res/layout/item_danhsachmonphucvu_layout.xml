@@ -43,11 +43,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:text="Tên món"
+                    android:maxWidth="100dp"
                     android:textColor="@color/red"
                     android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/tvSLBan"
+                    android:layout_weight="0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
