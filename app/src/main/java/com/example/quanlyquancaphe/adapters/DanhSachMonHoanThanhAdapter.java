@@ -41,10 +41,10 @@ public class DanhSachMonHoanThanhAdapter extends RecyclerView.Adapter<DanhSachMo
     @Override
     public void onBindViewHolder(@NonNull DanhSachMonHoanThanhViewHolder holder, int position) {ChiTietMon chiTietMon = list.get(position);
         holder.tvTenMon.setText(chiTietMon.getTenMon());
-       holder.tvSL.setText("Số lượng: "+String.valueOf(chiTietMon.getSl()));
+       holder.tvSL.setText("Số lượng: "+chiTietMon.getSl());
        Glide.with(context).load(chiTietMon.getHinh()).into(holder.ivImages);
        // SS chi tiết tại bàn vs mang về
-       if (chiTietMon.getTenKH().equals(" ")){
+       if (chiTietMon.getTenKH().substring(9).equals(" ") && !chiTietMon.getId_Ban().equals(" ")){
            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Ban");
            reference.addListenerForSingleValueEvent(new ValueEventListener() {
                @Override
@@ -62,13 +62,10 @@ public class DanhSachMonHoanThanhAdapter extends RecyclerView.Adapter<DanhSachMo
 
                }
            });
-
-           holder.tvBan.setText(chiTietMon.getId_Ban());
        }
        else {
-           holder.tvBan.setText("Khách hàng:"+chiTietMon.getTenKH());
+           holder.tvBan.setText("Khách hàng: "+chiTietMon.getTenKH().substring(9));
        }
-
     }
     @Override
     public int getItemCount() {

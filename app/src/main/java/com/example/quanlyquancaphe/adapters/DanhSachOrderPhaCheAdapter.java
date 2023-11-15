@@ -43,31 +43,41 @@ public class DanhSachOrderPhaCheAdapter extends RecyclerView.Adapter<DanhSachOrd
     }
     @Override
     public void onBindViewHolder(@NonNull DanhSachOrderPhaCheViewholder holder, int position) {
-        /* lấy tên bàn  */
-        DatabaseReference referenceBan = FirebaseDatabase.getInstance().getReference("Ban");
-        referenceBan.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    String id_Ban = dataSnapshot.child("id_Ban").getValue(String.class);
-                    if (id_Ban.equals(list_DanhSachOder.get(holder.getAdapterPosition()).getId_Ban())){
-                      String tenBan = dataSnapshot.child("tenBan").getValue(String.class);
-                      holder.tvMaBan.setText(tenBan.toString());
+
+            /* lấy tên bàn  */
+            DatabaseReference referenceBan = FirebaseDatabase.getInstance().getReference("Ban");
+            referenceBan.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        String id_Ban = dataSnapshot.child("id_Ban").getValue(String.class);
+                        if (id_Ban.equals(list_DanhSachOder.get(holder.getAdapterPosition()).getId_Ban())) {
+                           String tenBan = dataSnapshot.child("tenBan").getValue(String.class);
+                            holder.tvMaBan.setText("Bàn: " + tenBan.toString());
+                        }
                     }
                 }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
-        holder.tvMaBan.setText(list_DanhSachOder.get(position).getId_Ban());
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+       // holder.tvMaBan.setText(list_DanhSachOder.get(position).getId_Ban());
         holder.tvThoiGian.setText(list_DanhSachOder.get(position).getGioGoiMon());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DanhSachMonTrongOrderPhaChe_Activity.class);
-                intent.putExtra("key", list_DanhSachOder.get(holder.getAdapterPosition()).getId_Ban());
+              String id =  list_DanhSachOder.get(holder.getAdapterPosition()).getId_Ban();
+              String id_ten =  list_DanhSachOder.get(holder.getAdapterPosition()).getTenKH();
+
+              if (id.equals(" ")){
+                  intent.putExtra("key",id_ten);
+              }else {
+                  intent.putExtra("key",id);
+              }
                 context.startActivity(intent);
             }
         });

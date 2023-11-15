@@ -16,6 +16,7 @@ import android.view.View;
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.adapters.DanhSachMonHoanThanhAdapter;
 import com.example.quanlyquancaphe.models.ChiTietMon;
+import com.example.quanlyquancaphe.ultilities.NotificationUtility;
 import com.example.quanlyquancaphe.services.MenuSideBarPhaChe;
 import com.example.quanlyquancaphe.services.MenuSideBarPhucVu;
 import com.google.android.material.navigation.NavigationView;
@@ -39,6 +40,7 @@ public class DanhSachMonHoanThanh_Activity extends AppCompatActivity implements 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     ActionBarDrawerToggle actionBarDrawerToggle;
+    boolean first = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +50,7 @@ public class DanhSachMonHoanThanh_Activity extends AppCompatActivity implements 
         toolBar.setNavigationIcon(R.drawable.menu_icon);
         setdrawer();
         getKey();
+        notification();
     }
     private void getData(List<String> CT) {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -62,7 +65,7 @@ public class DanhSachMonHoanThanh_Activity extends AppCompatActivity implements 
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         for (DataSnapshot snapshot1 : dataSnapshot.getChildren()) {
                             Integer id_TrangThai = snapshot1.child("id_TrangThai").getValue(Integer.class);
-                            if ( id_TrangThai.equals(3)) {
+                            if ( id_TrangThai==2) {
                                ChiTietMon CT_Mon = snapshot1.getValue(ChiTietMon.class);
                                CT_TaiBan.add(CT_Mon);
                             }
@@ -85,16 +88,40 @@ public class DanhSachMonHoanThanh_Activity extends AppCompatActivity implements 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 key_node_CT.clear();
-                CT_TaiBan.clear();
+
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     key_node_CT.add(dataSnapshot.getKey());
                 }
+                CT_TaiBan.clear();
                 getData(key_node_CT);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+    }
+    private void notification() {
+       DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("ThongBao");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (first) {
+                    first = false;
+                    return;
+                }
+                if (snapshot.child("id").getValue(Integer.class) == null){
+                    return;
+                }
+                if (snapshot.child("id").getValue(Integer.class) == 2) {
+                    System.out.println(snapshot.child("contentText"));
+                    NotificationUtility.pushNotification(DanhSachMonHoanThanh_Activity.this, snapshot.child("contentText").getValue(String.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
             }
         });
     }

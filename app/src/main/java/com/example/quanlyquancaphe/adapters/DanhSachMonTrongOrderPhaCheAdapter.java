@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.models.ChiTietMon;
+import com.example.quanlyquancaphe.ultilities.NotificationUtility;
 import com.example.quanlyquancaphe.viewholders.DanhSachMonTrongOrderViewHolder;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,10 +42,9 @@ public class DanhSachMonTrongOrderPhaCheAdapter extends RecyclerView.Adapter<Dan
     String sConfig_id_Time;
     String sConfig_key_Time;
 
-    public DanhSachMonTrongOrderPhaCheAdapter(Context context, List<ChiTietMon> list_CT, List<Integer> id_TrangThaiMon, String key_node) {
+    public DanhSachMonTrongOrderPhaCheAdapter(Context context, List<ChiTietMon> list_CT, String key_node) {
         this.context = context;
         this.list_CT = list_CT;
-        this.id_TrangThaiMon = id_TrangThaiMon;
         this.key_node = key_node;
     }
 
@@ -62,8 +61,10 @@ public class DanhSachMonTrongOrderPhaCheAdapter extends RecyclerView.Adapter<Dan
         holder.tvGhiChu.setText("Ghi chú: " + list_CT.get(position).getGhiChu());
         holder.tvTenMonAn.setText(list_CT.get(position).getTenMon());
         holder.tvsoLuong.setText("Số lượng: " + String.valueOf(list_CT.get(position).getSl()));
+        System.out.println("Adapter"+ String.valueOf(list_CT.get(position).getSl()));
+
         /* kiểm tra trạng thái món : Đang làm ,hoàn thành ,xác nhận */
-        if (list_CT.get(position).getId_TrangThai() == 0){
+        if (list_CT.get(position).getId_TrangThai() == 0) {
             holder.ibtnComplete.setEnabled(false);
             holder.ibtnConfig.setEnabled(false);
             holder.ibtnWaiting.setEnabled(true);
@@ -89,7 +90,7 @@ public class DanhSachMonTrongOrderPhaCheAdapter extends RecyclerView.Adapter<Dan
             holder.cardView.setCardBackgroundColor(Color.parseColor("#E7E7E7"));
         }
         /* kiểm tra trạng thái bật / tắt nút switch*/
-        String id_CT_Mon = list_CT.get(holder.getAdapterPosition()).getId_Mon();
+        String id_CT_Mon = list_CT.get(holder.getBindingAdapterPosition()).getId_Mon();
         DatabaseReference check_switch = FirebaseDatabase.getInstance().getReference("Mon");
         check_switch.addValueEventListener(new ValueEventListener() {
             @Override
@@ -98,7 +99,14 @@ public class DanhSachMonTrongOrderPhaCheAdapter extends RecyclerView.Adapter<Dan
                     String id_Mon = dataSnapshot.child("id_Mon").getValue(String.class);
                     if (id_Mon.equals(id_CT_Mon)) {
                         Boolean get_Id_TT = dataSnapshot.child("hetMon").getValue(Boolean.class);
-                        holder.swTrangThai.setChecked(get_Id_TT);
+
+                        if (get_Id_TT != null) {
+                            if (get_Id_TT) {
+                                holder.swTrangThai.setChecked(false);
+                            } else {
+                                holder.swTrangThai.setChecked(true);
+                            }
+                        }
                     }
                 }
             }
@@ -114,7 +122,7 @@ public class DanhSachMonTrongOrderPhaCheAdapter extends RecyclerView.Adapter<Dan
             @Override
             public void onClick(View view) {
                 holder.ibtnComplete.setEnabled(true);
-                String sWaiting_CT_Mon = list_CT.get(holder.getAdapterPosition()).getId_Mon();
+                String sWaiting_CT_Mon = list_CT.get(holder.getBindingAdapterPosition()).getId_Mon();
                 Integer iWaiting_id_TrangThai = 1;
                 DatabaseReference setWaiting = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(key_node).child("HT");
                 setWaiting.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -122,7 +130,7 @@ public class DanhSachMonTrongOrderPhaCheAdapter extends RecyclerView.Adapter<Dan
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         node_Time.clear();
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                            sWaiting_id_Time = list_CT.get(holder.getAdapterPosition()).getGioGoiMon();
+                            sWaiting_id_Time = list_CT.get(holder.getBindingAdapterPosition()).getGioGoiMon();
                             String id_node = dataSnapshot.getKey();
                             node_Time.add(id_node);
                         }
@@ -130,7 +138,7 @@ public class DanhSachMonTrongOrderPhaCheAdapter extends RecyclerView.Adapter<Dan
                         for (int i = 0; i < node_Time.size(); i++) {
                             String id = node_Time.get(i);
                             if (id.equals(setTime.toString())) {
-                                sWaiting_key_Time = id.toString();
+                                sWaiting_key_Time = id;
                             }
                         }
                         setWaiting.child(sWaiting_key_Time).child(sWaiting_CT_Mon).child("id_TrangThai").setValue(iWaiting_id_TrangThai);
@@ -147,15 +155,17 @@ public class DanhSachMonTrongOrderPhaCheAdapter extends RecyclerView.Adapter<Dan
         holder.ibtnComplete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String tenMon = list_CT.get(holder.getBindingAdapterPosition()).getTenMon();
+                NotificationUtility.updateNotiOnFirebase(2, "Món hoàn thành "+tenMon);
                 holder.ibtnConfig.setEnabled(true);
-                String sComplete_CT_Mon = list_CT.get(holder.getAdapterPosition()).getId_Mon();
+                String sComplete_CT_Mon = list_CT.get(holder.getBindingAdapterPosition()).getId_Mon();
                 DatabaseReference setComplete = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(key_node).child("HT");
                 setComplete.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         node_Time.clear();
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                            sComplete_id_time = list_CT.get(holder.getAdapterPosition()).getGioGoiMon();
+                            sComplete_id_time = list_CT.get(holder.getBindingAdapterPosition()).getGioGoiMon();
                             String id_node = dataSnapshot.getKey();
                             node_Time.add(id_node);
                         }
@@ -163,7 +173,7 @@ public class DanhSachMonTrongOrderPhaCheAdapter extends RecyclerView.Adapter<Dan
                         for (int i = 0; i < node_Time.size(); i++) {
                             String id = node_Time.get(i);
                             if (id.equals(setTime.toString())) {
-                                sComplete_key_Time = id.toString();
+                                sComplete_key_Time = id;
                             }
                         }
                         Integer iComplete_id_TrangThai = 2;
@@ -181,14 +191,14 @@ public class DanhSachMonTrongOrderPhaCheAdapter extends RecyclerView.Adapter<Dan
         holder.ibtnConfig.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String sConfig_CT_Mon = list_CT.get(holder.getAdapterPosition()).getId_Mon();
+                String sConfig_CT_Mon = list_CT.get(holder.getBindingAdapterPosition()).getId_Mon();
                 DatabaseReference setConfig = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(key_node).child("HT");
                 setConfig.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         node_Time.clear();
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                            sConfig_id_Time = list_CT.get(holder.getAdapterPosition()).getGioGoiMon();
+                            sConfig_id_Time = list_CT.get(holder.getBindingAdapterPosition()).getGioGoiMon();
                             String id_node = dataSnapshot.getKey().toString();
                             node_Time.add(id_node);
                         }
@@ -196,7 +206,7 @@ public class DanhSachMonTrongOrderPhaCheAdapter extends RecyclerView.Adapter<Dan
                         for (int i = 0; i < node_Time.size(); i++) {
                             String id = node_Time.get(i);
                             if (id.equals(setTime.toString())) {
-                                sConfig_key_Time = id.toString();
+                                sConfig_key_Time = id;
                             }
                         }
                         Integer iComfig_id_TrangThai = 3;
@@ -215,35 +225,12 @@ public class DanhSachMonTrongOrderPhaCheAdapter extends RecyclerView.Adapter<Dan
         });
 
         /*Tắt / bật nút switch hết món */
-        holder.swTrangThai.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.swTrangThai.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            public void onClick(View view) {
                 DatabaseReference set_Switch_database = FirebaseDatabase.getInstance().getReference("Mon");
-                if (compoundButton.isChecked()) {
-                    holder.cardView.setCardBackgroundColor(Color.parseColor("#E7E7E7"));
-                    holder.ibtnWaiting.setVisibility(View.INVISIBLE);
-                    holder.ibtnConfig.setVisibility(View.INVISIBLE);
-                    holder.ibtnComplete.setVisibility(View.INVISIBLE);
-                    Map<String, Object> mSwitch_On = new HashMap<>();
-                    mSwitch_On.put("hetMon", true);
-                    set_Switch_database.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                String ib_Mon = dataSnapshot.child("id_Mon").getValue(String.class);
-                                if (list_CT.get(holder.getAdapterPosition()).getId_Mon().equals(ib_Mon)) {
-                                    set_Switch_database.child(ib_Mon).updateChildren(mSwitch_On);
-                                    break;
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                        }
-                    });
-                } else {
-                    if (list_CT.get(holder.getAdapterPosition()).getId_TrangThai() == 3) {
+                if (holder.swTrangThai.isChecked()){
+                    if (list_CT.get(holder.getBindingAdapterPosition()).getId_TrangThai() == 3) {
                         holder.cardView.setCardBackgroundColor(Color.parseColor("#E7E7E7"));
                     } else {
                         holder.cardView.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
@@ -265,15 +252,38 @@ public class DanhSachMonTrongOrderPhaCheAdapter extends RecyclerView.Adapter<Dan
 
                             }
                         }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
+                }else {
+                    // set Notification
+                    String tenMon = list_CT.get(holder.getBindingAdapterPosition()).getTenMon();
+                    NotificationUtility.updateNotiOnFirebase(1, "Hết Món "+tenMon);
+                    holder.cardView.setCardBackgroundColor(Color.parseColor("#E7E7E7"));
+                    holder.ibtnWaiting.setVisibility(View.INVISIBLE);
+                    holder.ibtnConfig.setVisibility(View.INVISIBLE);
+                    holder.ibtnComplete.setVisibility(View.INVISIBLE);
+                    Map<String, Object> mSwitch_On = new HashMap<>();
+                    mSwitch_On.put("hetMon", true);
+                    set_Switch_database.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                String ib_Mon = dataSnapshot.child("id_Mon").getValue(String.class);
+                                if (list_CT.get(holder.getBindingAdapterPosition()).getId_Mon().equals(ib_Mon)) {
+                                    set_Switch_database.child(ib_Mon).updateChildren(mSwitch_On);
+                                    break;
+                                }
+                            }
+                        }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-
                         }
                     });
                 }
             }
-
         });
     }
 
@@ -289,7 +299,6 @@ public class DanhSachMonTrongOrderPhaCheAdapter extends RecyclerView.Adapter<Dan
         }
         return builder;
     }
-
     @Override
     public int getItemCount() {
         return list_CT.size();
