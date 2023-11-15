@@ -62,12 +62,10 @@ public class DanhSachMonHoanThanhAdapter extends RecyclerView.Adapter<DanhSachMo
 
                }
            });
-
        }
        else {
-           holder.tvBan.setText("Khách hàng:"+chiTietMon.getTenKH().substring(9));
+           holder.tvBan.setText("Khách hàng: "+chiTietMon.getTenKH().substring(9));
        }
-
     }
     @Override
     public int getItemCount() {
