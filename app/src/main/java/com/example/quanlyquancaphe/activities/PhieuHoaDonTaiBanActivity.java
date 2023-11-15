@@ -1,11 +1,7 @@
 package com.example.quanlyquancaphe.activities;
 
 import android.app.AlertDialog;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,17 +14,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.adapters.PhieuHoaDonAdapter;
 import com.example.quanlyquancaphe.models.Ban;
 import com.example.quanlyquancaphe.models.ChiTietMon;
-import com.example.quanlyquancaphe.models.HoaDon;
+import com.example.quanlyquancaphe.models.HoaDonTaiBan;
 import com.example.quanlyquancaphe.models.Khu;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,13 +31,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.InputStream;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PhieuHoaDonActivity extends AppCompatActivity {
+public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
     TextView tvMHD, tvGioHD, tvNgayHD, tvBanHD, tvGiaHD, tvKhu, tvNV, tvTongTien;
     Button btnQuayLai, btnThanhToan;
     ImageView ivHinh;
@@ -53,7 +45,7 @@ public class PhieuHoaDonActivity extends AppCompatActivity {
     String id_Ban = "";
     ArrayList<ChiTietMon> dataChiTietMon = new ArrayList<>();
     ArrayList<ChiTietMon> dataGop = new ArrayList<>();
-    HoaDon hoaDonTaiBan = new HoaDon();
+    HoaDonTaiBan hoaDonTaiBan = new HoaDonTaiBan();
     Ban ban = new Ban();
     Khu khu = new Khu();
     FirebaseDatabase firebaseDatabase;
@@ -72,7 +64,7 @@ public class PhieuHoaDonActivity extends AppCompatActivity {
         datachitietmon();
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
-        adapter = new PhieuHoaDonAdapter(PhieuHoaDonActivity.this, id_Ban, dataChiTietMon);
+        adapter = new PhieuHoaDonAdapter(PhieuHoaDonTaiBanActivity.this, id_Ban, dataChiTietMon);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
@@ -90,11 +82,12 @@ public class PhieuHoaDonActivity extends AppCompatActivity {
                     hoaDonTaiBan.setDaThanhToan(bundle.getBoolean("daThanhToan"));
                     Boolean tt = true;
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference ref = database.getReference("HoaDon");
+                    DatabaseReference ref = database.getReference("HoaDon").child("TaiBan");
                     ref.child(hoaDonTaiBan.getId_HoaDon()).child("daThanhToan").setValue(tt).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-
+                            Toast.makeText(PhieuHoaDonTaiBanActivity.this, "Thanh toán thành công", Toast.LENGTH_SHORT).show();
+                            finish();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -148,7 +141,6 @@ public class PhieuHoaDonActivity extends AppCompatActivity {
         dialog.dismiss();
     }
 
-
     private void datachitietmon() {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference().child("ChiTietMon").child(id_Ban);
@@ -156,16 +148,8 @@ public class PhieuHoaDonActivity extends AppCompatActivity {
         databaseReference.child("HT").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dataGop.clear();
                 dataChiTietMon.clear();
-//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-//                    for (DataSnapshot item : dataSnapshot.getChildren()) {
-//                        ChiTietMon chiTietMon = item.getValue(ChiTietMon.class);
-//                        dataChiTietMon.add(chiTietMon);
-//                    }
-//                }
-//                adapter.notifyDataSetChanged();
-
-
                 // nếu trùng id_Mon tăng số lượng món
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     for (DataSnapshot item : dataSnapshot.getChildren()) {
@@ -212,8 +196,5 @@ public class PhieuHoaDonActivity extends AppCompatActivity {
             }
         });
     }
-    public void cutTextView(){
-        int maxLength = 6;
-        if ()
-    }
+
 }

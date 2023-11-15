@@ -1,13 +1,13 @@
 package com.example.quanlyquancaphe.models;
 
-public class HoaDonMangVe1 extends HoaDon1{
+public class HoaDonMangVe extends HoaDon {
     private String tenKH;
 
-    public HoaDonMangVe1() {
+    public HoaDonMangVe() {
         super();
     }
 
-    public HoaDonMangVe1(String id_HoaDon, String thoiGian_ThanhToan, String ngayThanhToan, Double tongTien, Boolean daThanhToan, String tenKH) {
+    public HoaDonMangVe(String id_HoaDon, String thoiGian_ThanhToan, String ngayThanhToan, Double tongTien, Boolean daThanhToan, String tenKH) {
         super(id_HoaDon, thoiGian_ThanhToan, ngayThanhToan, tongTien, daThanhToan);
         this.tenKH = tenKH;
     }

@@ -3,15 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
+
         <TextView
+            android:layout_marginLeft="20dp"
             android:id="@+id/tvItemTenMon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="ten mon"
             android:textSize="20dp"
-            android:layout_weight="3"
-            android:textAlignment="center"
-            ></TextView>
+            android:layout_weight="3" />
+
         <TextView
             android:id="@+id/tvItemSoLuong"
             android:layout_width="0dp"
@@ -19,15 +20,15 @@
             android:text="so luong"
             android:textSize="20dp"
             android:layout_weight="3"
-            android:textAlignment="center"
-            ></TextView>
+            android:textAlignment="center" />
+
         <TextView
+            android:layout_marginRight="20dp"
             android:id="@+id/tvItemThanhTien"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="thanh tien"
-            android:textAlignment="center"
+            android:textAlignment="textEnd"
             android:textSize="20dp"
-            android:layout_weight="3"
-            ></TextView>
+            android:layout_weight="3" />
 </LinearLayout>

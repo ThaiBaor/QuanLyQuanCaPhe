@@ -9,8 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.models.Ban;
-import com.example.quanlyquancaphe.models.ChiTietMon;
-import com.example.quanlyquancaphe.models.HoaDon;
+import com.example.quanlyquancaphe.models.HoaDonTaiBan;
 import com.example.quanlyquancaphe.models.Khu;
 import com.example.quanlyquancaphe.viewholders.HoaDonTaiBanViewholder;
 
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 
 public class HoaDonTaiBanAdapter extends RecyclerView.Adapter<HoaDonTaiBanViewholder>{
     Context context;
-    ArrayList<HoaDon> data;
+    ArrayList<HoaDonTaiBan> data;
     ArrayList<Khu> dataKhu;
     ArrayList<Ban> dataBan;
     Integer position;
@@ -33,7 +32,7 @@ public class HoaDonTaiBanAdapter extends RecyclerView.Adapter<HoaDonTaiBanViewho
     }
 
     private ItemClickListener listener;
-    public HoaDonTaiBanAdapter(Context context, ArrayList<HoaDon> data, ArrayList<Ban> dataBan, ArrayList<Khu> dataKhu, ItemClickListener listener){
+    public HoaDonTaiBanAdapter(Context context, ArrayList<HoaDonTaiBan> data, ArrayList<Ban> dataBan, ArrayList<Khu> dataKhu, ItemClickListener listener){
         this.context = context;
         this.data = data;
         this.dataBan = dataBan;
@@ -49,7 +48,7 @@ public class HoaDonTaiBanAdapter extends RecyclerView.Adapter<HoaDonTaiBanViewho
     @Override
     public void onBindViewHolder(@NonNull HoaDonTaiBanViewholder holder, int position) {
         NumberFormat nf = NumberFormat.getNumberInstance();
-        HoaDon hoaDonTaiBan = data.get(position);
+        HoaDonTaiBan hoaDonTaiBan = data.get(position);
         holder.tvMHD.setText(hoaDonTaiBan.getId_HoaDon());
         holder.tvGioHD.setText(hoaDonTaiBan.getThoiGian_ThanhToan());
         holder.tvNgayHD.setText(hoaDonTaiBan.getNgayThanhToan());
@@ -59,7 +58,7 @@ public class HoaDonTaiBanAdapter extends RecyclerView.Adapter<HoaDonTaiBanViewho
                 break;
             }
         }
-        holder.tvGiaHD.setText(nf.format(hoaDonTaiBan.getTongTien()));
+        holder.tvGiaHD.setText(nf.format(hoaDonTaiBan.getTongTien()) + "đ");
         holder.itemView.setOnClickListener(view -> {
             listener.OnItemClick(position);
         });

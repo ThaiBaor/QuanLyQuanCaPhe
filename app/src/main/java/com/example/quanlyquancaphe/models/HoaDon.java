@@ -1,17 +1,17 @@
 package com.example.quanlyquancaphe.models;
 
-public class HoaDon1 {
+public class HoaDon {
     private String id_HoaDon;
     private String thoiGian_ThanhToan;
     private String ngayThanhToan;
     private Double tongTien;
     private Boolean daThanhToan = false;
 
-    public HoaDon1() {
+    public HoaDon() {
 
     }
 
-    public HoaDon1(String id_HoaDon, String thoiGian_ThanhToan, String ngayThanhToan, Double tongTien, Boolean daThanhToan) {
+    public HoaDon(String id_HoaDon, String thoiGian_ThanhToan, String ngayThanhToan, Double tongTien, Boolean daThanhToan) {
         this.id_HoaDon = id_HoaDon;
         this.thoiGian_ThanhToan = thoiGian_ThanhToan;
         this.ngayThanhToan = ngayThanhToan;
