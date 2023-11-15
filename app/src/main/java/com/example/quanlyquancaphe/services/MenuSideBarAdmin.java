@@ -37,6 +37,7 @@ public class MenuSideBarAdmin {
                 break;
             case R.id.nav_qlkho:
                 chonManHinh(activity, QuanLyKhoActivity.class);
+                break;
             case R.id.nav_doimatkhau:
                 Intent intent = new Intent(activity, DoiMatKhauActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
