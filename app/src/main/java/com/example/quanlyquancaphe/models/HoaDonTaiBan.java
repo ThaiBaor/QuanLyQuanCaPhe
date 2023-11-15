@@ -1,71 +1,22 @@
 package com.example.quanlyquancaphe.models;
 
-public class HoaDonTaiBan {
-    private String id_HoaDon;
-    private String id_DSMon_TaiBan;
-    private String thoiGian_thanhtoan;
-    private Double tongTien;
-    private Boolean daThanhToan;
+public class HoaDonTaiBan1 extends HoaDon1{
+    private String id_Ban;
 
-    public HoaDonTaiBan(String id_HoaDon, String id_DSMon_TaiBan, String thoiGian_thanhtoan, Double tongTien, Boolean daThanhToan) {
-        this.id_HoaDon = id_HoaDon;
-        this.id_DSMon_TaiBan = id_DSMon_TaiBan;
-        this.thoiGian_thanhtoan = thoiGian_thanhtoan;
-        this.tongTien = tongTien;
-        this.daThanhToan = daThanhToan;
+    public HoaDonTaiBan1() {
+        super();
     }
 
-    public HoaDonTaiBan() {
+    public HoaDonTaiBan1(String id_HoaDon, String thoiGian_ThanhToan, String ngayThanhToan, Double tongTien, Boolean daThanhToan, String id_Ban) {
+        super(id_HoaDon, thoiGian_ThanhToan, ngayThanhToan, tongTien, daThanhToan);
+        this.id_Ban = id_Ban;
     }
 
-    public String getId_HoaDon() {
-        return id_HoaDon;
+    public String getId_Ban() {
+        return id_Ban;
     }
 
-    public void setId_HoaDon(String id_HoaDon) {
-        this.id_HoaDon = id_HoaDon;
-    }
-
-    public String getId_DSMon_TaiBan() {
-        return id_DSMon_TaiBan;
-    }
-
-    public void setId_DSMon_TaiBan(String id_DSMon_TaiBan) {
-        this.id_DSMon_TaiBan = id_DSMon_TaiBan;
-    }
-
-    public String getThoiGian_thanhtoan() {
-        return thoiGian_thanhtoan;
-    }
-
-    public void setThoiGian_thanhtoan(String thoiGian_thanhtoan) {
-        this.thoiGian_thanhtoan = thoiGian_thanhtoan;
-    }
-
-    public Double getTongTien() {
-        return tongTien;
-    }
-
-    public void setTongTien(Double tongTien) {
-        this.tongTien = tongTien;
-    }
-
-    public Boolean getDaThanhToan() {
-        return daThanhToan;
-    }
-
-    public void setDaThanhToan(Boolean daThanhToan) {
-        this.daThanhToan = daThanhToan;
-    }
-
-    @Override
-    public String toString() {
-        return "HoaDonTaiBan{" +
-                "maHoaDon='" + id_HoaDon + '\'' +
-                ", maDSMon_TaiBan='" + id_DSMon_TaiBan + '\'' +
-                ", thoiGian_thanhtoan='" + thoiGian_thanhtoan + '\'' +
-                ", tongTien=" + tongTien +
-                ", daThanhToan=" + daThanhToan +
-                '}';
+    public void setId_Ban(String id_Ban) {
+        this.id_Ban = id_Ban;
     }
 }

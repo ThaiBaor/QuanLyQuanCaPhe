@@ -1,6 +1,7 @@
 package com.example.quanlyquancaphe.activities;
 
 import android.app.AlertDialog;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -38,7 +39,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.InputStream;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PhieuHoaDonActivity extends AppCompatActivity {
     TextView tvMHD, tvGioHD, tvNgayHD, tvBanHD, tvGiaHD, tvKhu, tvNV, tvTongTien;
@@ -48,12 +52,14 @@ public class PhieuHoaDonActivity extends AppCompatActivity {
     Bundle bundle;
     String id_Ban = "";
     ArrayList<ChiTietMon> dataChiTietMon = new ArrayList<>();
+    ArrayList<ChiTietMon> dataGop = new ArrayList<>();
     HoaDon hoaDonTaiBan = new HoaDon();
     Ban ban = new Ban();
     Khu khu = new Khu();
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     PhieuHoaDonAdapter adapter;
+    FirebaseStorage firebaseStorage;
     StorageReference storageReference;
 
     @Override
@@ -64,7 +70,8 @@ public class PhieuHoaDonActivity extends AppCompatActivity {
         setControl();
         loadDataThongTin();
         datachitietmon();
-        //loadQR();
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
         adapter = new PhieuHoaDonAdapter(PhieuHoaDonActivity.this, id_Ban, dataChiTietMon);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setAdapter(adapter);
@@ -122,6 +129,7 @@ public class PhieuHoaDonActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
         if (bundle != null) {
+            NumberFormat nf = NumberFormat.getNumberInstance();
             hoaDonTaiBan.setId_HoaDon(bundle.getString("id_HoaDon"));
             tvMHD.setText(hoaDonTaiBan.getId_HoaDon());
             hoaDonTaiBan.setThoiGian_ThanhToan(bundle.getString("thoiGian_ThanhToan"));
@@ -135,10 +143,11 @@ public class PhieuHoaDonActivity extends AppCompatActivity {
             khu.setTenKhu(bundle.getString("tenKhu"));
             tvKhu.setText(khu.getTenKhu());
             hoaDonTaiBan.setTongTien(bundle.getDouble("tongTien"));
-            tvTongTien.setText(hoaDonTaiBan.getTongTien() + "");
+            tvTongTien.setText(nf.format(hoaDonTaiBan.getTongTien()) + "đ");
         }
         dialog.dismiss();
     }
+
 
     private void datachitietmon() {
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -148,13 +157,52 @@ public class PhieuHoaDonActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 dataChiTietMon.clear();
+//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                    for (DataSnapshot item : dataSnapshot.getChildren()) {
+//                        ChiTietMon chiTietMon = item.getValue(ChiTietMon.class);
+//                        dataChiTietMon.add(chiTietMon);
+//                    }
+//                }
+//                adapter.notifyDataSetChanged();
+
+
+                // nếu trùng id_Mon tăng số lượng món
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     for (DataSnapshot item : dataSnapshot.getChildren()) {
                         ChiTietMon chiTietMon = item.getValue(ChiTietMon.class);
                         dataChiTietMon.add(chiTietMon);
-                        System.out.println(chiTietMon.toString());
                     }
                 }
+                Map<String, Integer> mapGopSL = new HashMap<>();
+                for (ChiTietMon item : dataChiTietMon){
+                    Integer current = mapGopSL.getOrDefault(item.getId_Mon(),0);
+                    mapGopSL.put(item.getId_Mon(),current + item.getSl());
+                }
+                for (Map.Entry<String, Integer> entry : mapGopSL.entrySet()){
+                    ChiTietMon chiTietMon = new ChiTietMon();
+                    chiTietMon.setId_Mon(entry.getKey());
+                    chiTietMon.setSl(entry.getValue());
+                    for (ChiTietMon item : dataChiTietMon){
+                        ChiTietMon chiTietMon1 = new ChiTietMon();
+                        if (item.getId_Mon().equals(entry.getKey())){
+                            chiTietMon1.setId_Mon(item.getId_Mon());
+                            chiTietMon1.setSl(chiTietMon.getSl());
+                            chiTietMon1.setId_Ban(item.getId_Ban());
+                            chiTietMon1.setGia(item.getGia());
+                            chiTietMon1.setTenMon(item.getTenMon());
+                            chiTietMon1.setTenKH(item.getTenKH());
+                            chiTietMon1.setGioGoiMon(item.getGioGoiMon());
+                            chiTietMon1.setHinh(item.getHinh());
+                            chiTietMon1.setNgayGoiMon(item.getNgayGoiMon());
+                            chiTietMon1.setId_TrangThai(item.getId_TrangThai());
+                            chiTietMon1.setGhiChu(item.getGhiChu());
+                            dataGop.add(chiTietMon1);
+                            break;
+                        }
+                    }
+                }
+                dataChiTietMon.clear();
+                dataChiTietMon.addAll(dataGop);
                 adapter.notifyDataSetChanged();
             }
 
@@ -164,5 +212,8 @@ public class PhieuHoaDonActivity extends AppCompatActivity {
             }
         });
     }
-
+    public void cutTextView(){
+        int maxLength = 6;
+        if ()
+    }
 }
