@@ -99,6 +99,14 @@
             android:name=".activities.DSBanDaDatActivity"
             android:exported="true">
         </activity>
+        <!--BÁO CÁO BÁN HÀNG -->
+        <activity
+            android:name=".activities.BaoCaoBanHangActivity"
+            android:exported="true">
+        </activity>        <activity
+        android:name=".activities.ChartActivity"
+        android:exported="true">
+    </activity>
     </application>
 
 </manifest>
