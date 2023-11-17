@@ -94,44 +94,43 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:textAlignment="center"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="30dp"
                     android:text="STT"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:textAlignment="center"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="30dp"
-                    android:paddingLeft="10dp"
                     android:text="Mã"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="30dp"
-                    android:paddingLeft="10dp"
                     android:text="Tên Khu"
                     android:textSize="20sp"
                     android:textStyle="bold" />
             </LinearLayout>
-
             <com.tsuryo.swipeablerv.SwipeableRecyclerView
                 android:id="@+id/recycle"
                 style="@style/quanly_recycleview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </LinearLayout>
-
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_view"
             android:layout_width="wrap_content"
