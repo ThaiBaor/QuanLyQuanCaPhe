@@ -117,7 +117,7 @@
                             android:drawableRight="@drawable/dropdown_icon"
                             android:focusable="false"
                             android:gravity="center"
-                            android:text="Tất cả"></EditText>
+                            android:text="Hôm nay"></EditText>
                     </LinearLayout>
 
                     <TableLayout
