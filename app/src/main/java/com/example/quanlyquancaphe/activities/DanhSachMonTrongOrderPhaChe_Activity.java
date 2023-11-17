@@ -62,7 +62,6 @@ public class DanhSachMonTrongOrderPhaChe_Activity extends AppCompatActivity {
                   for (DataSnapshot snapitems : dataSnapshot.getChildren()){
                       ChiTietMon chiTietMon = snapitems.getValue(ChiTietMon.class);
                       list_CT.add(chiTietMon);
-
                   }
                 }
                 adapter.notifyDataSetChanged();

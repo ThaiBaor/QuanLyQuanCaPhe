@@ -51,9 +51,11 @@ public class DanhSachOrderPhaCheAdapter extends RecyclerView.Adapter<DanhSachOrd
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             String id_Ban = dataSnapshot.child("id_Ban").getValue(String.class);
-                            if (id_Ban.equals(list_DanhSachOder.get(holder.getAdapterPosition()).getId_Ban())) {
-                                String tenBan = dataSnapshot.child("tenBan").getValue(String.class);
-                                holder.tvMaBan.setText("Bàn: " + tenBan.toString());
+                            if (holder.getBindingAdapterPosition()!= -1){
+                                if (id_Ban.equals(list_DanhSachOder.get(holder.getBindingAdapterPosition()).getId_Ban())) {
+                                    String tenBan = dataSnapshot.child("tenBan").getValue(String.class);
+                                    holder.tvMaBan.setText("Bàn: " + tenBan.toString());
+                                }
                             }
                         }
                     }

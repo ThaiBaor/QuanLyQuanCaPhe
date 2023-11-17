@@ -50,7 +50,6 @@ public class DanhSachMonHoanThanh_Activity extends AppCompatActivity implements 
         toolBar.setNavigationIcon(R.drawable.menu_icon);
         setdrawer();
         getKey();
-        notification();
     }
     private void getData(List<String> CT) {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -102,30 +101,6 @@ public class DanhSachMonHoanThanh_Activity extends AppCompatActivity implements 
             }
         });
     }
-    private void notification() {
-       DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("ThongBao");
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (first) {
-                    first = false;
-                    return;
-                }
-                if (snapshot.child("id").getValue(Integer.class) == null){
-                    return;
-                }
-                if (snapshot.child("id").getValue(Integer.class) == 2) {
-                    System.out.println(snapshot.child("contentText"));
-                    NotificationUtility.pushNotification(DanhSachMonHoanThanh_Activity.this, snapshot.child("contentText").getValue(String.class));
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-    }
-
     private void setControl() {
         toolBar = findViewById(R.id.toolBar);
         recyclerView = findViewById(R.id.recycleMonHoanThanh);
