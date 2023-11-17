@@ -26,8 +26,7 @@
                 android:textSize="20dp"
                 android:layout_weight="6"
                 android:layout_marginLeft="5dp"
-                android:textColor="@color/blue"
-                android:textStyle="bold" />
+                android:textColor="@color/blue" />
             <TextView
                 android:id="@+id/tvGioHD"
                 android:layout_width="0dp"
@@ -37,7 +36,6 @@
                 android:layout_weight="3"
                 android:textAlignment="center"
                 android:textColor="@color/blue"
-                android:textStyle="bold"
                 />
             <TextView
                 android:id="@+id/tvNgayHD"
@@ -49,7 +47,6 @@
                 android:layout_weight="4"
                 android:layout_marginRight="5dp"
                 android:textColor="@color/blue"
-                android:textStyle="bold"
                 />
         </LinearLayout>
         <LinearLayout
@@ -64,7 +61,6 @@
                 android:layout_weight="3"
                 android:textAlignment="textEnd"
                 android:textColor="@color/blue"
-                android:textStyle="bold"
                 />
             <TextView
                 android:id="@+id/tvBanHD"
@@ -75,7 +71,6 @@
                 android:layout_weight="3"
                 android:textAlignment="textStart"
                 android:textColor="@color/blue"
-                android:textStyle="bold"
                 />
             <TextView
                 android:id="@+id/tvGiaHD"
