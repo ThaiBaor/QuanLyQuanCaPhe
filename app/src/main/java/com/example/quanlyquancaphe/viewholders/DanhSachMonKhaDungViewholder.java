@@ -20,8 +20,8 @@ public class DanhSachMonKhaDungViewholder extends RecyclerView.ViewHolder {
         super(itemView);
         tenMon = itemView.findViewById(R.id.tvTenMonKhaDung);
         moTa = itemView.findViewById(R.id.tvMoTaKhaDung);
-        donGia = itemView.findViewById(R.id.tvGiamGia);
-        giamGia = itemView.findViewById(R.id.tvDonGiaKhaDung);
+        donGia = itemView.findViewById(R.id.tvGiamgiaKhaDung);
+        giamGia = itemView.findViewById(R.id.tvGiamgiaKhaDung);
         hinh = itemView.findViewById(R.id.ivHinhKhaDung);
         hetMon = itemView.findViewById(R.id.swHetMonKhaDung);
     }
