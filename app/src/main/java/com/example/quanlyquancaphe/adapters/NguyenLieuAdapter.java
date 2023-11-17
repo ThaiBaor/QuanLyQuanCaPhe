@@ -14,6 +14,7 @@ import com.example.quanlyquancaphe.models.NguyenLieu;
 import com.example.quanlyquancaphe.viewholders.NguyenLieuHolder;
 import com.tsuryo.swipeablerv.SwipeableRecyclerView;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,10 +38,11 @@ public class NguyenLieuAdapter extends RecyclerView.Adapter<NguyenLieuHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull NguyenLieuHolder holder, int position) {
+        NumberFormat nf = NumberFormat.getNumberInstance();
         NguyenLieu nl = data.get(position);
         holder.nguyenlieu.setText(nl.getTenNguyenLieu());
-        holder.nhap.setText(nl.getSoLuongNhap().toString());
-        holder.ton.setText(nl.getTonKho().toString());
+        holder.nhap.setText(nf.format(nl.getSoLuongNhap()));
+        holder.ton.setText(nf.format(nl.getTonKho()));
         //SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         holder.ngaynhap.setText(nl.getNgayNhap());
         holder.stt.setText(position + 1 + "");
