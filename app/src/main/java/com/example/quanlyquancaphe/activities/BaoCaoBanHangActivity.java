@@ -1,8 +1,11 @@
 package com.example.quanlyquancaphe.activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -12,6 +15,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -23,6 +27,8 @@ import android.widget.Toast;
 
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.models.ChiTietMon;
+import com.example.quanlyquancaphe.services.MenuSideBarAdmin;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,7 +50,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class BaoCaoBanHangActivity extends AppCompatActivity {
+public class BaoCaoBanHangActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    ActionBarDrawerToggle actionBarDrawerToggle;
     Toolbar toolbar;
     EditText edtNgay;
     TextView tvDoanhSo, tvDoanhThu;
@@ -59,10 +68,11 @@ public class BaoCaoBanHangActivity extends AppCompatActivity {
     ArrayList<String> arrTenMon = new ArrayList<>();
     ArrayList<Double> arrDoanhThu = new ArrayList<>();
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manhinh_baocaobanhang);
         setControl();
+        setdrawer();
         setEvent();
         getAllChiTietMon();
     }
@@ -70,11 +80,8 @@ public class BaoCaoBanHangActivity extends AppCompatActivity {
     private void setEvent() {
         //Set title toolbar
         toolbar.setTitle("Báo cáo bán hàng");
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
+        toolbar.setNavigationIcon(R.drawable.menu_icon);
+
         btnChart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -260,6 +267,26 @@ public class BaoCaoBanHangActivity extends AppCompatActivity {
             }
         }
         return hashMap;
+    }
+
+    private void setdrawer(){
+        drawerLayout = findViewById(R.id.nav_drawer_chucnang_admin);
+        navigationView = findViewById(R.id.nav_view);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,R.string.open_nav,R.string.close_nav);
+        //setSupportActionBar(toolbar);
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_thongke);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        MenuSideBarAdmin menuSideBarAdmin = new MenuSideBarAdmin();
+        menuSideBarAdmin.chonManHinh(item.getItemId(), BaoCaoBanHangActivity.this);
+        navigationView.setCheckedItem(item.getItemId());
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     private void setControl() {
