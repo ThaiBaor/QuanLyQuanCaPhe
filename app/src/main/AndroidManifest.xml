@@ -29,14 +29,17 @@
         <!-- NGUYEN LIEU -->
         <activity
             android:name=".activities.QuanLyKhoActivity"
-            android:exported="true" />
+            android:exported="true">
+
+        </activity>
         <activity
             android:name=".activities.ThemNguyenLieuActivity"
             android:exported="false" />
         <!-- KHU -->
         <activity
             android:name=".activities.QuanLyKhuActivity"
-            android:exported="false" />
+            android:exported="true" >
+        </activity>
         <!-- BAN -->
         <activity
             android:name=".activities.QuanLyBanActivity"
@@ -89,7 +92,8 @@
             android:exported="true"></activity>
         <activity
             android:name=".activities.GioHangActivity"
-            android:exported="true"></activity>
+            android:exported="true">
+        </activity>
         <activity
             android:name=".activities.DanhSachMonPhucVuActivity"
             android:exported="true"></activity>

@@ -98,8 +98,9 @@ public class HoaDonTaiBanActivity extends AppCompatActivity  {
                 data.clear();
                 for (DataSnapshot item : snapshot.getChildren()){
                     HoaDonTaiBan hoaDonTaiBan = item.getValue(HoaDonTaiBan.class);
-                    if (hoaDonTaiBan.getDaThanhToan() == false)
-                    data.add(hoaDonTaiBan);
+                    if (hoaDonTaiBan.getDaThanhToan() == false){
+                        data.add(hoaDonTaiBan);
+                    }
                 }
                 adapter.notifyDataSetChanged();
             }
