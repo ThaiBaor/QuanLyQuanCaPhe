@@ -86,7 +86,7 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
                     Boolean tt = true;
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference ref = database.getReference("HoaDon").child("TaiBan");
-                    taoChiTietMonQK();
+                    taoChiTietMonQK(hoaDonTaiBan.getId_HoaDon());
                     ref.child(hoaDonTaiBan.getId_HoaDon()).child("daThanhToan").setValue(tt).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -207,7 +207,7 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
             }
         });
     }
-    public void taoChiTietMonQK(){
-        ChiTietMonQKUtility.getHdqkInstance().taoChiTietMonQKTaiBan(PhieuHoaDonTaiBanActivity.this, id_Ban);
+    public void taoChiTietMonQK(String id_HoaDon){
+        ChiTietMonQKUtility.getHdqkInstance().taoChiTietMonQKTaiBan(PhieuHoaDonTaiBanActivity.this, id_Ban, id_HoaDon);
     }
 }
