@@ -14,6 +14,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.quanlyquancaphe.R;
+import com.example.quanlyquancaphe.models.ChiTietMon;
 import com.example.quanlyquancaphe.models.NguyenLieu;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,15 +23,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class DangNhapActivity extends AppCompatActivity {
     EditText edtTenDangNhap, edtMatKhau;
     Button btnDangNhap;
-
-
+    public static String tenDangNhap = "";
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     ValueEventListener valueEventListener;
-    String tenDangNhap = "", matKhauNhap = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,17 +63,20 @@ public class DangNhapActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.exists() == false){
                     Toast.makeText(DangNhapActivity.this, "Tài khoản không tồn tài trên hệ thống. Vui lòng kiểm tra lại.", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
                 }
                 else {
                     String taiKhoanData = snapshot.child("maNhanVien").getValue(String.class);
                     String matKhauData = snapshot.child("matKhau").getValue(String.class);
                     String viTri = snapshot.child("viTri").getValue(String.class);
                     if(kiemTraDangNhap(taiKhoanData, matKhauData)){
+                        tenDangNhap = taiKhoanData;
                         dangNhapTheoRole(viTri);
                         Toast.makeText(DangNhapActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                     }
                     else {
                         Toast.makeText(DangNhapActivity.this, "Mật khẩu sai. Vui lòng kiểm tra lại", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
                     }
                     dialog.dismiss();
                 }
@@ -80,7 +84,7 @@ public class DangNhapActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError error) {
                 dialog.dismiss();
-                Toast.makeText(DangNhapActivity.this, "apvbapva", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DangNhapActivity.this, "Lỗi!!! Vui lòng kiểm tra kết nối", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -91,8 +95,10 @@ public class DangNhapActivity extends AppCompatActivity {
                 chuyenManHinhTheoRole(DangNhapActivity.this, DanhSachBanActivity.class);
                 break;
             case "Pha chế":
+                chuyenManHinhTheoRole(DangNhapActivity.this, DanhSachMonKhaDungActivity.class);
                 break;
             case "Thu ngân":
+                chuyenManHinhTheoRole(DangNhapActivity.this, ThongKeHoaDonActivity.class);
                 break;
             case "Quản lý":
                 chuyenManHinhTheoRole(DangNhapActivity.this, QuanLyMonActivity.class);

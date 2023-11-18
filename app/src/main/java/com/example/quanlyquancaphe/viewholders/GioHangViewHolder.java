@@ -25,7 +25,7 @@ public class GioHangViewHolder extends RecyclerView.ViewHolder {
         setControl();
         btnTang.setOnClickListener(view -> {
             if (buttonClickListener != null) {
-                int position = getAdapterPosition();
+                int position = getBindingAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     buttonClickListener.onPlusButtonClick(position, edtSL, tvGia);
                 }
@@ -33,7 +33,7 @@ public class GioHangViewHolder extends RecyclerView.ViewHolder {
         });
         btnGiam.setOnClickListener(view -> {
             if (buttonClickListener != null) {
-                int position = getAdapterPosition();
+                int position = getBindingAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     buttonClickListener.onMinusButtonClick(position, edtSL, tvGia);
                 }
@@ -41,7 +41,7 @@ public class GioHangViewHolder extends RecyclerView.ViewHolder {
         });
         btnXoa.setOnClickListener(view -> {
             if (buttonClickListener != null) {
-                int position = getAdapterPosition();
+                int position = getBindingAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     buttonClickListener.onDeleteButtonClick(position);
                 }
@@ -56,7 +56,7 @@ public class GioHangViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (buttonClickListener != null) {
-                    int position = getAdapterPosition();
+                    int position = getBindingAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         buttonClickListener.onNoteChange(position, edtGhiChu.getText().toString());
                     }
@@ -77,7 +77,7 @@ public class GioHangViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (buttonClickListener != null) {
-                    int position = getAdapterPosition();
+                    int position = getBindingAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         if (!edtSL.getText().toString().equals("")) {
                             buttonClickListener.onQtyChange(position, Integer.parseInt(edtSL.getText().toString()), tvGia);

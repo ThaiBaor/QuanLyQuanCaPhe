@@ -2,7 +2,9 @@ package com.example.quanlyquancaphe.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -27,6 +29,7 @@ import java.util.regex.Pattern;
 public class DoiMatKhauActivity extends AppCompatActivity {
     EditText edtTenDangNhap, edtMatKhauHienTai, edtMatKhauMoi, edtXacNhanMatKhauMoi;
     Button btnXacNhan;
+    Toolbar toolBar;
     boolean xacNhan = true;
     boolean kiemTraTaiKhoan = false;
 
@@ -39,6 +42,9 @@ public class DoiMatKhauActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+
+        edtTenDangNhap.setText(DangNhapActivity.tenDangNhap);
+        edtTenDangNhap.setFocusable(false);
         edtTenDangNhap.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -117,6 +123,14 @@ public class DoiMatKhauActivity extends AppCompatActivity {
                 }
             }
         });
+
+        toolBar.setTitle("Đổi mật khẩu");
+        toolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     private void kiemTraDuLieuNhap() {
@@ -132,7 +146,8 @@ public class DoiMatKhauActivity extends AppCompatActivity {
         edtMatKhauMoi = findViewById(R.id.edtMatKhauMoi);
         edtXacNhanMatKhauMoi = findViewById(R.id.edtXacNhanMatKhauMoi);
         btnXacNhan = findViewById(R.id.btnXacNhan);
-        
+        toolBar = findViewById(R.id.toolBar);
+
     }
 
     private void doiMatKhau(String tenDangNhap, String matKhau){
@@ -143,6 +158,11 @@ public class DoiMatKhauActivity extends AppCompatActivity {
                 ref.child(tenDangNhap).child("matKhau").setValue(matKhau).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        finishAffinity();
+                        Intent intent = new Intent(DoiMatKhauActivity.this, DangNhapActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
                         Toast.makeText(DoiMatKhauActivity.this, "Thành công", Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -269,6 +289,14 @@ public class DoiMatKhauActivity extends AppCompatActivity {
         else {
             xacNhan = true;
         }
+        if (edtMatKhauMoi.getText().toString().equals(edtMatKhauHienTai.getText().toString())){
+            edtMatKhauMoi.setError("Mật khẩu mới giống với mật khẩu cũ");
+            xacNhan = false;
+        }
+        else {
+            xacNhan = true;
+        }
+
     }
 
     private void kiemTraEdtXacNhanMatKhauMoi(){
@@ -288,6 +316,13 @@ public class DoiMatKhauActivity extends AppCompatActivity {
         }
         if (edtXacNhanMatKhauMoi.getText().toString().length() < 6){
             edtXacNhanMatKhauMoi.setError("Chỉ cho phép nhập tối thiểu 6 kí tự");
+            xacNhan = false;
+        }
+        else {
+            xacNhan = true;
+        }
+        if (edtMatKhauMoi.getText().toString().equals(edtMatKhauHienTai.getText().toString())){
+            edtMatKhauMoi.setError("Mật khẩu mới giống với mật khẩu cũ");
             xacNhan = false;
         }
         else {

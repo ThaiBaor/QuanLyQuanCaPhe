@@ -49,46 +49,48 @@ public class DanhSachMonKhaDungAdapter extends RecyclerView.Adapter<DanhSachMonK
         holder.donGia.setTextSize(17);
         holder.donGia.setTextColor(Color.rgb(0, 0, 255));
         holder.donGia.setText(nf.format(mon.getDonGia()) + "đ");
-        if (mon.getHetMon() == true){
-            holder.hetMon.setChecked(true);
+        if (mon.getHetMon()){
+            holder.hetMon.setChecked(false);
         }
         else {
-            holder.hetMon.setChecked(false);
+            holder.hetMon.setChecked(true);
         }
         holder.hetMon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mon.getHetMon() == true){
-                    Boolean setHetMon = false;
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference ref = database.getReference("Mon");
-                    ref.child(data.get(position).getId_Mon()).child("hetMon").setValue(setHetMon).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
+                Mon item = data.get(position);
+                if(item != null){
+                    if(holder.hetMon.isChecked()){
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference ref = database.getReference("Mon");
+                        ref.child(data.get(position).getId_Mon()).child("hetMon").setValue(false).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
 
-                        }
-                    });
-                    holder.hetMon.setChecked(false);
-                }
-                else {
-                    Boolean setHetMon = true;
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference ref = database.getReference("Mon");
-                    ref.child(data.get(position).getId_Mon()).child("hetMon").setValue(setHetMon).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            holder.hetMon.setChecked(true);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(context, "Lỗi. Vui lòng kiểm tra lại kết nối", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                            }
+                        });
+                        holder.hetMon.setChecked(false);
+                    }
+                    else {
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference ref = database.getReference("Mon");
+                        ref.child(data.get(position).getId_Mon()).child("hetMon").setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(context, "Lỗi. Vui lòng kiểm tra lại kết nối", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        holder.hetMon.setChecked(true);
+                    }
                 }
             }
         });

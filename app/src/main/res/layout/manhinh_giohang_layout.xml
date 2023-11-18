@@ -18,6 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
+        android:background="@drawable/quanly_button_background"
         android:layout_margin="10dp"
         android:text="Xác nhận" />
 </LinearLayout>

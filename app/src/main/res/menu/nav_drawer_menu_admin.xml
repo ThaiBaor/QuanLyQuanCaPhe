@@ -30,6 +30,10 @@
             android:icon="@drawable/qlkho_icon"
             android:title="Quản lý kho"></item>
         <item
+            android:id="@+id/nav_doimatkhau"
+            android:icon="@drawable/lock_icon"
+            android:title="Đổi mật khẩu"></item>
+        <item
             android:id="@+id/nav_dangxuat"
             android:icon="@drawable/dangxuat_icon"
             android:title="Đăng xuất"></item>

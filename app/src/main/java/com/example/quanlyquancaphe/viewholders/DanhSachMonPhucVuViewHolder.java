@@ -23,7 +23,7 @@ public class DanhSachMonPhucVuViewHolder extends RecyclerView.ViewHolder {
         setControl();
         btnTang.setOnClickListener(view -> {
             if (buttonClickListener != null) {
-                int position = getAdapterPosition();
+                int position = getBindingAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     buttonClickListener.onPlusButtonClick(position, edtSL);
                 }
@@ -31,7 +31,7 @@ public class DanhSachMonPhucVuViewHolder extends RecyclerView.ViewHolder {
         });
         btnGiam.setOnClickListener(view -> {
             if (buttonClickListener != null) {
-                int position = getAdapterPosition();
+                int position = getBindingAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     buttonClickListener.onMinusButtonClick(position, edtSL);
                 }
@@ -39,7 +39,7 @@ public class DanhSachMonPhucVuViewHolder extends RecyclerView.ViewHolder {
         });
         btnAdd.setOnClickListener(view -> {
             if (buttonClickListener != null) {
-                int position = getAdapterPosition();
+                int position = getBindingAdapterPosition();
                 Integer sl = Integer.parseInt(edtSL.getText().toString());
                 if (position != RecyclerView.NO_POSITION) {
                     buttonClickListener.onAddButtonClick(position, sl);

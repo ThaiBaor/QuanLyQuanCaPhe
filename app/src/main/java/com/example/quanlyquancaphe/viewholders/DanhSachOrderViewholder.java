@@ -10,11 +10,10 @@ import com.example.quanlyquancaphe.R;
 
 public class DanhSachOrderViewholder extends RecyclerView.ViewHolder {
 
-   public TextView tvMaHoaDon ,tvBan ,tvThoiGian;
+   public TextView tvBan ,tvThoiGian;
 
     public DanhSachOrderViewholder(@NonNull View itemView) {
         super(itemView);
-        tvMaHoaDon = itemView.findViewById(R.id.tvItemsMaHoaDon);
         tvBan = itemView.findViewById(R.id.tvItemsBan);
         tvThoiGian = itemView.findViewById(R.id.tvItemsThoiGian);
     }

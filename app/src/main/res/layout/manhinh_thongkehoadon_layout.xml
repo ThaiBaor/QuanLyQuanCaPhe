@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:openDrawer="start"
     android:fitsSystemWindows="true"
+    android:background="@drawable/background"
     tools:context=".activities.ThongKeHoaDonActivity"
     android:orientation="vertical">
     <include layout="@layout/toolbar"/>
@@ -22,40 +23,64 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="8"
-                android:layout_marginBottom="30dp">
+                android:gravity="center"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bắt đầu: "
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="#000"
+                    android:textSize="20dp"></TextView>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tvGioThuNhat"
-                    android:text="10:30"
+                    android:text="0:0"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:textColor="#000"
                     android:textSize="30dp"></TextView>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="|"
-                    android:layout_weight="2"
-                    android:textSize="30dp"
-                    android:gravity="center"></TextView>
+                    android:text="Kết thúc: "
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="#000"
+                    android:textSize="20dp"></TextView>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tvGioThuHai"
-                    android:text="10:30"
+                    android:text="23:59"
                     android:layout_weight="1"
+                    android:textColor="#000"
                     android:textSize="30dp"
                     android:gravity="center"></TextView>
-
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ngày: "
+                    android:gravity="center"
+                    android:textColor="#000"
+                    android:textSize="20dp"></TextView>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tvNgayThongKe"
                     android:text="1-1-2023"
-                    android:layout_weight="4"
                     android:textSize="30dp"
-                    android:layout_marginLeft="10dp"
-                    android:drawableLeft="@drawable/lich_icon"></TextView>
+                    android:textColor="#000"
+                    android:layout_marginLeft="10dp"></TextView>
             </LinearLayout>
 
             <LinearLayout
@@ -73,7 +98,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginBottom="20dp"
                     android:background="@color/white"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp">
@@ -97,7 +121,7 @@
                             android:gravity="end"
                             android:textColor="#000"
                             android:paddingEnd="20dp"
-                            android:text="5"></TextView>
+                            android:text="Đang tải"></TextView>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -119,7 +143,7 @@
                             android:gravity="end"
                             android:textColor="#000"
                             android:paddingEnd="20dp"
-                            android:text="1000"></TextView>
+                            android:text="Đang tải"></TextView>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
