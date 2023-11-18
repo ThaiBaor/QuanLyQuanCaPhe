@@ -243,6 +243,7 @@ public class QuanLyNhanVienActivity extends AppCompatActivity implements Navigat
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         MenuSideBarAdmin menuSideBarAdmin = new MenuSideBarAdmin();
         menuSideBarAdmin.chonManHinh(item.getItemId(), QuanLyNhanVienActivity.this);
+        navigationView.setCheckedItem(item.getItemId());
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }

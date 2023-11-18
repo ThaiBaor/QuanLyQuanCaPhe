@@ -23,6 +23,7 @@ import com.example.quanlyquancaphe.adapters.NguyenLieuAdapter;
 import com.example.quanlyquancaphe.models.Mon;
 import com.example.quanlyquancaphe.models.NguyenLieu;
 import com.example.quanlyquancaphe.services.MenuSideBarAdmin;
+import com.example.quanlyquancaphe.services.MenuSideBarPhaChe;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -55,12 +56,13 @@ public class DanhSachMonKhaDungActivity extends AppCompatActivity implements Nav
         setdrawer();
         toolBar.setNavigationIcon(R.drawable.menu_icon);
         toolBar.setTitle("Danh sách món khả dụng");
-        danhSachMonKhaDungAdapter = new DanhSachMonKhaDungAdapter(this, data);
-        recyclerView.setAdapter(danhSachMonKhaDungAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
     }
 
     private void setEvent() {
+        danhSachMonKhaDungAdapter = new DanhSachMonKhaDungAdapter(DanhSachMonKhaDungActivity.this, data);
+        recyclerView.setAdapter(danhSachMonKhaDungAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(DanhSachMonKhaDungActivity.this));
         edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -88,14 +90,13 @@ public class DanhSachMonKhaDungActivity extends AppCompatActivity implements Nav
         builder.setCancelable(false);
         AlertDialog dialog = builder.create();
         dialog.show();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference().child("Mon");
-        valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Mon");
+        ValueEventListener valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 data.clear();
                 for (DataSnapshot item: snapshot.getChildren()){
-
                     Mon mon = item.getValue(Mon.class);
                     data.add(mon);
                 }
@@ -118,7 +119,7 @@ public class DanhSachMonKhaDungActivity extends AppCompatActivity implements Nav
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolBar,R.string.open_nav,R.string.close_nav);
         //setSupportActionBar(toolbar);
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_qlkho);
+        navigationView.setCheckedItem(R.id.nav_danhsachmonkhadung);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
     }
@@ -140,8 +141,8 @@ public class DanhSachMonKhaDungActivity extends AppCompatActivity implements Nav
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        MenuSideBarAdmin menuSideBarAdmin = new MenuSideBarAdmin();
-        menuSideBarAdmin.chonManHinh(item.getItemId(), DanhSachMonKhaDungActivity.this);
+        MenuSideBarPhaChe menuSideBarPhaChe = new MenuSideBarPhaChe();
+        menuSideBarPhaChe.chonManHinh(item.getItemId(), DanhSachMonKhaDungActivity.this);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }

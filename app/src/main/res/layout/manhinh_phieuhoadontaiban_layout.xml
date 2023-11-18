@@ -54,8 +54,8 @@
                     android:layout_height="wrap_content"
                     android:paddingRight="8dp"
                     android:text="Mã hóa đơn:"
-                    android:textAlignment="textEnd"
-                    android:textSize="18dp" />
+                    android:textAlignment="center"
+                    android:textSize="16dp" />
 
                 <TextView
                     android:id="@+id/tvMa"
@@ -63,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
                     android:text="09123"
-                    android:textSize="18dp" />
+                    android:textSize="16dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -71,7 +71,7 @@
                     android:layout_weight="1"
                     android:text="Bàn: "
                     android:textAlignment="textEnd"
-                    android:textSize="18dp" />
+                    android:textSize="16dp" />
 
                 <TextView
                     android:id="@+id/tvBan"
@@ -79,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="5"
-                    android:textSize="18dp" />
+                    android:textSize="16dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -92,15 +92,15 @@
                     android:layout_height="wrap_content"
                     android:paddingRight="8dp"
                     android:text="Tên phục vụ:"
-                    android:textAlignment="textEnd"
-                    android:textSize="18dp" />
+                    android:textAlignment="center"
+                    android:textSize="16dp" />
 
                 <TextView
                     android:id="@+id/tvTenNV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Nguyễn Văn Tèo"
-                    android:textSize="18dp" />
+                    android:textSize="16dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -111,17 +111,17 @@
                 <TextView
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
-                    android:paddingRight="8dp"
                     android:text="Ngày:"
                     android:textAlignment="center"
-                    android:textSize="18dp" />
+                    android:textSize="16dp" />
 
                 <TextView
                     android:id="@+id/tvNgay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="30/10/2023"
-                    android:textSize="18dp" />
+                    android:textSize="16dp"
+                    android:layout_weight="4"/>
 
                 <TextView
                     android:layout_width="70dp"
@@ -129,31 +129,31 @@
                     android:paddingRight="8dp"
                     android:text="Giờ:"
                     android:textAlignment="textEnd"
-                    android:textSize="18dp" />
+                    android:textSize="16dp" />
 
                 <TextView
                     android:id="@+id/tvGio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="10:00"
-                    android:textSize="18dp" />
+                    android:textSize="16dp"
+                    android:layout_weight="4"/>
 
                 <TextView
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5"
                     android:paddingRight="8dp"
                     android:text="Khu:"
                     android:textAlignment="textEnd"
-                    android:textSize="18dp" />
+                    android:textSize="16dp" />
 
                 <TextView
                     android:id="@+id/tvKhu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5"
+                    android:layout_weight="3"
                     android:text="Khu A"
-                    android:textSize="18dp" />
+                    android:textSize="16dp" />
             </LinearLayout>
 
             <LinearLayout

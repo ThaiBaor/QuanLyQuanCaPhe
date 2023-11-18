@@ -7,7 +7,6 @@ public class ChiTietMon {
 
     public ChiTietMon() {
     }
-
     public ChiTietMon(String id_Mon, String id_Ban, String tenKH, String ngayGoiMon, String gioGoiMon, String ghiChu, String hinh, String tenMon, Integer id_TrangThai, Integer sl, Double gia) {
         this.id_Mon = id_Mon;
         this.id_Ban = id_Ban;

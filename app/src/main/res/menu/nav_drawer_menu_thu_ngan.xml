@@ -8,7 +8,7 @@
         <item
             android:id="@+id/nav_thongkehoadon"
             android:icon="@drawable/thongkehoadon_icon"
-            android:title="Thống kê hóa đơn"></item>
+            android:title="Lịch sử hóa đơn"></item>
         <item
             android:id="@+id/nav_thanhtoantaiban"
             android:icon="@drawable/qlban_icon"

@@ -72,10 +72,10 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
         setControl();
         setEvent();
         setdrawer();
+        initDataBan();
 
-
-        getDataHoaDon();
-        filterHoaDon();
+        //getDataHoaDon();
+        //filterHoaDon();
     }
 
     private void setEvent() {
@@ -84,7 +84,6 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
             @Override
             public void onClick(View view) {
                 ChonGioThuNhat();
-
             }
         });
 
@@ -215,17 +214,17 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
     }
 
     private void getDataHoaDon(){
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(ThongKeHoaDonActivity.this).setTitle("").setMessage("Đang tải dữ liệu...");
-        builder.setCancelable(false);
-        AlertDialog dialog = builder.create();
-        dialog.show();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference().child("HoaDon");
-        valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(ThongKeHoaDonActivity.this).setTitle("").setMessage("Đang tải dữ liệu...");
+//        builder.setCancelable(false);
+//        AlertDialog dialog = builder.create();
+//        dialog.show();
+        FirebaseDatabase firebaseDatabaseTaiBan = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReferenceTaiBan = firebaseDatabaseTaiBan.getReference().child("HoaDon").child("TaiBan");
+        ValueEventListener valueEventListenerTaiBan = databaseReferenceTaiBan.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 data.clear();
+                xoaData();
                 for (DataSnapshot item: snapshot.getChildren()){
                     String id_MaHoaDon = item.child("id_HoaDon").getValue().toString();
                     String id_Ban = item.child("id_Ban").getValue().toString();
@@ -234,26 +233,77 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                     Double tongTien = Double.parseDouble(item.child("tongTien").getValue().toString());
                     Boolean daThanhToan = Boolean.parseBoolean(item.child("daThanhToan").getValue().toString());
                     String tenKhachHang = "Không có";
+                    for (HoaDonKhachHang hoaDonKhachHang : hoaDonKhachHangs){
+                        if(id_MaHoaDon.equals(hoaDonKhachHang.getId_HoaDon())){
+                            tenKhachHang = hoaDonKhachHang.getTenKH();
+                        }
+                    }
                     //Toast.makeText(ThongKeHoaDonActivity.this,ngayThanhToan + " " + thoiGian_thanhtoan, Toast.LENGTH_SHORT).show();
                     thongKeHoaDon = new ThongKeHoaDon(id_MaHoaDon, id_Ban,ngayThanhToan, thoiGian_thanhtoan, tongTien, daThanhToan, tenKhachHang);
                     data.add(thongKeHoaDon);
                 }
-                initDataBan();
+                getDataHoaDonMangVe();
                 thongKeHoaDonAdapter.notifyDataSetChanged();
-                dialog.dismiss();
-                Toast.makeText(ThongKeHoaDonActivity.this, hoaDonKhachHangs.size() + "", Toast.LENGTH_SHORT).show();
+                filterHoaDon();
+//                dialog.dismiss();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                dialog.dismiss();
+//                dialog.dismiss();
                 Toast.makeText(ThongKeHoaDonActivity.this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    private void getDataHoaDonMangVe(){
+//        AlertDialog.Builder builder = new AlertDialog.Builder(ThongKeHoaDonActivity.this).setTitle("").setMessage("Đang tải dữ liệu...");
+//        builder.setCancelable(false);
+//        AlertDialog dialog = builder.create();
+//        dialog.show();
+        FirebaseDatabase firebaseDatabaseMangVe = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReferenceMangVe = firebaseDatabaseMangVe.getReference().child("HoaDon").child("MangVe");
+        databaseReferenceMangVe.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                xoaData();
+                for (DataSnapshot item: snapshot.getChildren()){
+                    String id_MaHoaDon = item.child("id_HoaDon").getValue().toString();
+                    String id_Ban = "Mang về";
+                    String thoiGian_thanhtoan = item.child("thoiGian_ThanhToan").getValue().toString();
+                    String ngayThanhToan = item.child("ngayThanhToan").getValue().toString();
+                    Double tongTien = Double.parseDouble(item.child("tongTien").getValue().toString());
+                    Boolean daThanhToan = Boolean.parseBoolean(item.child("daThanhToan").getValue().toString());
+                    String tenKhachHang = item.child("tenKH").getValue().toString();
+                    //Toast.makeText(ThongKeHoaDonActivity.this,ngayThanhToan + " " + thoiGian_thanhtoan, Toast.LENGTH_SHORT).show();
+                    thongKeHoaDon = new ThongKeHoaDon(id_MaHoaDon, id_Ban,ngayThanhToan, thoiGian_thanhtoan, tongTien, daThanhToan, tenKhachHang);
+                    data.add(thongKeHoaDon);
+                }
+                thongKeHoaDonAdapter.notifyDataSetChanged();
+                filterHoaDon();
+                //dialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                //dialog.dismiss();
+                Toast.makeText(ThongKeHoaDonActivity.this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void xoaData(){
+        if (data.isEmpty() == false){
+            for (int i = 0; i < data.size(); i++){
+                if (data.get(i).getId_Ban().equals("Mang về")){
+                    data.remove(i);
+                    i = 0;
+                }
+            }
+        }
+    }
+
     private void getDataIdHoaDon(ArrayList arrIdHoaDonGet) {
-        Toast.makeText(this, dataBan.size() + "hd", Toast.LENGTH_SHORT).show();
         for (int i = 0; i < dataBan.size(); i++) {
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             DatabaseReference databaseReference = firebaseDatabase.getReference().child("ChiTietMon").child(dataBan.get(i).getId_Ban()).child("QK");
@@ -263,7 +313,6 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                     for (DataSnapshot item: snapshot.getChildren()){
                         arrIdHoaDonGet.add(item.getKey());
                     }
-                    getIdThoiGianGoiMon(arrIdThoiGianGoiMon);
                 }
 
                 @Override
@@ -272,6 +321,8 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                 }
             });
         }
+        getIdThoiGianGoiMon(arrIdThoiGianGoiMon);
+
     }
 
     private void initDataBan() {
@@ -293,6 +344,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
 
             }
         });
+
     }
     private void getIdThoiGianGoiMon(ArrayList arrIdThoiGianGoiMonGet){
         for (int i = 0; i < dataBan.size(); i++) {
@@ -307,7 +359,6 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                                 arrIdThoiGianGoiMonGet.add(item.getKey());
                             }
                         }
-                        setArrHoaDonKH(hoaDonKhachHangs);
                     }
 
                     @Override
@@ -317,12 +368,14 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                 });
             }
         }
+        setArrHoaDonKH(hoaDonKhachHangs);
     }
 
-    private void setArrHoaDonKH(ArrayList arrHoaDonKHGet){
+    private void setArrHoaDonKH(ArrayList<HoaDonKhachHang> arrHoaDonKHGet){
         for (int i = 0; i < dataBan.size(); i++) {
             for (int j = 0; j < arrIdHoaDon.size(); j ++){
                 String idHD = arrIdHoaDon.get(j).toString();
+                final String[] add = {"0"};
                 for (int k = 0;k < arrIdThoiGianGoiMon.size(); k++){
                     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                     DatabaseReference databaseReference = firebaseDatabase.getReference().child("ChiTietMon").child(dataBan.get(i).getId_Ban()).child("QK").child(arrIdHoaDon.get(j).toString()).child(arrIdThoiGianGoiMon.get(k).toString());
@@ -331,10 +384,12 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             for (DataSnapshot item : snapshot.getChildren()){
                                     HoaDonKhachHang hoaDonKhachHang = new HoaDonKhachHang(idHD, item.child("tenKH").getValue().toString());
-                                    if(arrHoaDonKHGet == null){
+                                    if(add[0].equals("0") == true){
                                         arrHoaDonKHGet.add(hoaDonKhachHang);
+                                        add[0] = "1";
                                     }
                             }
+
                         }
 
                         @Override
@@ -345,11 +400,13 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                 }
             }
         }
+        getDataHoaDon();
+        filterHoaDon();
     }
 
     private void setdrawer(){
         toolBar = findViewById(R.id.toolBar);
-        toolBar.setTitle("Thống kê hóa đơn");
+        toolBar.setTitle("Lịch sử hóa đơn");
         drawerLayout = findViewById(R.id.nav_drawer_chucnang_thungan);
         navigationView = findViewById(R.id.nav_view);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolBar,R.string.open_nav,R.string.close_nav);
@@ -363,23 +420,21 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
 
 
     private void filterHoaDon(){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         dataFilter.clear();
+        Boolean kq = true;
         for (ThongKeHoaDon item : data){
-            //Toast.makeText(this, item.getThoiGian_thanhtoan() + " " + item.getNgayThanhToan(), Toast.LENGTH_SHORT).show();
             Date dateData = chuyenNgayGioData(item.getThoiGian_thanhtoan() + " " + item.getNgayThanhToan());
-            if (dateData.compareTo(chuyenNgayGioThongKeThuNhat()) >= 0 && dateData.compareTo(chuyenNgayGioThongKeThuHai()) <= 0 ){
+            if (dateData.compareTo(chuyenNgayGioThongKeThuNhat()) >= 0 && dateData.compareTo(chuyenNgayGioThongKeThuHai()) <= 0 && item.getDaThanhToan().equals(kq)){
                 dataFilter.add(item);
-            }
-            else {
             }
         }
         if(dataFilter != null){
-            thongKeHoaDonAdapter = new ThongKeHoaDonAdapter(this, dataFilter);
+            thongKeHoaDonAdapter = new ThongKeHoaDonAdapter(this, dataFilter, dataBan);
             recyclerView.setAdapter(thongKeHoaDonAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             tvSoLuongHoaDon.setText(dataFilter.size()+"");
-            //tvTongTien.setText(getTongTien(dataFilter));
+            thongKeHoaDonAdapter.notifyDataSetChanged();
             NumberFormat nf = NumberFormat.getNumberInstance();
             tvTongTien.setText(nf.format(getTongTien(dataFilter)) + "đ");
         }else {
@@ -420,9 +475,8 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
     }
     private Date chuyenNgayGioData(String dateString){
         Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try{
-            Toast.makeText(this, dateString, Toast.LENGTH_SHORT).show();
             date = dateFormat.parse(dateString);
         } catch (ParseException e) {
             Toast.makeText(this, "Loi tg data", Toast.LENGTH_SHORT).show();
@@ -450,12 +504,15 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         tvNgayThongKe.setText(dateFormat.format(calendar.getTime()));
+        chuyenNgayGioThongKeThuNhat();
+        chuyenNgayGioThongKeThuHai();
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         MenuSideBarThuNgan menuSideBarThuNgan = new MenuSideBarThuNgan();
         menuSideBarThuNgan.chonManHinh(item.getItemId(), ThongKeHoaDonActivity.this);
+        navigationView.setCheckedItem(item.getItemId());
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }

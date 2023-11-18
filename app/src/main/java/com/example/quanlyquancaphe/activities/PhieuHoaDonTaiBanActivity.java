@@ -2,6 +2,7 @@ package com.example.quanlyquancaphe.activities;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,8 +21,10 @@ import com.example.quanlyquancaphe.models.Ban;
 import com.example.quanlyquancaphe.models.ChiTietMon;
 import com.example.quanlyquancaphe.models.HoaDonTaiBan;
 import com.example.quanlyquancaphe.models.Khu;
+import com.example.quanlyquancaphe.ultilities.ChiTietMonQKUtility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -83,10 +86,18 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
                     Boolean tt = true;
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference ref = database.getReference("HoaDon").child("TaiBan");
+                    taoChiTietMonQK(hoaDonTaiBan.getId_HoaDon());
                     ref.child(hoaDonTaiBan.getId_HoaDon()).child("daThanhToan").setValue(tt).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             Toast.makeText(PhieuHoaDonTaiBanActivity.this, "Thanh toán thành công", Toast.LENGTH_SHORT).show();
+                            databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(id_Ban);
+                            databaseReference.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+
+                                }
+                            });
                             finish();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -196,5 +207,7 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
             }
         });
     }
-
+    public void taoChiTietMonQK(String id_HoaDon){
+        ChiTietMonQKUtility.getHdqkInstance().taoChiTietMonQKTaiBan(PhieuHoaDonTaiBanActivity.this, id_Ban, id_HoaDon);
+    }
 }
