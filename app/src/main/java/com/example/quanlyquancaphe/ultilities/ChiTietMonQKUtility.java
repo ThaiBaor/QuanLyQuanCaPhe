@@ -60,7 +60,7 @@ public class ChiTietMonQKUtility {
                         String dau = ":";
                         String thayDoi = "0";
                         String sauThayDoi = ke.replaceAll(String.valueOf(dau),String.valueOf(thayDoi));
-                        databaseReference1.child(sauThayDoi).setValue(chiTietMon).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        databaseReference1.child(sauThayDoi).child(chiTietMon.getId_Mon()).setValue(chiTietMon).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                             }
