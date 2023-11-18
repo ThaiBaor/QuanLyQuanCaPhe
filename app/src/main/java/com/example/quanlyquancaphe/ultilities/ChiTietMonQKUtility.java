@@ -31,7 +31,7 @@ public class ChiTietMonQKUtility {
         }
         return hdqkInstance;
     }
-    public void taoChiTietMonQKTaiBan(Context context,String id_Ban){
+    public void taoChiTietMonQKTaiBan(Context context,String id_Ban, String id_HoaDon){
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(id_Ban).child("HT");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -60,7 +60,7 @@ public class ChiTietMonQKUtility {
                         String dau = ":";
                         String thayDoi = "0";
                         String sauThayDoi = ke.replaceAll(String.valueOf(dau),String.valueOf(thayDoi));
-                        databaseReference1.child(sauThayDoi).child(chiTietMon.getId_Mon()).setValue(chiTietMon).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        databaseReference1.child(id_HoaDon).child(sauThayDoi).child(chiTietMon.getId_Mon()).setValue(chiTietMon).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                             }
