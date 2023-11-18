@@ -21,6 +21,7 @@ import com.example.quanlyquancaphe.models.Ban;
 import com.example.quanlyquancaphe.models.ChiTietMon;
 import com.example.quanlyquancaphe.models.HoaDonTaiBan;
 import com.example.quanlyquancaphe.models.Khu;
+import com.example.quanlyquancaphe.ultilities.ChiTietMonQKUtility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -85,6 +86,7 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
                     Boolean tt = true;
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference ref = database.getReference("HoaDon").child("TaiBan");
+                    taoChiTietMonQK();
                     ref.child(hoaDonTaiBan.getId_HoaDon()).child("daThanhToan").setValue(tt).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -93,7 +95,7 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
                             databaseReference.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
-                                    Log.d("TAG", "onSuccess: Xoa thanh cong");
+
                                 }
                             });
                             finish();
@@ -205,5 +207,7 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
             }
         });
     }
-
+    public void taoChiTietMonQK(){
+        ChiTietMonQKUtility.getHdqkInstance().taoChiTietMonQKTaiBan(PhieuHoaDonTaiBanActivity.this, id_Ban);
+    }
 }

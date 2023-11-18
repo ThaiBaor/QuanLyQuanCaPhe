@@ -102,7 +102,8 @@
             android:exported="true" />
         <activity
             android:name=".activities.HoaDonTaiBanActivity"
-            android:exported="true" />
+            android:exported="true" >
+        </activity>
         <!-- DANH SÁCH MÓN KHẢ DỤNG -->
         <!--BÁO CÁO BÁN HÀNG -->
         <activity
