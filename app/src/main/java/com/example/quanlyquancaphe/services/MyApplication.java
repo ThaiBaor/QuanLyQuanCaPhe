@@ -6,12 +6,13 @@ import android.app.NotificationManager;
 
 import com.example.quanlyquancaphe.R;
 
-public class NotificationService extends Application {
+public class MyApplication extends Application {
     public static final String CHANNEL_ID = "CHANNEL";
 
     @Override
     public void onCreate() {
         super.onCreate();
+        LocalDataManager.init(getApplicationContext());
         createNotificationChannel();
     }
     private void createNotificationChannel() {
@@ -27,4 +28,5 @@ public class NotificationService extends Application {
         NotificationManager notificationManager = getSystemService(NotificationManager.class);
         notificationManager.createNotificationChannel(channel);
     }
+
 }
