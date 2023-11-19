@@ -8,7 +8,7 @@ import android.graphics.BitmapFactory;
 import androidx.core.app.NotificationCompat;
 
 import com.example.quanlyquancaphe.R;
-import com.example.quanlyquancaphe.services.NotificationService;
+import com.example.quanlyquancaphe.services.MyApplication;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -18,7 +18,7 @@ public class NotificationUtility {
     public static void pushNotification(Context context, String textContent) {
 
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.logo_icon);
-        android.app.Notification notification = new NotificationCompat.Builder(context, NotificationService.CHANNEL_ID)
+        android.app.Notification notification = new NotificationCompat.Builder(context, MyApplication.CHANNEL_ID)
                 .setContentTitle("Thông báo")
                 .setContentText(textContent)
                 .setSmallIcon(R.drawable.logo_icon)
