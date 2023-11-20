@@ -9,9 +9,18 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.adapters.DanhSachMonHoanThanhAdapter;
@@ -121,8 +130,51 @@ public class DanhSachMonHoanThanh_Activity extends AppCompatActivity implements 
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         MenuSideBarPhucVu menuSideBarPhucVu = new MenuSideBarPhucVu();
         menuSideBarPhucVu.chonManHinh(item.getItemId(), DanhSachMonHoanThanh_Activity.this);
-        navigationView.setCheckedItem(item.getItemId());
+        if (item.getItemId() == R.id.nav_mangve) {
+            openCustomDialog();
+        }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void openCustomDialog() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_dialog);
+        dialog.setCancelable(false);
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            WindowManager.LayoutParams layoutParams = window.getAttributes();
+            layoutParams.gravity = Gravity.CENTER;
+            window.setAttributes(layoutParams);
+        }
+        Button btnHuy = dialog.findViewById(R.id.btnHuy);
+        Button btnTiep = dialog.findViewById(R.id.btnTiep);
+        EditText edtTenKH = dialog.findViewById(R.id.edtTenKH);
+        btnHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigationView.setCheckedItem(R.id.nav_danhsachban);
+                dialog.dismiss();
+            }
+        });
+        btnTiep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edtTenKH.getText().toString().equals("")) {
+                    edtTenKH.requestFocus();
+                    edtTenKH.setError("Phải nhập tên khách hàng");
+                } else {
+                    GioHangActivity.tenKH = edtTenKH.getText().toString();
+                    Intent intent = new Intent(DanhSachMonHoanThanh_Activity.this, DanhSachMonPhucVuActivity.class);
+                    dialog.dismiss();
+                    startActivity(intent);
+                }
+            }
+        });
+        dialog.show();
+
     }
 }
