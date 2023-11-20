@@ -41,13 +41,13 @@ public class DangNhapActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (kiemTraDuLieuDangNhap()) {
-                    dangNhap(edtTenDangNhap.getText().toString(), edtMatKhau.getText().toString());
+                    dangNhap(edtTenDangNhap.getText().toString());
                 }
             }
         });
     }
 
-    private void dangNhap(String taiKhoan, String matKhau) {
+    private void dangNhap(String taiKhoan) {
         AlertDialog.Builder builder = new AlertDialog.Builder(DangNhapActivity.this).setTitle("").setMessage("Đang đăng nhập...");
         builder.setCancelable(false);
         AlertDialog dialog = builder.create();
