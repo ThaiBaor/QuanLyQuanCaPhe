@@ -237,7 +237,6 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                     data.add(thongKeHoaDon);
                 }
                 getDataHoaDonMangVe();
-                thongKeHoaDonAdapter.notifyDataSetChanged();
                 filterHoaDon();
 //                dialog.dismiss();
             }

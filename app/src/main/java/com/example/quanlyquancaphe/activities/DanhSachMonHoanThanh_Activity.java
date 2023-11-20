@@ -156,7 +156,7 @@ public class DanhSachMonHoanThanh_Activity extends AppCompatActivity implements 
         btnHuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navigationView.setCheckedItem(R.id.nav_danhsachban);
+                navigationView.setCheckedItem(R.id.nav_dsmonhoanthanh);
                 dialog.dismiss();
             }
         });
