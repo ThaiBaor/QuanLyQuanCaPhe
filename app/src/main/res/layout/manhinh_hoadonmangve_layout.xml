@@ -10,24 +10,8 @@
     tools:context=".activities.HoaDonTaiBanActivity"
     tools:openDrawer="start">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_margin="10dp"
-        android:orientation="horizontal"
-        android:weightSum="10">
-
-        <EditText
-            android:id="@+id/edtSearchBox"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="10"
-            android:drawableLeft="@drawable/search_icon"
-            android:hint="Search" />
-    </LinearLayout>
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerviewHDTB"
+        android:id="@+id/recyclerviewHDMV"
         style="@style/quanly_recycleview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

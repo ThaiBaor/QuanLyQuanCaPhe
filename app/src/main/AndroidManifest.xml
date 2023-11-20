@@ -77,10 +77,7 @@
         <activity
             android:name=".activities.DangNhapActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity
             android:name=".activities.DoiMatKhauActivity"
@@ -101,8 +98,19 @@
             android:name=".activities.PhieuHoaDonTaiBanActivity"
             android:exported="true" />
         <activity
+            android:name=".activities.PhieuHoaDonMangVeActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.HoaDonTaiBanActivity"
             android:exported="true" >
+        </activity>
+        <activity
+            android:name=".activities.HoaDonMangVeActivity"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <!-- DANH SÁCH MÓN KHẢ DỤNG -->
         <!--BÁO CÁO BÁN HÀNG -->
