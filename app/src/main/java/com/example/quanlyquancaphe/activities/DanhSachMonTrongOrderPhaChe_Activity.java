@@ -30,6 +30,7 @@ public class DanhSachMonTrongOrderPhaChe_Activity extends AppCompatActivity {
     DanhSachMonTrongOrderPhaCheAdapter adapter;
     Bundle bundle;
     String id_DSMon_TB;
+    String time ;
     Toolbar toolBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class DanhSachMonTrongOrderPhaChe_Activity extends AppCompatActivity {
         bundle = getIntent().getExtras();
         if (bundle != null) {
             id_DSMon_TB = bundle.getString("key");
+            time = bundle.getString("time");
         }
         setEvent();
     }
@@ -59,9 +61,14 @@ public class DanhSachMonTrongOrderPhaChe_Activity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list_CT.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                  for (DataSnapshot snapitems : dataSnapshot.getChildren()){
-                      ChiTietMon chiTietMon = snapitems.getValue(ChiTietMon.class);
-                      list_CT.add(chiTietMon);
+                  for (DataSnapshot snapItem : dataSnapshot.getChildren()){
+                      String id_Time = snapItem.child("gioGoiMon").getValue(String.class);
+                      if (id_Time != null && time != null){
+                          if (id_Time.equals(time) ){
+                              ChiTietMon chiTietMon = snapItem.getValue(ChiTietMon.class);
+                              list_CT.add(chiTietMon);
+                          }
+                      }
                   }
                 }
                 adapter.notifyDataSetChanged();
