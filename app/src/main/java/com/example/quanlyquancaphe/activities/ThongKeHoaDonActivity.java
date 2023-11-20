@@ -8,8 +8,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -26,9 +24,7 @@ import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.adapters.ThongKeHoaDonAdapter;
 import com.example.quanlyquancaphe.models.Ban;
 import com.example.quanlyquancaphe.models.HoaDonKhachHang;
-import com.example.quanlyquancaphe.models.Khu;
 import com.example.quanlyquancaphe.models.ThongKeHoaDon;
-import com.example.quanlyquancaphe.services.MenuSideBarAdmin;
 import com.example.quanlyquancaphe.services.MenuSideBarThuNgan;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -54,8 +50,6 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
 
     ArrayList<HoaDonKhachHang> hoaDonKhachHangs = new ArrayList<>();
     ThongKeHoaDonAdapter thongKeHoaDonAdapter ;
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
     ValueEventListener valueEventListener;
     RecyclerView recyclerView;
     TextView tvGiothuNhat, tvGioThuHai, tvNgayThongKe, tvSoLuongHoaDon, tvTongTien;
@@ -73,9 +67,6 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
         setEvent();
         setdrawer();
         initDataBan();
-
-        //getDataHoaDon();
-        //filterHoaDon();
     }
 
     private void setEvent() {
@@ -220,7 +211,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
 //        dialog.show();
         FirebaseDatabase firebaseDatabaseTaiBan = FirebaseDatabase.getInstance();
         DatabaseReference databaseReferenceTaiBan = firebaseDatabaseTaiBan.getReference().child("HoaDon").child("TaiBan");
-        ValueEventListener valueEventListenerTaiBan = databaseReferenceTaiBan.addValueEventListener(new ValueEventListener() {
+        databaseReferenceTaiBan.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 data.clear();
@@ -233,6 +224,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                     Double tongTien = Double.parseDouble(item.child("tongTien").getValue().toString());
                     Boolean daThanhToan = Boolean.parseBoolean(item.child("daThanhToan").getValue().toString());
                     String tenKhachHang = "Không có";
+                    //Toast.makeText(ThongKeHoaDonActivity.this, hoaDonKhachHangs.size() +"hoadonKH", Toast.LENGTH_SHORT).show();
                     for (HoaDonKhachHang hoaDonKhachHang : hoaDonKhachHangs){
                         if(id_MaHoaDon.equals(hoaDonKhachHang.getId_HoaDon())){
                             tenKhachHang = hoaDonKhachHang.getTenKH();
@@ -303,7 +295,8 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
         }
     }
 
-    private void getDataIdHoaDon(ArrayList arrIdHoaDonGet) {
+    private void getDataIdHoaDon() {
+        arrIdHoaDon.clear();
         for (int i = 0; i < dataBan.size(); i++) {
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             DatabaseReference databaseReference = firebaseDatabase.getReference().child("ChiTietMon").child(dataBan.get(i).getId_Ban()).child("QK");
@@ -311,8 +304,10 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot item: snapshot.getChildren()){
-                        arrIdHoaDonGet.add(item.getKey());
+                        arrIdHoaDon.add(item.getKey());
                     }
+                    //Toast.makeText(ThongKeHoaDonActivity.this, arrIdHoaDon.size()+"Get", Toast.LENGTH_SHORT).show();
+                    getIdThoiGianGoiMon(arrIdThoiGianGoiMon);
                 }
 
                 @Override
@@ -321,8 +316,6 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                 }
             });
         }
-        getIdThoiGianGoiMon(arrIdThoiGianGoiMon);
-
     }
 
     private void initDataBan() {
@@ -336,7 +329,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                     Ban ban = item.getValue(Ban.class);
                     dataBan.add(ban);
                 }
-                getDataIdHoaDon(arrIdHoaDon);
+                getDataIdHoaDon();
             }
 
             @Override
@@ -347,6 +340,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
 
     }
     private void getIdThoiGianGoiMon(ArrayList arrIdThoiGianGoiMonGet){
+        arrIdThoiGianGoiMonGet.clear();
         for (int i = 0; i < dataBan.size(); i++) {
             for (int j = 0; j < arrIdHoaDon.size(); j ++){
                 FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -359,6 +353,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                                 arrIdThoiGianGoiMonGet.add(item.getKey());
                             }
                         }
+                        setArrHoaDonKH(hoaDonKhachHangs);
                     }
 
                     @Override
@@ -368,7 +363,6 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                 });
             }
         }
-        setArrHoaDonKH(hoaDonKhachHangs);
     }
 
     private void setArrHoaDonKH(ArrayList<HoaDonKhachHang> arrHoaDonKHGet){
@@ -420,7 +414,6 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
 
 
     private void filterHoaDon(){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         dataFilter.clear();
         Boolean kq = true;
         for (ThongKeHoaDon item : data){
