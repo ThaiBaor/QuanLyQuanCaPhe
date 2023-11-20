@@ -141,7 +141,8 @@
                             android:id="@+id/tvTongCong"
                             android:textSize="20dp"
                             android:gravity="end"
-                            android:textColor="#000"
+                            android:textStyle="bold"
+                            android:textColor="@color/red"
                             android:paddingEnd="20dp"
                             android:text="Đang tải"></TextView>
                     </LinearLayout>

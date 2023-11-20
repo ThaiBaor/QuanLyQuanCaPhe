@@ -125,6 +125,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/tvTongTien"
                 android:text="10000d"
+                android:textStyle="bold"
                 android:textSize="20dp"
                 android:textColor="@color/red"></TextView>
         </LinearLayout>
