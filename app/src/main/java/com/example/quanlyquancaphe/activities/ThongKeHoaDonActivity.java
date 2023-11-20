@@ -214,10 +214,10 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
     }
 
     private void getDataHoaDon(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(ThongKeHoaDonActivity.this).setTitle("").setMessage("Đang tải dữ liệu...");
-        builder.setCancelable(false);
-        AlertDialog dialog = builder.create();
-        dialog.show();
+//        AlertDialog.Builder builder = new AlertDialog.Builder(ThongKeHoaDonActivity.this).setTitle("").setMessage("Đang tải dữ liệu...");
+//        builder.setCancelable(false);
+//        AlertDialog dialog = builder.create();
+//        dialog.show();
         FirebaseDatabase firebaseDatabaseTaiBan = FirebaseDatabase.getInstance();
         DatabaseReference databaseReferenceTaiBan = firebaseDatabaseTaiBan.getReference().child("HoaDon").child("TaiBan");
         ValueEventListener valueEventListenerTaiBan = databaseReferenceTaiBan.addValueEventListener(new ValueEventListener() {
@@ -245,22 +245,22 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                 getDataHoaDonMangVe();
                 thongKeHoaDonAdapter.notifyDataSetChanged();
                 filterHoaDon();
-                dialog.dismiss();
+//                dialog.dismiss();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                dialog.dismiss();
+//                dialog.dismiss();
                 Toast.makeText(ThongKeHoaDonActivity.this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void getDataHoaDonMangVe(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(ThongKeHoaDonActivity.this).setTitle("").setMessage("Đang tải dữ liệu...");
-        builder.setCancelable(false);
-        AlertDialog dialog = builder.create();
-        dialog.show();
+//        AlertDialog.Builder builder = new AlertDialog.Builder(ThongKeHoaDonActivity.this).setTitle("").setMessage("Đang tải dữ liệu...");
+//        builder.setCancelable(false);
+//        AlertDialog dialog = builder.create();
+//        dialog.show();
         FirebaseDatabase firebaseDatabaseMangVe = FirebaseDatabase.getInstance();
         DatabaseReference databaseReferenceMangVe = firebaseDatabaseMangVe.getReference().child("HoaDon").child("MangVe");
         databaseReferenceMangVe.addValueEventListener(new ValueEventListener() {
@@ -281,12 +281,12 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                 }
                 thongKeHoaDonAdapter.notifyDataSetChanged();
                 filterHoaDon();
-                dialog.dismiss();
+                //dialog.dismiss();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                dialog.dismiss();
+                //dialog.dismiss();
                 Toast.makeText(ThongKeHoaDonActivity.this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

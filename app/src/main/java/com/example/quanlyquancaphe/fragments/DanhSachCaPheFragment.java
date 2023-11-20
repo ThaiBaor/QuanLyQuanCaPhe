@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,17 +79,15 @@ public class DanhSachCaPheFragment extends Fragment implements DSMonPVInterface 
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                int changedPosition = 0;
                 MonTrongDS mon = snapshot.getValue(MonTrongDS.class);
                 if (mon.getId_Loai() == 0) {
                     for (int i = 0; i < data.size(); i++) {
-                        if (data.get(i).getId_Mon().equals(previousChildName)) {
-                            changedPosition = i + 1;
+                        if (data.get(i).getId_Mon().equals(mon.getId_Mon())) {
+                            data.set(i, mon);
+                            adapter.notifyItemChanged(i);
                             break;
                         }
                     }
-                    data.set(changedPosition, mon);
-                    adapter.notifyItemChanged(changedPosition);
                 }
                 dialog.dismiss();
             }

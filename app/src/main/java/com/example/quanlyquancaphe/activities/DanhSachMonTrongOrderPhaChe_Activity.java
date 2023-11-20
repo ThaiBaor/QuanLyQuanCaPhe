@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -46,29 +47,11 @@ public class DanhSachMonTrongOrderPhaChe_Activity extends AppCompatActivity {
         if (bundle != null) {
             id_DSMon_TB = bundle.getString("key");
         }
-        getId_TrangThaiMon();
         setEvent();
-
-    }
-    public void getId_TrangThaiMon(){
-        DatabaseReference reference_TT = FirebaseDatabase.getInstance().getReference("TrangThai_Mon");
-        reference_TT.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                id_TrangThaiMon.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    id_TrangThaiMon.add(dataSnapshot.child("id_TrangThai").getValue(Integer.class));
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
     private void setEvent() {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new DanhSachMonTrongOrderPhaCheAdapter(DanhSachMonTrongOrderPhaChe_Activity.this, list_CT, id_TrangThaiMon,id_DSMon_TB);
+        adapter = new DanhSachMonTrongOrderPhaCheAdapter(DanhSachMonTrongOrderPhaChe_Activity.this, list_CT,id_DSMon_TB);
         recyclerView.setAdapter(adapter);
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(id_DSMon_TB).child("HT");
         reference.addValueEventListener(new ValueEventListener() {
@@ -81,6 +64,7 @@ public class DanhSachMonTrongOrderPhaChe_Activity extends AppCompatActivity {
                       list_CT.add(chiTietMon);
                   }
                 }
+                adapter.notifyDataSetChanged();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

@@ -133,17 +133,15 @@ public class DanhSachBanhFragment extends Fragment {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                int changedPosition = 0;
                 MonTrongDS mon = snapshot.getValue(MonTrongDS.class);
                 if (mon.getId_Loai() == 1) {
                     for (int i = 0; i < data.size(); i++) {
-                        if (data.get(i).getId_Mon().equals(previousChildName)) {
-                            changedPosition = i + 1;
+                        if (data.get(i).getId_Mon().equals(mon.getId_Mon())) {
+                            data.set(i, mon);
+                            adapter.notifyItemChanged(i);
                             break;
                         }
                     }
-                    data.set(changedPosition, mon);
-                    adapter.notifyItemChanged(changedPosition);
                 }
                 dialog.dismiss();
             }
