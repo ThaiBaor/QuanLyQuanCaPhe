@@ -31,7 +31,6 @@ public class DoiMatKhauActivity extends AppCompatActivity {
     Button btnXacNhan;
     Toolbar toolBar;
     boolean xacNhan = true;
-    boolean kiemTraTaiKhoan = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

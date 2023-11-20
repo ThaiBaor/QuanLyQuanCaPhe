@@ -19,7 +19,6 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.adapters.ThongKeHoaDonAdapter;
 import com.example.quanlyquancaphe.models.Ban;
@@ -67,6 +66,9 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
         setEvent();
         setdrawer();
         initDataBan();
+        getDataHoaDon();
+        getDataHoaDonMangVe();
+        //filterHoaDon();
     }
 
     private void setEvent() {
@@ -271,7 +273,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                     thongKeHoaDon = new ThongKeHoaDon(id_MaHoaDon, id_Ban,ngayThanhToan, thoiGian_thanhtoan, tongTien, daThanhToan, tenKhachHang);
                     data.add(thongKeHoaDon);
                 }
-                thongKeHoaDonAdapter.notifyDataSetChanged();
+                //thongKeHoaDonAdapter.notifyDataSetChanged();
                 filterHoaDon();
                 //dialog.dismiss();
             }
@@ -295,7 +297,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
         }
     }
 
-    private void getDataIdHoaDon() {
+    private void getDataIdHoaDon(ArrayList arrIdHoaDonGet) {
         arrIdHoaDon.clear();
         for (int i = 0; i < dataBan.size(); i++) {
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -304,7 +306,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot item: snapshot.getChildren()){
-                        arrIdHoaDon.add(item.getKey());
+                        arrIdHoaDonGet.add(item.getKey());
                     }
                     //Toast.makeText(ThongKeHoaDonActivity.this, arrIdHoaDon.size()+"Get", Toast.LENGTH_SHORT).show();
                     getIdThoiGianGoiMon(arrIdThoiGianGoiMon);
@@ -329,7 +331,8 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                     Ban ban = item.getValue(Ban.class);
                     dataBan.add(ban);
                 }
-                getDataIdHoaDon();
+                getDataIdHoaDon(arrIdHoaDon);
+
             }
 
             @Override
@@ -340,6 +343,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
 
     }
     private void getIdThoiGianGoiMon(ArrayList arrIdThoiGianGoiMonGet){
+        //Toast.makeText(this, arrIdHoaDon.size()+"arrHoaDon", Toast.LENGTH_SHORT).show();
         arrIdThoiGianGoiMonGet.clear();
         for (int i = 0; i < dataBan.size(); i++) {
             for (int j = 0; j < arrIdHoaDon.size(); j ++){
