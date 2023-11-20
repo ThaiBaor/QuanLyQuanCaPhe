@@ -9,7 +9,7 @@
     android:background="@drawable/background"
     tools:context=".activities.HoaDonTaiBanActivity"
     tools:openDrawer="start">
-
+<include layout="@layout/toolbar"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -25,9 +25,8 @@
             android:drawableLeft="@drawable/search_icon"
             android:hint="Search" />
     </LinearLayout>
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerviewHDTB"
+        android:id="@+id/recyclerviewHDMV"
         style="@style/quanly_recycleview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

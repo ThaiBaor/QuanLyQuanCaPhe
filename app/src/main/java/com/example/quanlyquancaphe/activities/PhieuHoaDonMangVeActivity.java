@@ -18,6 +18,7 @@ import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.adapters.PhieuHoaDonAdapter;
 import com.example.quanlyquancaphe.models.Ban;
 import com.example.quanlyquancaphe.models.ChiTietMon;
+import com.example.quanlyquancaphe.models.HoaDonMangVe;
 import com.example.quanlyquancaphe.models.HoaDonTaiBan;
 import com.example.quanlyquancaphe.models.Khu;
 import com.example.quanlyquancaphe.ultilities.HoaDonUltility;
@@ -38,35 +39,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
-    TextView tvMHD, tvGioHD, tvNgayHD, tvBanHD, tvGiaHD, tvKhu, tvNV, tvTongTien;
+public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
+    TextView tvMHD, tvGioHD, tvNgayHD, tvTenKH, tvGiaHD, tvTongTien;
     Button btnQuayLai, btnThanhToan;
-    ImageView ivHinh;
     RecyclerView recyclerView;
-    Bundle bundle;
-    String id_Ban = "";
-    ArrayList<ChiTietMon> dataChiTietMon = new ArrayList<>();
-    ArrayList<ChiTietMon> dataGop = new ArrayList<>();
-    HoaDonTaiBan hoaDonTaiBan = new HoaDonTaiBan();
-    Ban ban = new Ban();
-    Khu khu = new Khu();
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     PhieuHoaDonAdapter adapter;
-    FirebaseStorage firebaseStorage;
-    StorageReference storageReference;
-
+    Bundle bundle;
+    String tenKH = "";
+    HoaDonMangVe hoaDonMangVe = new HoaDonMangVe();
+    ArrayList<ChiTietMon> dataChiTietMon = new ArrayList<>();
+    ArrayList<ChiTietMon> dataGop = new ArrayList<>();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manhinh_phieuhoadontaiban_layout);
+        setContentView(R.layout.manhinh_phieuhoadonmangve_layout);
         bundle = getIntent().getExtras();
         setControl();
         loadDataThongTin();
         datachitietmon();
-        firebaseStorage = FirebaseStorage.getInstance();
-        storageReference = firebaseStorage.getReference();
-        adapter = new PhieuHoaDonAdapter(PhieuHoaDonTaiBanActivity.this, dataChiTietMon);
+        adapter = new PhieuHoaDonAdapter(PhieuHoaDonMangVeActivity.this, dataChiTietMon);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
@@ -80,18 +73,17 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (bundle != null) {
-                    hoaDonTaiBan.setId_HoaDon(bundle.getString("id_HoaDon"));
-                    hoaDonTaiBan.setDaThanhToan(bundle.getBoolean("daThanhToan"));
+                    hoaDonMangVe.setId_HoaDon(bundle.getString("id_HoaDon"));
+                    hoaDonMangVe.setDaThanhToan(bundle.getBoolean("daThanhToan"));
                     Boolean tt = true;
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference ref = database.getReference("HoaDon").child("TaiBan");
-
-                    taoChiTietMonQK(hoaDonTaiBan.getId_HoaDon());
-                    ref.child(hoaDonTaiBan.getId_HoaDon()).child("daThanhToan").setValue(tt).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    DatabaseReference ref = database.getReference("HoaDon").child("MangVe");
+                    taoChiTietMonQK(hoaDonMangVe.getId_HoaDon());
+                    ref.child(hoaDonMangVe.getId_HoaDon()).child("daThanhToan").setValue(tt).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            Toast.makeText(PhieuHoaDonTaiBanActivity.this, "Thanh toán thành công", Toast.LENGTH_SHORT).show();
-                            databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(id_Ban);
+                            Toast.makeText(PhieuHoaDonMangVeActivity.this, "Thanh toán thành công", Toast.LENGTH_SHORT).show();
+                            databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(tenKH);
                             databaseReference.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
@@ -113,48 +105,40 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
     }
 
     private void setControl() {
-        recyclerView = findViewById(R.id.recyclePhieuHoaDon);
-        tvMHD = findViewById(R.id.tvMa);
-        tvGioHD = findViewById(R.id.tvGio);
-        tvGiaHD = findViewById(R.id.tvGiaHD);
-        tvTongTien = findViewById(R.id.tvTongTien);
-        tvBanHD = findViewById(R.id.tvBan);
-        tvNgayHD = findViewById(R.id.tvNgay);
-        tvKhu = findViewById(R.id.tvKhu);
-        tvNV = findViewById(R.id.tvTenNV);
-        btnQuayLai = findViewById(R.id.btnQuayLai);
-        btnThanhToan = findViewById(R.id.btnThanhToan);
-        ivHinh = findViewById(R.id.ivHinh);
+        recyclerView = findViewById(R.id.recyclePhieuHoaDonMV);
+        tvMHD = findViewById(R.id.tvMaMV);
+        tvGioHD = findViewById(R.id.tvGioMV);
+        tvGiaHD = findViewById(R.id.tvGiaHDMV);
+        tvTongTien = findViewById(R.id.tvTongTienMV);
+        tvNgayHD = findViewById(R.id.tvNgayMV);
+        tvTenKH = findViewById(R.id.tvTenKH);
+        btnQuayLai = findViewById(R.id.btnQuayLaiMV);
+        btnThanhToan = findViewById(R.id.btnThanhToanMV);
     }
-
-    private void loadDataThongTin() {
+    public void loadDataThongTin(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("").setMessage("Đang tải dữ liệu...");
         builder.setCancelable(false);
         AlertDialog dialog = builder.create();
         dialog.show();
         if (bundle != null) {
             NumberFormat nf = NumberFormat.getNumberInstance();
-            hoaDonTaiBan.setId_HoaDon(bundle.getString("id_HoaDon"));
-            tvMHD.setText(hoaDonTaiBan.getId_HoaDon());
-            hoaDonTaiBan.setThoiGian_ThanhToan(bundle.getString("thoiGian_ThanhToan"));
-            tvGioHD.setText(hoaDonTaiBan.getThoiGian_ThanhToan());
-            hoaDonTaiBan.setNgayThanhToan(bundle.getString("ngayThanhToan"));
-            tvNgayHD.setText(hoaDonTaiBan.getNgayThanhToan());
-            hoaDonTaiBan.setId_Ban(bundle.getString("id_Ban"));
-            id_Ban = hoaDonTaiBan.getId_Ban();
-            ban.setTenBan(bundle.getString("tenBan"));
-            tvBanHD.setText(ban.getTenBan());
-            khu.setTenKhu(bundle.getString("tenKhu"));
-            tvKhu.setText(khu.getTenKhu());
-            hoaDonTaiBan.setTongTien(bundle.getDouble("tongTien"));
-            tvTongTien.setText(nf.format(hoaDonTaiBan.getTongTien()) + "đ");
+            hoaDonMangVe.setId_HoaDon(bundle.getString("id_HoaDon"));
+            tvMHD.setText(hoaDonMangVe.getId_HoaDon().substring(0,13));
+            hoaDonMangVe.setThoiGian_ThanhToan(bundle.getString("thoiGian_ThanhToan"));
+            tvGioHD.setText(hoaDonMangVe.getThoiGian_ThanhToan());
+            hoaDonMangVe.setNgayThanhToan(bundle.getString("ngayThanhToan"));
+            tvNgayHD.setText(hoaDonMangVe.getNgayThanhToan());
+            hoaDonMangVe.setTenKH(bundle.getString("tenKH"));
+            tvTenKH.setText(hoaDonMangVe.getTenKH().substring(9));
+            tenKH = hoaDonMangVe.getTenKH();
+            hoaDonMangVe.setTongTien(bundle.getDouble("tongTien"));
+            tvTongTien.setText(nf.format(hoaDonMangVe.getTongTien()) + "đ");
         }
         dialog.dismiss();
     }
-
     private void datachitietmon() {
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference().child("ChiTietMon").child(id_Ban);
+        databaseReference = firebaseDatabase.getReference().child("ChiTietMon").child(tenKH);
 
         databaseReference.child("HT").addValueEventListener(new ValueEventListener() {
             @Override
@@ -208,9 +192,6 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
         });
     }
     public void taoChiTietMonQK(String id_HoaDon){
-        HoaDonUltility.getHdInstance().thanhToanTaiBan(id_Ban, id_HoaDon);
-    }
-    public void createPDF(){
-        
+        HoaDonUltility.getHdInstance().thanhToanTaiBan(tenKH, id_HoaDon);
     }
 }
