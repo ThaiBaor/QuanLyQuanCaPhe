@@ -70,9 +70,9 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manhinh_danhsachban_layout);
         setConTrol();
+        getNotification();
         setdrawer();
         setEvent();
-
     }
 
     private void GetDataBan() {
@@ -151,7 +151,7 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
         GetDataBan();
         GetDataKhu();
         GetDataSpinner();
-        getNotification();
+
         //Set title toolbar
         toolBar.setTitle("Danh sách bàn");
         //Thay đổi bàn dựa theo khu
@@ -337,6 +337,7 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
             }
         });
     }
+
     // Hàm kiểm tra xem bàn có còn món chưa hoàn thành hay không
     private void kiemTraMonVanCon(String id_Ban, kiemTraMonVanConTrongBanListener listener) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(id_Ban).child("HT");
