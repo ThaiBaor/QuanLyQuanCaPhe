@@ -101,7 +101,14 @@
             android:name=".activities.PhieuHoaDonTaiBanActivity"
             android:exported="true" />
         <activity
+            android:name=".activities.PhieuHoaDonMangVeActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.HoaDonTaiBanActivity"
+            android:exported="true" >
+        </activity>
+        <activity
+            android:name=".activities.HoaDonMangVeActivity"
             android:exported="true" >
         </activity>
         <!-- DANH SÁCH MÓN KHẢ DỤNG -->

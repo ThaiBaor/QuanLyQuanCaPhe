@@ -39,16 +39,13 @@ public class HoaDonTaiBanActivity extends AppCompatActivity implements Navigatio
     HoaDonTaiBanAdapter adapter;
     RecyclerView recyclerView;
     ArrayList<HoaDonTaiBan> data = new ArrayList<>();
-    ArrayList<HoaDonTaiBan> filterdata = new ArrayList<>();
     ArrayList<Khu> dataKhu = new ArrayList<>();
     ArrayList<Ban> dataBan = new ArrayList<>();
-    TextView tvMHD, tvGioHD, tvNgayHD, tvBanHD, tvGiaHD;
 
     DrawerLayout drawerLayout;
     Toolbar toolBar;
     NavigationView navigationView;
     ActionBarDrawerToggle actionBarDrawerToggle;
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manhinh_hoadontaiban_layout);
@@ -92,18 +89,12 @@ public class HoaDonTaiBanActivity extends AppCompatActivity implements Navigatio
 
     private void setControl() {
         recyclerView = findViewById(R.id.recyclerviewHDTB);
-        tvMHD = findViewById(R.id.tvMaHD);
-        tvGioHD = findViewById(R.id.tvGioHD);
-        tvGiaHD = findViewById(R.id.tvGiaHD);
-        tvBanHD = findViewById(R.id.tvBanHD);
-        tvNgayHD = findViewById(R.id.tvNgayHD);
         edtSearchBox = findViewById(R.id.edtSearchBox);
     }
 
     public void loadDataHoaDonTaiBan() {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference().child("HoaDon");
-
         ValueEventListener = databaseReference.child("TaiBan").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

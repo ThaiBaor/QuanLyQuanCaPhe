@@ -48,7 +48,7 @@
                     android:textSize="18dp"
                     android:paddingRight="8dp"></TextView>
                 <TextView
-                    android:id="@+id/tvMa"
+                    android:id="@+id/tvMaMV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="09123"
@@ -65,7 +65,7 @@
                     android:id="@+id/tvBan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5"
+                    android:text=""
                     android:textSize="18dp"
                     android:layout_weight="1"></TextView>
             </LinearLayout>
@@ -80,7 +80,7 @@
                     android:paddingRight="10dp"
                     android:textSize="18dp"></TextView>
                 <TextView
-                    android:id="@+id/tvTenNV"
+                    android:id="@+id/tvTenKH"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Nguyễn Văn Tèo"
@@ -97,7 +97,7 @@
                     android:paddingRight="8dp"
                     android:textSize="18dp"></TextView>
                 <TextView
-                    android:id="@+id/tvNgay"
+                    android:id="@+id/tvNgayMV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="30/10/2023"
@@ -110,7 +110,7 @@
                     android:paddingRight="8dp"
                     android:textSize="18dp"></TextView>
                 <TextView
-                    android:id="@+id/tvGio"
+                    android:id="@+id/tvGioMV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="10:00"
@@ -127,7 +127,7 @@
                     android:id="@+id/tvKhu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Khu A"
+                    android:text=""
                     android:layout_weight="5"
                     android:textSize="18dp"></TextView>
             </LinearLayout>
@@ -156,7 +156,7 @@
                     android:textAlignment="center"></TextView>
             </LinearLayout>
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclePhieuHoaDon"
+                android:id="@+id/recyclePhieuHoaDonMV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             </androidx.recyclerview.widget.RecyclerView>
@@ -180,7 +180,7 @@
                     android:layout_weight="1"
                     ></TextView>
                 <TextView
-                    android:id="@+id/tvTongTien"
+                    android:id="@+id/tvTongTienMV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="1000"
@@ -207,13 +207,13 @@
         android:orientation="horizontal"
         android:layout_marginTop="20dp">
         <Button
-            android:id="@+id/btnQuayLai"
+            android:id="@+id/btnQuayLaiMV"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:text="Quay lại"
             android:layout_marginLeft="20dp"></Button>
         <Button
-            android:id="@+id/btnThanhToan"
+            android:id="@+id/btnThanhToanMV"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:text="Thanh toán"
