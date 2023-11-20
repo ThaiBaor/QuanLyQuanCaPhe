@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.models.LoaiMon;
 import com.example.quanlyquancaphe.models.Mon;
+import com.example.quanlyquancaphe.ultilities.NotificationUtility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -178,6 +179,7 @@ public class ThemMonActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
+                    NotificationUtility.updateNotiOnFirebase(3, "Có món mới trên hệ thống: "+mon.getTenMon());
                     Toast.makeText(ThemMonActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
                     finish();
                 }

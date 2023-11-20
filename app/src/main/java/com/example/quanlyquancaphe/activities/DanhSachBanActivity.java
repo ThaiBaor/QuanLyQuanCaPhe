@@ -471,7 +471,8 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
                 if (snapshot.child("id").getValue(Integer.class) == null) {
                     return;
                 }
-                if (snapshot.child("id").getValue(Integer.class) == 2) {
+                int id_ThongBao = snapshot.child("id").getValue(Integer.class);
+                if (id_ThongBao == 2 || id_ThongBao == 3) {
                     NotificationUtility.pushNotification(DanhSachBanActivity.this, snapshot.child("contentText").getValue(String.class));
                 }
             }
