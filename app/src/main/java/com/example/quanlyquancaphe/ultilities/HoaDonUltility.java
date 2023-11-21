@@ -1,7 +1,6 @@
 package com.example.quanlyquancaphe.ultilities;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -9,6 +8,7 @@ import androidx.annotation.NonNull;
 import com.example.quanlyquancaphe.models.ChiTietMon;
 import com.example.quanlyquancaphe.models.HoaDonMangVe;
 import com.example.quanlyquancaphe.models.HoaDonTaiBan;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,6 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class HoaDonUltility {
     private double tongTien;
@@ -43,7 +44,6 @@ public class HoaDonUltility {
                     for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
                         ChiTietMon chiTietMon = itemSnapshot.getValue(ChiTietMon.class);
                         tongTien += chiTietMon.tinhTongTien();
-                        Log.d("TAG", "Tongtien: " + tongTien);
                     }
                 }
                 DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("HoaDon").child("MangVe");
@@ -68,6 +68,16 @@ public class HoaDonUltility {
         });
     }
 
+    public void tangSoLuongDaBan(ArrayList<ChiTietMon> data) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Mon");
+        for (ChiTietMon chiTietMon : data) {
+            Task<DataSnapshot> task = databaseReference.child(chiTietMon.getId_Mon()).get();
+            while (!task.isSuccessful()) ;
+            int slCu = task.getResult().child("slDaBan").getValue(Integer.class);
+            databaseReference.child(chiTietMon.getId_Mon()).child("slDaBan").setValue(slCu + chiTietMon.getSl());
+        }
+    }
+
     public void taoHoaDonTaiBan(Context context, String id_Ban) {
         tongTien = 0;
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(id_Ban).child("HT");
@@ -78,7 +88,6 @@ public class HoaDonUltility {
                     for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
                         ChiTietMon chiTietMon = itemSnapshot.getValue(ChiTietMon.class);
                         tongTien += chiTietMon.tinhTongTien();
-                        Log.d("TAG", "Tongtien: " + tongTien);
                     }
                 }
                 DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("HoaDon").child("TaiBan");

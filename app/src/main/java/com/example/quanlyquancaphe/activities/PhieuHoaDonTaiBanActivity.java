@@ -2,7 +2,6 @@ package com.example.quanlyquancaphe.activities;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,6 +21,7 @@ import com.example.quanlyquancaphe.models.ChiTietMon;
 import com.example.quanlyquancaphe.models.HoaDonTaiBan;
 import com.example.quanlyquancaphe.models.Khu;
 import com.example.quanlyquancaphe.ultilities.ChiTietMonQKUtility;
+import com.example.quanlyquancaphe.ultilities.HoaDonUltility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -90,6 +90,7 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
                     ref.child(hoaDonTaiBan.getId_HoaDon()).child("daThanhToan").setValue(tt).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+                            HoaDonUltility.getHdInstance().tangSoLuongDaBan(dataGop);
                             Toast.makeText(PhieuHoaDonTaiBanActivity.this, "Thanh toán thành công", Toast.LENGTH_SHORT).show();
                             databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(id_Ban);
                             databaseReference.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -152,6 +153,7 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
         dialog.dismiss();
     }
 
+
     private void datachitietmon() {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference().child("ChiTietMon").child(id_Ban);
@@ -169,17 +171,17 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
                     }
                 }
                 Map<String, Integer> mapGopSL = new HashMap<>();
-                for (ChiTietMon item : dataChiTietMon){
-                    Integer current = mapGopSL.getOrDefault(item.getId_Mon(),0);
-                    mapGopSL.put(item.getId_Mon(),current + item.getSl());
+                for (ChiTietMon item : dataChiTietMon) {
+                    Integer current = mapGopSL.getOrDefault(item.getId_Mon(), 0);
+                    mapGopSL.put(item.getId_Mon(), current + item.getSl());
                 }
-                for (Map.Entry<String, Integer> entry : mapGopSL.entrySet()){
+                for (Map.Entry<String, Integer> entry : mapGopSL.entrySet()) {
                     ChiTietMon chiTietMon = new ChiTietMon();
                     chiTietMon.setId_Mon(entry.getKey());
                     chiTietMon.setSl(entry.getValue());
-                    for (ChiTietMon item : dataChiTietMon){
+                    for (ChiTietMon item : dataChiTietMon) {
                         ChiTietMon chiTietMon1 = new ChiTietMon();
-                        if (item.getId_Mon().equals(entry.getKey())){
+                        if (item.getId_Mon().equals(entry.getKey())) {
                             chiTietMon1.setId_Mon(item.getId_Mon());
                             chiTietMon1.setSl(chiTietMon.getSl());
                             chiTietMon1.setId_Ban(item.getId_Ban());
@@ -199,6 +201,7 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
                 dataChiTietMon.clear();
                 dataChiTietMon.addAll(dataGop);
                 adapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -207,7 +210,8 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
             }
         });
     }
-    public void taoChiTietMonQK(String id_HoaDon){
+
+    public void taoChiTietMonQK(String id_HoaDon) {
         ChiTietMonQKUtility.getHdqkInstance().taoChiTietMonQKTaiBan(PhieuHoaDonTaiBanActivity.this, id_Ban, id_HoaDon);
     }
 }
