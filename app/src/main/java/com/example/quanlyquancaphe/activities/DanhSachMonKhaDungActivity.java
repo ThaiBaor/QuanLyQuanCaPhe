@@ -41,9 +41,6 @@ public class DanhSachMonKhaDungActivity extends AppCompatActivity implements Nav
     ArrayList<Mon> data = new ArrayList<>();
     ArrayList<Mon> fillterdata = new ArrayList<>();
     DanhSachMonKhaDungAdapter danhSachMonKhaDungAdapter;
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
-    ValueEventListener valueEventListener;
     RecyclerView recyclerView;
     EditText edtSearch;
     @Override

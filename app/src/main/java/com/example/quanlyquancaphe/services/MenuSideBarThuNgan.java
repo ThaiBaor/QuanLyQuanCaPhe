@@ -9,6 +9,7 @@ import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.activities.DangNhapActivity;
 import com.example.quanlyquancaphe.activities.DanhSachMonPhucVuActivity;
 import com.example.quanlyquancaphe.activities.DoiMatKhauActivity;
+import com.example.quanlyquancaphe.activities.HoaDonMangVeActivity;
 import com.example.quanlyquancaphe.activities.HoaDonTaiBanActivity;
 import com.example.quanlyquancaphe.activities.QuanLyBanActivity;
 import com.example.quanlyquancaphe.activities.QuanLyKhoActivity;
@@ -31,6 +32,7 @@ public class MenuSideBarThuNgan {
                 chonManHinh(activity, HoaDonTaiBanActivity.class);
                 break;
             case R.id.nav_thanhtoanmangdi:
+                chonManHinh(activity, HoaDonMangVeActivity.class);
                 break;
             case R.id.nav_doimatkhau:
                 Intent intent = new Intent(activity, DoiMatKhauActivity.class);
