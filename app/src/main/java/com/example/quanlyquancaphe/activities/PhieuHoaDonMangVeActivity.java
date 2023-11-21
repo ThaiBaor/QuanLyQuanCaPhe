@@ -51,6 +51,7 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
     HoaDonMangVe hoaDonMangVe = new HoaDonMangVe();
     ArrayList<ChiTietMon> dataChiTietMon = new ArrayList<>();
     ArrayList<ChiTietMon> dataGop = new ArrayList<>();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +83,7 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
                     ref.child(hoaDonMangVe.getId_HoaDon()).child("daThanhToan").setValue(tt).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+                            HoaDonUltility.getHdInstance().tangSoLuongDaBan(dataGop);
                             Toast.makeText(PhieuHoaDonMangVeActivity.this, "Thanh toán thành công", Toast.LENGTH_SHORT).show();
                             databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(tenKH);
                             databaseReference.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -115,7 +117,8 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
         btnQuayLai = findViewById(R.id.btnQuayLaiMV);
         btnThanhToan = findViewById(R.id.btnThanhToanMV);
     }
-    public void loadDataThongTin(){
+
+    public void loadDataThongTin() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("").setMessage("Đang tải dữ liệu...");
         builder.setCancelable(false);
         AlertDialog dialog = builder.create();
@@ -123,7 +126,7 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
         if (bundle != null) {
             NumberFormat nf = NumberFormat.getNumberInstance();
             hoaDonMangVe.setId_HoaDon(bundle.getString("id_HoaDon"));
-            tvMHD.setText(hoaDonMangVe.getId_HoaDon().substring(0,13));
+            tvMHD.setText(hoaDonMangVe.getId_HoaDon().substring(0, 13));
             hoaDonMangVe.setThoiGian_ThanhToan(bundle.getString("thoiGian_ThanhToan"));
             tvGioHD.setText(hoaDonMangVe.getThoiGian_ThanhToan());
             hoaDonMangVe.setNgayThanhToan(bundle.getString("ngayThanhToan"));
@@ -136,6 +139,7 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
         }
         dialog.dismiss();
     }
+
     private void datachitietmon() {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference().child("ChiTietMon").child(tenKH);
@@ -153,17 +157,17 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
                     }
                 }
                 Map<String, Integer> mapGopSL = new HashMap<>();
-                for (ChiTietMon item : dataChiTietMon){
-                    Integer current = mapGopSL.getOrDefault(item.getId_Mon(),0);
-                    mapGopSL.put(item.getId_Mon(),current + item.getSl());
+                for (ChiTietMon item : dataChiTietMon) {
+                    Integer current = mapGopSL.getOrDefault(item.getId_Mon(), 0);
+                    mapGopSL.put(item.getId_Mon(), current + item.getSl());
                 }
-                for (Map.Entry<String, Integer> entry : mapGopSL.entrySet()){
+                for (Map.Entry<String, Integer> entry : mapGopSL.entrySet()) {
                     ChiTietMon chiTietMon = new ChiTietMon();
                     chiTietMon.setId_Mon(entry.getKey());
                     chiTietMon.setSl(entry.getValue());
-                    for (ChiTietMon item : dataChiTietMon){
+                    for (ChiTietMon item : dataChiTietMon) {
                         ChiTietMon chiTietMon1 = new ChiTietMon();
-                        if (item.getId_Mon().equals(entry.getKey())){
+                        if (item.getId_Mon().equals(entry.getKey())) {
                             chiTietMon1.setId_Mon(item.getId_Mon());
                             chiTietMon1.setSl(chiTietMon.getSl());
                             chiTietMon1.setId_Ban(item.getId_Ban());
@@ -191,7 +195,8 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
             }
         });
     }
-    public void taoChiTietMonQK(String id_HoaDon){
+
+    public void taoChiTietMonQK(String id_HoaDon) {
         HoaDonUltility.getHdInstance().thanhToanTaiBan(tenKH, id_HoaDon);
     }
 }
