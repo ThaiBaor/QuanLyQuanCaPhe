@@ -12,11 +12,11 @@
         <item
             android:id="@+id/nav_thanhtoantaiban"
             android:icon="@drawable/qlban_icon"
-            android:title="Thanh toán tại bàn"></item>
+            android:title="Hóa đơn tại bàn"></item>
         <item
             android:id="@+id/nav_thanhtoanmangdi"
             android:icon="@drawable/thongkehoadon_icon"
-            android:title="Thanh toán mang đi"></item>
+            android:title="Hóa đơn mang về"></item>
         <item
             android:id="@+id/nav_doimatkhau"
             android:icon="@drawable/lock_icon"

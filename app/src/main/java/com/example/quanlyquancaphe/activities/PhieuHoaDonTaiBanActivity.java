@@ -1,7 +1,15 @@
 package com.example.quanlyquancaphe.activities;
 
 import android.app.AlertDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -33,6 +41,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,7 +52,7 @@ import java.util.Map;
 
 public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
     TextView tvMHD, tvGioHD, tvNgayHD, tvBanHD, tvGiaHD, tvKhu, tvNV, tvTongTien;
-    Button btnQuayLai, btnThanhToan;
+    Button btnQuayLai, btnThanhToan, btnPDF;
     ImageView ivHinh;
     RecyclerView recyclerView;
     Bundle bundle;
@@ -55,6 +67,7 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
     PhieuHoaDonAdapter adapter;
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
+    Bitmap bmp, scaledbmp;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -110,6 +123,12 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
                 dataChiTietMon.clear();
             }
         });
+        btnPDF.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createPDF();
+            }
+        });
     }
 
     private void setControl() {
@@ -125,6 +144,9 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
         btnQuayLai = findViewById(R.id.btnQuayLai);
         btnThanhToan = findViewById(R.id.btnThanhToan);
         ivHinh = findViewById(R.id.ivHinh);
+        btnPDF = findViewById(R.id.btnPDF);
+        bmp = BitmapFactory.decodeResource(getResources(),R.drawable.logo);
+        scaledbmp = Bitmap.createScaledBitmap(bmp,200,200,false);
     }
 
     private void loadDataThongTin() {
@@ -211,6 +233,90 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
         HoaDonUltility.getHdInstance().thanhToanTaiBan(id_Ban, id_HoaDon);
     }
     public void createPDF(){
-        
+        int pageWidth =1200;
+        int cd = 50;
+        int pageRemember = 600;
+        PdfDocument pdfDocument = new PdfDocument();
+        Paint paint = new Paint();
+        Paint titlePaint  = new Paint();
+
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(1200,2010,1).create();
+        PdfDocument.Page page = pdfDocument.startPage(pageInfo);
+        Canvas canvas = page.getCanvas();
+
+        canvas.drawBitmap(scaledbmp,0,0,paint);
+
+        titlePaint.setTextAlign(Paint.Align.CENTER);
+        titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.ITALIC));
+        titlePaint.setTextSize(40);
+        canvas.drawText("53 Võ Vân Ngân, Linh Chiểu, Tp.Thủ Đức, Tp.HCM",pageWidth/2,250,titlePaint);
+
+        paint.setTextAlign(Paint.Align.LEFT);
+        paint.setTextSize(40f);
+        paint.setColor(Color.BLACK);
+        canvas.drawText("Mã hóa đơn: ",20,350,paint);
+        canvas.drawText("Tên phục vụ: ",20,400,paint);
+        canvas.drawText("Ngày: ",20,450,paint);
+
+        paint.setTextAlign(Paint.Align.RIGHT);
+        canvas.drawText("Ban: ",pageWidth-20,350,paint);
+        canvas.drawText("Khu: ",pageWidth-20,450,paint);
+
+        paint.setTextAlign(Paint.Align.LEFT);
+        paint.setTextSize(70f);
+        paint.setColor(Color.BLACK);
+        canvas.drawText("Tên món",50,600,paint);
+
+        paint.setTextAlign(Paint.Align.CENTER);
+        paint.setTextSize(70f);
+        paint.setColor(Color.BLACK);
+        canvas.drawText("Số lượng",pageWidth/2,600,paint);
+
+        paint.setTextAlign(Paint.Align.RIGHT);
+        paint.setTextSize(70f);
+        paint.setColor(Color.BLACK);
+        canvas.drawText("Thành tiền",pageWidth-70,600,paint);
+
+        for (int i =1 ; i<4; i++){
+            paint.setTextAlign(Paint.Align.LEFT);
+            paint.setTextSize(50f);
+            paint.setColor(Color.BLACK);
+            canvas.drawText("mon "+ i,50,pageRemember+cd,paint);
+
+            paint.setTextAlign(Paint.Align.CENTER);
+            paint.setTextSize(50f);
+            paint.setColor(Color.BLACK);
+            canvas.drawText(i+"",pageWidth/2,pageRemember+cd,paint);
+
+            paint.setTextAlign(Paint.Align.RIGHT);
+            paint.setTextSize(50f);
+            paint.setColor(Color.BLACK);
+            canvas.drawText(i+"",pageWidth-70,pageRemember+cd,paint);
+            pageRemember += cd;
+        }
+
+        paint.setTextAlign(Paint.Align.LEFT);
+        paint.setTextSize(50f);
+        paint.setColor(Color.BLACK);
+        canvas.drawText("Tổng cộng ",50,pageRemember + 100,paint);
+
+        paint.setTextAlign(Paint.Align.RIGHT);
+        paint.setTextSize(50f);
+        paint.setColor(Color.BLACK);
+        canvas.drawText("Tong Tien",pageWidth-50,pageRemember + 100,paint);
+
+        pdfDocument.finishPage(page);
+
+        File file = new File(Environment.getExternalStorageDirectory(),"/Bill.pdf");
+
+        try {
+            pdfDocument.writeTo(new FileOutputStream(file));
+            Toast.makeText(this, "Thanh Cong", Toast.LENGTH_SHORT).show();
+        }catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        pdfDocument.close();
     }
 }
