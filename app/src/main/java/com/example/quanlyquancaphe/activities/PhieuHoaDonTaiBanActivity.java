@@ -1,5 +1,6 @@
 package com.example.quanlyquancaphe.activities;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,6 +54,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
+    final static int REQUEST_CODE = 1232;
     TextView tvMHD, tvGioHD, tvNgayHD, tvBanHD, tvGiaHD, tvKhu, tvNV, tvTongTien;
     Button btnQuayLai, btnThanhToan, btnPDF;
     ImageView ivHinh;
@@ -128,6 +131,7 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
         btnPDF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                askPermission();
                 createPDF();
             }
         });
@@ -148,7 +152,7 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
         ivHinh = findViewById(R.id.ivHinh);
         btnPDF = findViewById(R.id.btnPDF);
         bmp = BitmapFactory.decodeResource(getResources(),R.drawable.logo);
-        scaledbmp = Bitmap.createScaledBitmap(bmp,200,200,false);
+        scaledbmp = Bitmap.createScaledBitmap(bmp,500,500,false);
     }
 
     private void loadDataThongTin() {
@@ -235,6 +239,9 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
     public void taoChiTietMonQK(String id_HoaDon){
         HoaDonUltility.getHdInstance().thanhToanTaiBan(id_Ban, id_HoaDon);
     }
+    public void askPermission(){
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
+    }
     public void createPDF(){
         int pageWidth =1200;
         int cd = 50;
@@ -310,10 +317,13 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
 
         pdfDocument.finishPage(page);
 
-        File file = new File(Environment.getExternalStorageDirectory(),"/Bill.pdf");
+        File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        String fileName = "Bill.pdf";
+        File file = new File(downloadDir,fileName);
 
         try {
-            pdfDocument.writeTo(new FileOutputStream(file));
+            FileOutputStream fos = new FileOutputStream(file);
+            pdfDocument.writeTo(fos);
             Toast.makeText(this, "Thanh Cong", Toast.LENGTH_SHORT).show();
         }catch (FileNotFoundException e) {
             throw new RuntimeException(e);
