@@ -96,10 +96,10 @@
             android:exported="true" />
         <activity
             android:name=".activities.HoaDonTaiBanActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".activities.HoaDonMangVeActivity"
-            android:exported="true"></activity> <!-- DANH SÁCH MÓN KHẢ DỤNG -->
+            android:exported="true" /> <!-- DANH SÁCH MÓN KHẢ DỤNG -->
         <!-- BÁO CÁO BÁN HÀNG -->
         <activity
             android:name=".activities.BaoCaoBanHangActivity"
@@ -118,6 +118,9 @@
             android:exported="true" /> <!-- THỐNG KÊ -->
         <activity
             android:name=".activities.ThongKeHoaDonActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.BaoCaoDoanhThuThang"
             android:exported="true" />
         <activity
             android:name=".activities.BieuDoThongKeHoaDonThang"

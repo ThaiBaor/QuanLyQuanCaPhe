@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.quanlyquancaphe.R;
 import com.github.mikephil.charting.animation.Easing;
@@ -21,6 +23,9 @@ import java.util.ArrayList;
 
 public class BieuDoThongKeHoaDonThang extends AppCompatActivity {
     BarChart barChart;
+
+    TextView test;
+
 
     ArrayList<BarEntry> data = new ArrayList<>();
     Toolbar toolbar;
@@ -41,6 +46,10 @@ public class BieuDoThongKeHoaDonThang extends AppCompatActivity {
             //data.add(new PieEntry(arrDoanhThu.get(i).intValue(), arrTenMon.get(i)));
         //}
         data.add(new BarEntry(0, 10));
+        data.add(new BarEntry(1, 10));
+        data.add(new BarEntry(2, 10));
+        data.add(new BarEntry(3, 10));
+        data.add(new BarEntry(4, 10));
         BarDataSet barDataSet = new BarDataSet(data, "");
         barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         barDataSet.setValueTextSize(20f);
@@ -49,10 +58,17 @@ public class BieuDoThongKeHoaDonThang extends AppCompatActivity {
         barChart.getDescription().setEnabled(false);
         barChart.animateY(1000, Easing.EaseInOutQuad);
         barChart.invalidate();
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                barChart.clear();
+            }
+        });
     }
 
     private void setControl() {
         barChart = findViewById(R.id.bieuDoHoaDonThang);
         toolbar = findViewById(R.id.toolBar);
+        test = findViewById(R.id.tvTest);
     }
 }
