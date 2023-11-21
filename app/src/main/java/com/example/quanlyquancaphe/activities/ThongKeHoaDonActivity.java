@@ -301,6 +301,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
         for (int i = 0; i < dataBan.size(); i++) {
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             DatabaseReference databaseReference = firebaseDatabase.getReference().child("ChiTietMon").child(dataBan.get(i).getId_Ban()).child("QK");
+            int finalI = i;
             valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -308,7 +309,10 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                         arrIdHoaDonGet.add(item.getKey());
                     }
                     //Toast.makeText(ThongKeHoaDonActivity.this, arrIdHoaDon.size()+"Get", Toast.LENGTH_SHORT).show();
-                    getIdThoiGianGoiMon(arrIdThoiGianGoiMon);
+                    if(finalI == dataBan.size()-1){
+                        getIdThoiGianGoiMon(arrIdThoiGianGoiMon);
+                        //Toast.makeText(ThongKeHoaDonActivity.this, "Lay", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
                 @Override
@@ -348,6 +352,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
             for (int j = 0; j < arrIdHoaDon.size(); j ++){
                 FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                 DatabaseReference databaseReference = firebaseDatabase.getReference().child("ChiTietMon").child(dataBan.get(i).getId_Ban()).child("QK").child(arrIdHoaDon.get(j).toString());
+                int finalI = i;
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -356,7 +361,9 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                                 arrIdThoiGianGoiMonGet.add(item.getKey());
                             }
                         }
-                        setArrHoaDonKH(hoaDonKhachHangs);
+                        if(finalI == dataBan.size() - 1){
+                            setArrHoaDonKH(hoaDonKhachHangs);
+                        }
                     }
 
                     @Override
