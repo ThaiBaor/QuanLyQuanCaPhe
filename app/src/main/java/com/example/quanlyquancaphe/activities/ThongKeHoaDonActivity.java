@@ -58,6 +58,16 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
     ActionBarDrawerToggle actionBarDrawerToggle;
     ThongKeHoaDon thongKeHoaDon = new ThongKeHoaDon();
 
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
+
+    int count = 0;
+    int countHD = 0;
+
+    int countGet = 0;
+
+    int countGet_ = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,9 +76,6 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
         setEvent();
         setdrawer();
         initDataBan();
-        getDataHoaDon();
-        getDataHoaDonMangVe();
-        //filterHoaDon();
     }
 
     private void setEvent() {
@@ -168,7 +175,6 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 calendar.set(year,month,day);
-                //tvNgayThongKe.setText(dateFormat.format(calendar.getTime()));
                 if(kiemTraNgayGio() <= 0){
                     tvNgayThongKe.setText(dateFormat.format(calendar.getTime()));
                 }
@@ -207,10 +213,6 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
     }
 
     private void getDataHoaDon(){
-//        AlertDialog.Builder builder = new AlertDialog.Builder(ThongKeHoaDonActivity.this).setTitle("").setMessage("Đang tải dữ liệu...");
-//        builder.setCancelable(false);
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
         FirebaseDatabase firebaseDatabaseTaiBan = FirebaseDatabase.getInstance();
         DatabaseReference databaseReferenceTaiBan = firebaseDatabaseTaiBan.getReference().child("HoaDon").child("TaiBan");
         databaseReferenceTaiBan.addValueEventListener(new ValueEventListener() {
@@ -226,34 +228,28 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                     Double tongTien = Double.parseDouble(item.child("tongTien").getValue().toString());
                     Boolean daThanhToan = Boolean.parseBoolean(item.child("daThanhToan").getValue().toString());
                     String tenKhachHang = "Không có";
-                    //Toast.makeText(ThongKeHoaDonActivity.this, hoaDonKhachHangs.size() +"hoadonKH", Toast.LENGTH_SHORT).show();
                     for (HoaDonKhachHang hoaDonKhachHang : hoaDonKhachHangs){
                         if(id_MaHoaDon.equals(hoaDonKhachHang.getId_HoaDon())){
-                            tenKhachHang = hoaDonKhachHang.getTenKH();
+                            String[] split = hoaDonKhachHang.getTenKH().split("-");
+                            tenKhachHang = split[1];
                         }
                     }
-                    //Toast.makeText(ThongKeHoaDonActivity.this,ngayThanhToan + " " + thoiGian_thanhtoan, Toast.LENGTH_SHORT).show();
                     thongKeHoaDon = new ThongKeHoaDon(id_MaHoaDon, id_Ban,ngayThanhToan, thoiGian_thanhtoan, tongTien, daThanhToan, tenKhachHang);
                     data.add(thongKeHoaDon);
                 }
-                getDataHoaDonMangVe();
                 filterHoaDon();
-//                dialog.dismiss();
+                getDataHoaDonMangVe();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-//                dialog.dismiss();
                 Toast.makeText(ThongKeHoaDonActivity.this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void getDataHoaDonMangVe(){
-//        AlertDialog.Builder builder = new AlertDialog.Builder(ThongKeHoaDonActivity.this).setTitle("").setMessage("Đang tải dữ liệu...");
-//        builder.setCancelable(false);
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
+
         FirebaseDatabase firebaseDatabaseMangVe = FirebaseDatabase.getInstance();
         DatabaseReference databaseReferenceMangVe = firebaseDatabaseMangVe.getReference().child("HoaDon").child("MangVe");
         databaseReferenceMangVe.addValueEventListener(new ValueEventListener() {
@@ -267,19 +263,16 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                     String ngayThanhToan = item.child("ngayThanhToan").getValue().toString();
                     Double tongTien = Double.parseDouble(item.child("tongTien").getValue().toString());
                     Boolean daThanhToan = Boolean.parseBoolean(item.child("daThanhToan").getValue().toString());
-                    String tenKhachHang = item.child("tenKH").getValue().toString();
-                    //Toast.makeText(ThongKeHoaDonActivity.this,ngayThanhToan + " " + thoiGian_thanhtoan, Toast.LENGTH_SHORT).show();
-                    thongKeHoaDon = new ThongKeHoaDon(id_MaHoaDon, id_Ban,ngayThanhToan, thoiGian_thanhtoan, tongTien, daThanhToan, tenKhachHang);
+                    String[] splitget = item.child("tenKH").getValue().toString().split("-");
+                    String tenKH = splitget[1];
+                    thongKeHoaDon = new ThongKeHoaDon(id_MaHoaDon, id_Ban,ngayThanhToan, thoiGian_thanhtoan, tongTien, daThanhToan, tenKH);
                     data.add(thongKeHoaDon);
                 }
-                //thongKeHoaDonAdapter.notifyDataSetChanged();
                 filterHoaDon();
-                //dialog.dismiss();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                //dialog.dismiss();
                 Toast.makeText(ThongKeHoaDonActivity.this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -296,32 +289,58 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
         }
     }
 
-    private void getDataIdHoaDon(ArrayList arrIdHoaDonGet) {
-        arrIdHoaDon.clear();
-        for (int i = 0; i < dataBan.size(); i++) {
-            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-            DatabaseReference databaseReference = firebaseDatabase.getReference().child("ChiTietMon").child(dataBan.get(i).getId_Ban()).child("QK");
-            int finalI = i;
-            valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot item: snapshot.getChildren()){
-                        arrIdHoaDonGet.add(item.getKey());
-                    }
-                    //Toast.makeText(ThongKeHoaDonActivity.this, arrIdHoaDon.size()+"Get", Toast.LENGTH_SHORT).show();
-                    if(finalI == dataBan.size()-1){
-                        getIdThoiGianGoiMon(arrIdThoiGianGoiMon);
-                        //Toast.makeText(ThongKeHoaDonActivity.this, "Lay", Toast.LENGTH_SHORT).show();
-                    }
-                }
+    private void getDataArrHDKH(ArrayList<HoaDonKhachHang> arrHDKH){
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference().child("ChiTietMon");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot item : snapshot.getChildren()){
+                    String id_Ban = item.getKey();
+                    firebaseDatabase = FirebaseDatabase.getInstance();
+                    databaseReference = firebaseDatabase.getReference().child("ChiTietMon").child(id_Ban).child("QK");
+                    databaseReference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            countGet++;
+                            for (DataSnapshot itemIDHoaDon : snapshot.getChildren()){
+                                String idHoaDon = itemIDHoaDon.getKey();
+                                count++;
+                                for (DataSnapshot itemTGGoiMon : itemIDHoaDon.getChildren()){
+                                    for (DataSnapshot item : itemTGGoiMon.getChildren()){
+                                        countHD = 1;
+                                        if(count == countHD){
+                                            String tenKH = item.child("tenKH").getValue().toString();
+                                            HoaDonKhachHang hoaDonKhachHang = new HoaDonKhachHang(idHoaDon, tenKH);
+                                            arrHDKH.add(hoaDonKhachHang);
+                                            count = 0;
+                                        }
+                                    }
+                                }
+                            }
+                            if (countGet == countGet_){
+                                getDataHoaDon();
+                                getDataHoaDonMangVe();
+                            }
+                        }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(ThongKeHoaDonActivity.this, "Kết nối mạng lỗi", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    countGet_++;
                 }
-            });
-        }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(ThongKeHoaDonActivity.this, "Kết nối mạng lỗi", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
+
 
     private void initDataBan() {
        FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -334,8 +353,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                     Ban ban = item.getValue(Ban.class);
                     dataBan.add(ban);
                 }
-                getDataIdHoaDon(arrIdHoaDon);
-
+                getDataArrHDKH(hoaDonKhachHangs);
             }
 
             @Override
@@ -345,68 +363,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
         });
 
     }
-    private void getIdThoiGianGoiMon(ArrayList arrIdThoiGianGoiMonGet){
-        //Toast.makeText(this, arrIdHoaDon.size()+"arrHoaDon", Toast.LENGTH_SHORT).show();
-        arrIdThoiGianGoiMonGet.clear();
-        for (int i = 0; i < dataBan.size(); i++) {
-            for (int j = 0; j < arrIdHoaDon.size(); j ++){
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference databaseReference = firebaseDatabase.getReference().child("ChiTietMon").child(dataBan.get(i).getId_Ban()).child("QK").child(arrIdHoaDon.get(j).toString());
-                int finalI = i;
-                databaseReference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot item : snapshot.getChildren()){
-                            if(arrIdThoiGianGoiMonGet.contains(item.getKey()) == false){
-                                arrIdThoiGianGoiMonGet.add(item.getKey());
-                            }
-                        }
-                        if(finalI == dataBan.size() - 1){
-                            setArrHoaDonKH(hoaDonKhachHangs);
-                        }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-            }
-        }
-    }
-
-    private void setArrHoaDonKH(ArrayList<HoaDonKhachHang> arrHoaDonKHGet){
-        for (int i = 0; i < dataBan.size(); i++) {
-            for (int j = 0; j < arrIdHoaDon.size(); j ++){
-                String idHD = arrIdHoaDon.get(j).toString();
-                final String[] add = {"0"};
-                for (int k = 0;k < arrIdThoiGianGoiMon.size(); k++){
-                    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                    DatabaseReference databaseReference = firebaseDatabase.getReference().child("ChiTietMon").child(dataBan.get(i).getId_Ban()).child("QK").child(arrIdHoaDon.get(j).toString()).child(arrIdThoiGianGoiMon.get(k).toString());
-                    databaseReference.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for (DataSnapshot item : snapshot.getChildren()){
-                                    HoaDonKhachHang hoaDonKhachHang = new HoaDonKhachHang(idHD, item.child("tenKH").getValue().toString());
-                                    if(add[0].equals("0") == true){
-                                        arrHoaDonKHGet.add(hoaDonKhachHang);
-                                        add[0] = "1";
-                                    }
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                }
-            }
-        }
-        getDataHoaDon();
-        filterHoaDon();
-    }
 
     private void setdrawer(){
         toolBar = findViewById(R.id.toolBar);
