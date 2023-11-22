@@ -9,8 +9,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,8 +31,10 @@ import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.adapters.PhieuHoaDonAdapter;
 import com.example.quanlyquancaphe.models.Ban;
 import com.example.quanlyquancaphe.models.ChiTietMon;
+import com.example.quanlyquancaphe.models.HoaDon;
 import com.example.quanlyquancaphe.models.HoaDonTaiBan;
 import com.example.quanlyquancaphe.models.Khu;
+import com.example.quanlyquancaphe.models.PDF;
 import com.example.quanlyquancaphe.ultilities.HoaDonUltility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -42,6 +47,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -71,6 +77,8 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
     Bitmap bmp, scaledbmp;
+    String fileName;
+    File downloadDir;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,6 +110,8 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference ref = database.getReference("HoaDon").child("TaiBan");
 
+
+
                     taoChiTietMonQK(hoaDonTaiBan.getId_HoaDon());
                     ref.child(hoaDonTaiBan.getId_HoaDon()).child("daThanhToan").setValue(tt).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -131,6 +141,7 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
             public void onClick(View view) {
                 askPermission();
                 createPDF();
+                UploadFile(fileName);
             }
         });
     }
@@ -150,7 +161,7 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
         ivHinh = findViewById(R.id.ivHinh);
         btnPDF = findViewById(R.id.btnPDF);
         bmp = BitmapFactory.decodeResource(getResources(),R.drawable.logo);
-        scaledbmp = Bitmap.createScaledBitmap(bmp,500,500,false);
+        scaledbmp = Bitmap.createScaledBitmap(bmp,400,400,false);
     }
 
     private void loadDataThongTin() {
@@ -241,8 +252,8 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
     }
     public void createPDF(){
         int pageWidth =1200;
-        int cd = 50;
-        int pageRemember = 600;
+        int cd = 80;
+        int pageRemember = 870;
         PdfDocument pdfDocument = new PdfDocument();
         Paint paint = new Paint();
         Paint titlePaint  = new Paint();
@@ -251,82 +262,130 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
         PdfDocument.Page page = pdfDocument.startPage(pageInfo);
         Canvas canvas = page.getCanvas();
 
-        canvas.drawBitmap(scaledbmp,0,0,paint);
+        canvas.drawBitmap(scaledbmp,400,0,paint);
+
 
         titlePaint.setTextAlign(Paint.Align.CENTER);
         titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.ITALIC));
-        titlePaint.setTextSize(40);
-        canvas.drawText("53 Võ Vân Ngân, Linh Chiểu, Tp.Thủ Đức, Tp.HCM",pageWidth/2,250,titlePaint);
+        titlePaint.setTextSize(50);
+        canvas.drawText("53 Võ Vân Ngân, Linh Chiểu, Tp.Thủ Đức, Tp.HCM",pageWidth/2,450,titlePaint);
 
         paint.setTextAlign(Paint.Align.LEFT);
-        paint.setTextSize(40f);
+        paint.setTextSize(60f);
         paint.setColor(Color.BLACK);
-        canvas.drawText("Mã hóa đơn: ",20,350,paint);
-        canvas.drawText("Tên phục vụ: ",20,400,paint);
-        canvas.drawText("Ngày: ",20,450,paint);
+        canvas.drawText("Mã hóa đơn: ",20,550,paint);
+        canvas.drawText("Bàn: ",20,630,paint);
+        canvas.drawText("Ngày: ",20,710,paint);
 
         paint.setTextAlign(Paint.Align.RIGHT);
-        canvas.drawText("Ban: ",pageWidth-20,350,paint);
-        canvas.drawText("Khu: ",pageWidth-20,450,paint);
+        paint.setTextSize(60f);
+        paint.setColor(Color.BLACK);
+        canvas.drawText("Giờ: ",pageWidth-410,710,paint);
+        canvas.drawText("Khu: ",pageWidth-400,630,paint);
 
         paint.setTextAlign(Paint.Align.LEFT);
-        paint.setTextSize(70f);
+        paint.setTextSize(60f);
         paint.setColor(Color.BLACK);
-        canvas.drawText("Tên món",50,600,paint);
+        canvas.drawText("Tên món",50,850,paint);
 
         paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(70f);
+        paint.setTextSize(60f);
         paint.setColor(Color.BLACK);
-        canvas.drawText("Số lượng",pageWidth/2,600,paint);
+        canvas.drawText("Số lượng",pageWidth/2,850,paint);
 
         paint.setTextAlign(Paint.Align.RIGHT);
         paint.setTextSize(70f);
         paint.setColor(Color.BLACK);
-        canvas.drawText("Thành tiền",pageWidth-70,600,paint);
+        canvas.drawText("Thành tiền",pageWidth-70,850,paint);
 
-        for (int i =1 ; i<4; i++){
+        NumberFormat nf = NumberFormat.getNumberInstance();
+        for (ChiTietMon item : dataChiTietMon){
+
+
             paint.setTextAlign(Paint.Align.LEFT);
-            paint.setTextSize(50f);
+            paint.setTextSize(55f);
             paint.setColor(Color.BLACK);
-            canvas.drawText("mon "+ i,50,pageRemember+cd,paint);
+            canvas.drawText(item.getTenMon(),50,pageRemember+cd,paint);
 
             paint.setTextAlign(Paint.Align.CENTER);
-            paint.setTextSize(50f);
+            paint.setTextSize(55f);
             paint.setColor(Color.BLACK);
-            canvas.drawText(i+"",pageWidth/2,pageRemember+cd,paint);
+            canvas.drawText(item.getSl()+"",pageWidth/2,pageRemember+cd,paint);
 
             paint.setTextAlign(Paint.Align.RIGHT);
-            paint.setTextSize(50f);
+            paint.setTextSize(55f);
             paint.setColor(Color.BLACK);
-            canvas.drawText(i+"",pageWidth-70,pageRemember+cd,paint);
+            canvas.drawText(nf.format(item.getGia()) + "đ",pageWidth-90,pageRemember+cd,paint);
             pageRemember += cd;
         }
 
         paint.setTextAlign(Paint.Align.LEFT);
+        paint.setTextSize(60f);
+        paint.setColor(Color.BLACK);
+        canvas.drawText(hoaDonTaiBan.getId_HoaDon(), 400,550,paint);
+        canvas.drawText(ban.getTenBan(),170,630,paint);
+        canvas.drawText(hoaDonTaiBan.getNgayThanhToan(), 200,710,paint);
+
+        paint.setTextAlign(Paint.Align.RIGHT);
+        paint.setTextSize(60f);
+        paint.setColor(Color.BLACK);
+        canvas.drawText(hoaDonTaiBan.getThoiGian_ThanhToan(), pageWidth-170,710,paint);
+        canvas.drawText(khu.getTenKhu(), pageWidth-230,630,paint);
+
+        paint.setTextAlign(Paint.Align.LEFT);
         paint.setTextSize(50f);
         paint.setColor(Color.BLACK);
-        canvas.drawText("Tổng cộng ",50,pageRemember + 100,paint);
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.BOLD));
+        canvas.drawText("Tổng cộng: ",50,pageRemember + 100,paint);
 
         paint.setTextAlign(Paint.Align.RIGHT);
         paint.setTextSize(50f);
         paint.setColor(Color.BLACK);
-        canvas.drawText("Tong Tien",pageWidth-50,pageRemember + 100,paint);
+        canvas.drawText(nf.format(hoaDonTaiBan.getTongTien()) + "đ",pageWidth-90,pageRemember + 100,paint);
+
 
         pdfDocument.finishPage(page);
 
-        File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        String fileName = "Bill.pdf";
+        downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        fileName = hoaDonTaiBan.getId_HoaDon() + ".pdf";
         File file = new File(downloadDir,fileName);
 
         try {
             FileOutputStream fos = new FileOutputStream(file);
             pdfDocument.writeTo(fos);
-            Toast.makeText(this, "Thanh Cong", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Thanh Cong", Toast.LENGTH_SHORT).show();
         }catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         pdfDocument.close();
+    }
+
+    public void UploadFile(String pdfFilePath){
+        storageReference = FirebaseStorage.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference("Bill_PDF");
+        File pdfFile = new File(downloadDir,pdfFilePath);
+        Uri fileUri = Uri.fromFile(pdfFile);
+
+        StorageReference reference = storageReference.child("Bill_PDF/" + System.currentTimeMillis() + ".pdf");
+        reference.putFile(fileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                while (!uriTask.isComplete());
+                Uri uri = uriTask.getResult();
+
+                PDF pdf = new PDF(fileName, uri.toString());
+                databaseReference.child(databaseReference.push().getKey()).setValue(pdf);
+
+                Toast.makeText(PhieuHoaDonTaiBanActivity.this, "Upload File Thanh cong", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("Loi", "Upload failed. Exception: " + e.getMessage());
+            }
+        });
     }
 }
