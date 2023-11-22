@@ -3,6 +3,7 @@ package com.example.quanlyquancaphe.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -10,58 +11,59 @@ import android.widget.TextView;
 import com.example.quanlyquancaphe.R;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BieuDoThongKeHoaDonThang extends AppCompatActivity {
     BarChart barChart;
 
     TextView test;
 
-
     ArrayList<BarEntry> data = new ArrayList<>();
     Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.man_hinh_bieu_do_thong_ke_hoa_don_thang_layout);
+        setContentView(R.layout.manhinh_bieudothongkehoadonthang);
         setControl();
         setEvent();
     }
 
     private void setEvent() {
-        //ArrayList<String> arrTenMon = bundle.getStringArrayList("arrTenMon");
-        //ArrayList<Double> arrDoanhThu = (ArrayList<Double>)intent.getSerializableExtra("arrDoanhThu");
-        // Duyệt array list, khỏi gán giá trị cho biểu đồ
+        Intent intent = getIntent();
+        List<String> labels = new ArrayList<>();
+        //Bundle bundle = intent.getExtras();
+        ArrayList<Double> arrDoanhThu = (ArrayList<Double>)intent.getSerializableExtra("arrDoanhThu");
         barChart.clear();
-        //for(int i = 0; i< arrTenMon.size(); i ++){
-            //data.add(new PieEntry(arrDoanhThu.get(i).intValue(), arrTenMon.get(i)));
-        //}
-        data.add(new BarEntry(0, 10));
-        data.add(new BarEntry(1, 10));
-        data.add(new BarEntry(2, 10));
-        data.add(new BarEntry(3, 10));
-        data.add(new BarEntry(4, 10));
+        for(int i = 0; i< arrDoanhThu.size(); i ++){
+            data.add(new BarEntry(i, arrDoanhThu.get(i).intValue()));
+        }
+        for (int i = 0; i < 12; i++){
+            labels.add("Tháng " + (i + 1));
+        }
         BarDataSet barDataSet = new BarDataSet(data, "");
         barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         barDataSet.setValueTextSize(20f);
         BarData barData = new BarData(barDataSet);
         barChart.setData(barData);
+        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
+        barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         barChart.getDescription().setEnabled(false);
         barChart.animateY(1000, Easing.EaseInOutQuad);
         barChart.invalidate();
-        test.setOnClickListener(new View.OnClickListener() {
+
+        toolbar.setTitle("Biểu đồ báo cáo doanh thu theo tháng");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                barChart.clear();
+                finish();
             }
         });
     }
@@ -69,6 +71,5 @@ public class BieuDoThongKeHoaDonThang extends AppCompatActivity {
     private void setControl() {
         barChart = findViewById(R.id.bieuDoHoaDonThang);
         toolbar = findViewById(R.id.toolBar);
-        test = findViewById(R.id.tvTest);
     }
 }

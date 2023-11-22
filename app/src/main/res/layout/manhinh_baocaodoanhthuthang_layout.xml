@@ -13,7 +13,8 @@
         android:layout_marginTop="10dp"
         android:text="Doanh thu trong năm 2023: "
         android:textColor="#000"
-        android:textSize="25dp"></TextView>
+        android:textSize="25dp"
+        android:id="@+id/tvTitle"></TextView>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -145,4 +146,5 @@
             android:background="#DA8383"
             android:src="@drawable/chart_icon"></ImageButton>
     </LinearLayout>
+
 </LinearLayout>

@@ -4,11 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <include layout="@layout/toolbar"></include>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="bapvba;vabvapbapb;a"
-        android:id="@+id/tvTest"></TextView>
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/bieuDoHoaDonThang"
         android:layout_width="match_parent"

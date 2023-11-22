@@ -3,19 +3,20 @@ package com.example.quanlyquancaphe.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.quanlyquancaphe.R;
-import com.example.quanlyquancaphe.adapters.ThongKeHoaDonAdapter;
-import com.example.quanlyquancaphe.models.ChiTietMon;
-import com.example.quanlyquancaphe.models.HoaDonKhachHang;
 import com.example.quanlyquancaphe.models.ThongKeHoaDon;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,27 +25,21 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Map;
 
 public class BaoCaoDoanhThuThang extends AppCompatActivity {
 
-    TextView tvSlHoaDon, tvDoanhThu;
+    TextView tvSlHoaDon, tvDoanhThu, tvTitle;
     TableLayout tbLayout;
     ArrayList<ThongKeHoaDon> data = new ArrayList<>();
     ArrayList<ThongKeHoaDon> dataFilter = new ArrayList<>();
-
-    ThongKeHoaDonAdapter thongKeHoaDonAdapter;
-
-    //ArrayList<Double> dataDoanhThu = new ArrayList<>(new double[0.0]);
+    ArrayList<Double> dataDoanhThu = new ArrayList<>();
+    ImageButton btnChart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.man_hing_bao_cao_doanh_thu_thang_layout);
+        setContentView(R.layout.manhinh_baocaodoanhthuthang_layout);
         getDataHoaDonTaiBanVaMangVe();
         setControl();
     }
@@ -64,9 +59,49 @@ public class BaoCaoDoanhThuThang extends AppCompatActivity {
         inSertTableRow("10");
         inSertTableRow("11");
         inSertTableRow("12");
-
+        Calendar calendar = Calendar.getInstance();
+        tvTitle.setText("Doanh thu trong năm ");
+        NumberFormat nf = NumberFormat.getNumberInstance();
         tvSlHoaDon.setText(dataFilter.size() + "");
-        tvDoanhThu.setText(getTongDoanhThu() + "");
+        tvDoanhThu.setText(nf.format(getTongDoanhThu()) + "đ");
+        tvDoanhThu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDiaLog();
+            }
+        });
+        btnChart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(BaoCaoDoanhThuThang.this, BieuDoThongKeHoaDonThang.class);
+                for (int i = 0; i < 12 ; i++){
+                    dataDoanhThu.add(filterDoanhThuHoaDon((i + 1) + ""));
+                }
+                intent.putExtra("arrDoanhThu", dataDoanhThu);
+                startActivity(intent);
+                dataDoanhThu.clear();
+            }
+        });
+
+
+    }
+
+    private void openDiaLog(){
+        Calendar calendar = Calendar.getInstance();
+        int yearNow = calendar.get(Calendar.YEAR);
+        int monthNow = calendar.get(Calendar.MONTH);
+        int dayNow = calendar.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                //calendar.set(year,month,day);
+            }
+        }, yearNow, 0, 0);
+        datePickerDialog.setTitle("Chọn ngày");
+        datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+        calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) - 100);
+        datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
+        datePickerDialog.show();
     }
 
     private void getDataHoaDonTaiBanVaMangVe(){
@@ -115,7 +150,9 @@ public class BaoCaoDoanhThuThang extends AppCompatActivity {
                     ThongKeHoaDon thongKeHoaDon = new ThongKeHoaDon(id_MaHoaDon, id_Ban,ngayThanhToan, thoiGian_thanhtoan, tongTien, daThanhToan, tenKhachHang);
                     data.add(thongKeHoaDon);
                 }
-                filterDataTheoNam();
+                Calendar calendar = Calendar.getInstance();
+                String year = String.valueOf(calendar.get(Calendar.YEAR));
+                filterDataTheoNam(year);
             }
 
             @Override
@@ -124,10 +161,8 @@ public class BaoCaoDoanhThuThang extends AppCompatActivity {
             }
         });
     }
-    private void filterDataTheoNam(){
+    private void filterDataTheoNam(String year){
         dataFilter.clear();
-        Calendar calendar = Calendar.getInstance();
-        String year = String.valueOf(calendar.get(Calendar.YEAR));
         for(ThongKeHoaDon thongKeHoaDon : data){
            if (thongKeHoaDon.getThoiGian_thanhtoan().contains(year)){
                dataFilter.add(thongKeHoaDon);
@@ -303,6 +338,8 @@ public class BaoCaoDoanhThuThang extends AppCompatActivity {
     private void setControl() {
         tbLayout = findViewById(R.id.tbLayout);
         tvSlHoaDon = findViewById(R.id.tvSLHoaDon);
+        tvTitle = findViewById(R.id.tvTitle);
         tvDoanhThu = findViewById(R.id.tvDoanhThu);
+        btnChart = findViewById(R.id.btnChart);
     }
 }
