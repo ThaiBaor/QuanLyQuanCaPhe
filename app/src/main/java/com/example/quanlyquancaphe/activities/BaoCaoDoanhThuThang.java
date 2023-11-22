@@ -37,7 +37,10 @@ public class BaoCaoDoanhThuThang extends AppCompatActivity {
     TableLayout tbLayout;
     ArrayList<ThongKeHoaDon> data = new ArrayList<>();
     ArrayList<ThongKeHoaDon> dataFilter = new ArrayList<>();
+
     ThongKeHoaDonAdapter thongKeHoaDonAdapter;
+
+    //ArrayList<Double> dataDoanhThu = new ArrayList<>(new double[0.0]);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

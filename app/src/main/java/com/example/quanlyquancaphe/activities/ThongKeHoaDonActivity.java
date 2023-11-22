@@ -75,11 +75,11 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
         setControl();
         setEvent();
         setdrawer();
-        //initDataBan();
+        initDataBan();
         //getDataHoaDon();
         //getDataHoaDonMangVe();
         //filterHoaDon();
-        getDataArrHDKH(hoaDonKhachHangs);
+        //getDataArrHDKH(hoaDonKhachHangs);
     }
 
     private void setEvent() {
@@ -237,18 +237,18 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                     Double tongTien = Double.parseDouble(item.child("tongTien").getValue().toString());
                     Boolean daThanhToan = Boolean.parseBoolean(item.child("daThanhToan").getValue().toString());
                     String tenKhachHang = "Không có";
-                    //Toast.makeText(ThongKeHoaDonActivity.this, hoaDonKhachHangs.size() +"hoadonKH", Toast.LENGTH_SHORT).show();
                     for (HoaDonKhachHang hoaDonKhachHang : hoaDonKhachHangs){
                         if(id_MaHoaDon.equals(hoaDonKhachHang.getId_HoaDon())){
-                            tenKhachHang = hoaDonKhachHang.getTenKH();
+                            String[] split = hoaDonKhachHang.getTenKH().split("-");
+                            tenKhachHang = split[1];
                         }
                     }
                     //Toast.makeText(ThongKeHoaDonActivity.this,ngayThanhToan + " " + thoiGian_thanhtoan, Toast.LENGTH_SHORT).show();
                     thongKeHoaDon = new ThongKeHoaDon(id_MaHoaDon, id_Ban,ngayThanhToan, thoiGian_thanhtoan, tongTien, daThanhToan, tenKhachHang);
                     data.add(thongKeHoaDon);
                 }
-                getDataHoaDonMangVe();
                 filterHoaDon();
+                getDataHoaDonMangVe();
 //                dialog.dismiss();
             }
 
@@ -278,9 +278,9 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                     String ngayThanhToan = item.child("ngayThanhToan").getValue().toString();
                     Double tongTien = Double.parseDouble(item.child("tongTien").getValue().toString());
                     Boolean daThanhToan = Boolean.parseBoolean(item.child("daThanhToan").getValue().toString());
-                    String tenKhachHang = item.child("tenKH").getValue().toString();
-                    //Toast.makeText(ThongKeHoaDonActivity.this,ngayThanhToan + " " + thoiGian_thanhtoan, Toast.LENGTH_SHORT).show();
-                    thongKeHoaDon = new ThongKeHoaDon(id_MaHoaDon, id_Ban,ngayThanhToan, thoiGian_thanhtoan, tongTien, daThanhToan, tenKhachHang);
+                    String[] splitget = item.child("tenKH").getValue().toString().split("-");
+                    String tenKH = splitget[1];
+                    thongKeHoaDon = new ThongKeHoaDon(id_MaHoaDon, id_Ban,ngayThanhToan, thoiGian_thanhtoan, tongTien, daThanhToan, tenKH);
                     data.add(thongKeHoaDon);
                 }
                 filterHoaDon();
@@ -335,6 +335,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                             }
                             if (countGet == countGet_){
                                 getDataHoaDon();
+                                getDataHoaDonMangVe();
                             }
                         }
 
@@ -393,8 +394,7 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
                     Ban ban = item.getValue(Ban.class);
                     dataBan.add(ban);
                 }
-                getDataIdHoaDon(arrIdHoaDon);
-
+                getDataArrHDKH(hoaDonKhachHangs);
             }
 
             @Override
