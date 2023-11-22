@@ -54,20 +54,6 @@
                     android:text="09123"
                     android:textSize="18dp"
                     android:layout_weight="7"></TextView>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Bàn: "
-                    android:textSize="18dp"
-                    android:textAlignment="textEnd"
-                    android:layout_weight="1"></TextView>
-                <TextView
-                    android:id="@+id/tvBan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textSize="18dp"
-                    android:layout_weight="1"></TextView>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -114,21 +100,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="10:00"
-                    android:textSize="18dp"></TextView>
-                <TextView
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:text="Khu:"
-                    android:textAlignment="textEnd"
-                    android:paddingRight="8dp"
-                    android:layout_weight="5"
-                    android:textSize="18dp"></TextView>
-                <TextView
-                    android:id="@+id/tvKhu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:layout_weight="5"
                     android:textSize="18dp"></TextView>
             </LinearLayout>
             <LinearLayout
@@ -204,19 +175,32 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        android:gravity="end"
+        android:orientation="horizontal">
+
         <Button
             android:id="@+id/btnQuayLaiMV"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:text="Quay lại"
-            android:layout_marginLeft="20dp"></Button>
+            android:layout_margin="15dp"
+            android:layout_weight="1"
+            android:text="Quay lại" />
+
+        <Button
+            android:id="@+id/btnPDF"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:layout_weight="1"
+            android:text="PDF" />
+
         <Button
             android:id="@+id/btnThanhToanMV"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:text="Thanh toán"
-            android:layout_marginLeft="110dp"></Button>
+            android:layout_margin="15dp"
+            android:layout_weight="1"
+            android:text="Thanh toán" />
     </LinearLayout>
 </LinearLayout>

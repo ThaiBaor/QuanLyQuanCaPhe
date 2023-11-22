@@ -1,7 +1,18 @@
 package com.example.quanlyquancaphe.activities;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.graphics.pdf.PdfDocument;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -11,6 +22,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +33,7 @@ import com.example.quanlyquancaphe.models.ChiTietMon;
 import com.example.quanlyquancaphe.models.HoaDonMangVe;
 import com.example.quanlyquancaphe.models.HoaDonTaiBan;
 import com.example.quanlyquancaphe.models.Khu;
+import com.example.quanlyquancaphe.models.PDF;
 import com.example.quanlyquancaphe.ultilities.HoaDonUltility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,15 +46,21 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
+    final static int REQUEST_CODE = 1232;
     TextView tvMHD, tvGioHD, tvNgayHD, tvTenKH, tvGiaHD, tvTongTien;
-    Button btnQuayLai, btnThanhToan;
+    Button btnQuayLai, btnThanhToan, PDF;
     RecyclerView recyclerView;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
@@ -51,6 +70,10 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
     HoaDonMangVe hoaDonMangVe = new HoaDonMangVe();
     ArrayList<ChiTietMon> dataChiTietMon = new ArrayList<>();
     ArrayList<ChiTietMon> dataGop = new ArrayList<>();
+    Bitmap bmp, scaledbmp, qr, scaledqr;
+    String fileName;
+    File downloadDir;
+    StorageReference storageReference;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +92,14 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
                 finish();
             }
         });
+        PDF.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                askPermission();
+                createPDF();
+                UploadFile(fileName);
+            }
+        });
         btnThanhToan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,7 +114,7 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             Toast.makeText(PhieuHoaDonMangVeActivity.this, "Thanh toán thành công", Toast.LENGTH_SHORT).show();
-                            databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(tenKH);
+                            databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(tenKH).child("HT");
                             databaseReference.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
@@ -102,6 +133,7 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
                 dataChiTietMon.clear();
             }
         });
+
     }
 
     private void setControl() {
@@ -114,6 +146,11 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
         tvTenKH = findViewById(R.id.tvTenKH);
         btnQuayLai = findViewById(R.id.btnQuayLaiMV);
         btnThanhToan = findViewById(R.id.btnThanhToanMV);
+        PDF = findViewById(R.id.btnPDF);
+        bmp = BitmapFactory.decodeResource(getResources(), R.drawable.logo);
+        qr = BitmapFactory.decodeResource(getResources(), R.drawable.qrcode);
+        scaledbmp = Bitmap.createScaledBitmap(bmp, 400, 400, false);
+        scaledqr = Bitmap.createScaledBitmap(qr, 200, 200, false);
     }
     public void loadDataThongTin(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("").setMessage("Đang tải dữ liệu...");
@@ -193,5 +230,166 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
     }
     public void taoChiTietMonQK(String id_HoaDon){
         HoaDonUltility.getHdInstance().thanhToanTaiBan(tenKH, id_HoaDon);
+    }
+
+    public void askPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
+    }
+
+    public void createPDF() {
+        int pageWidth = 1200;
+        int cd = 80;
+        int pageRemember = 870;
+        PdfDocument pdfDocument = new PdfDocument();
+        Paint paint = new Paint();
+        Paint titlePaint = new Paint();
+
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(1200, 2010, 1).create();
+        PdfDocument.Page page = pdfDocument.startPage(pageInfo);
+        Canvas canvas = page.getCanvas();
+
+        // load hình ảnh lên file pdf
+        canvas.drawBitmap(scaledbmp, 400, 0, paint);
+
+
+
+
+        titlePaint.setTextAlign(Paint.Align.CENTER);
+        titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.ITALIC));
+        titlePaint.setTextSize(50);
+        canvas.drawText("53 Võ Vân Ngân, Linh Chiểu, Tp.Thủ Đức, Tp.HCM", pageWidth / 2, 450, titlePaint);
+
+        paint.setTextAlign(Paint.Align.LEFT);
+        paint.setTextSize(60f);
+        paint.setColor(Color.BLACK);
+        canvas.drawText("Mã hóa đơn: ", 20, 550, paint);
+        canvas.drawText("Khách hàng: ", 20, 630, paint);
+        canvas.drawText("Ngày: ", 20, 710, paint);
+
+        paint.setTextAlign(Paint.Align.RIGHT);
+        paint.setTextSize(60f);
+        paint.setColor(Color.BLACK);
+        canvas.drawText("Giờ: ", pageWidth - 410, 710, paint);
+
+        paint.setTextAlign(Paint.Align.LEFT);
+        paint.setTextSize(60f);
+        paint.setColor(Color.BLACK);
+        canvas.drawText("Tên món", 50, 850, paint);
+
+        paint.setTextAlign(Paint.Align.CENTER);
+        paint.setTextSize(60f);
+        paint.setColor(Color.BLACK);
+        canvas.drawText("Số lượng", pageWidth / 2, 850, paint);
+
+        paint.setTextAlign(Paint.Align.RIGHT);
+        paint.setTextSize(70f);
+        paint.setColor(Color.BLACK);
+        canvas.drawText("Thành tiền", pageWidth - 70, 850, paint);
+
+        NumberFormat nf = NumberFormat.getNumberInstance();
+        // đổ dữ liệu lên file pdf
+        for (ChiTietMon item : dataChiTietMon) {
+
+
+            paint.setTextAlign(Paint.Align.LEFT);
+            paint.setTextSize(55f);
+            paint.setColor(Color.BLACK);
+            canvas.drawText(item.getTenMon(), 50, pageRemember + cd, paint);
+
+            paint.setTextAlign(Paint.Align.CENTER);
+            paint.setTextSize(55f);
+            paint.setColor(Color.BLACK);
+            canvas.drawText(item.getSl() + "", pageWidth / 2, pageRemember + cd, paint);
+
+            paint.setTextAlign(Paint.Align.RIGHT);
+            paint.setTextSize(55f);
+            paint.setColor(Color.BLACK);
+            canvas.drawText(nf.format(item.getGia()) + "đ", pageWidth - 90, pageRemember + cd, paint);
+            pageRemember += cd;
+        }
+
+        paint.setTextAlign(Paint.Align.LEFT);
+        paint.setTextSize(60f);
+        paint.setColor(Color.BLACK);
+        canvas.drawText(hoaDonMangVe.getId_HoaDon(), 400, 550, paint);
+        canvas.drawText(hoaDonMangVe.getNgayThanhToan(), 200, 710, paint);
+
+        paint.setTextAlign(Paint.Align.LEFT);
+        paint.setTextSize(60f);
+        paint.setColor(Color.BLACK);
+        canvas.drawText(hoaDonMangVe.getTenKH().substring(9), 450, 630, paint);
+
+        paint.setTextAlign(Paint.Align.RIGHT);
+        paint.setTextSize(60f);
+        paint.setColor(Color.BLACK);
+        canvas.drawText(hoaDonMangVe.getThoiGian_ThanhToan(), pageWidth - 170, 710, paint);
+
+        paint.setTextAlign(Paint.Align.CENTER);
+        paint.setTextSize(30f);
+        paint.setColor(Color.BLACK);
+        canvas.drawText( "Cảm ơn quý khách vì sự ủng hộ. Chúng tôi luôn sẵn lòng phục vụ bạn!", pageWidth/2, pageRemember + 400, paint);
+
+        paint.setTextAlign(Paint.Align.LEFT);
+        paint.setTextSize(50f);
+        paint.setColor(Color.BLACK);
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        canvas.drawText("Tổng cộng: ", 50, pageRemember + 100, paint);
+
+        paint.setTextAlign(Paint.Align.RIGHT);
+        paint.setTextSize(50f);
+        paint.setColor(Color.BLACK);
+        canvas.drawText(nf.format(hoaDonMangVe.getTongTien()) + "đ", pageWidth - 90, pageRemember + 100, paint);
+
+        // load hình ảnh lên file pdf
+        canvas.drawBitmap(scaledqr, 500, pageRemember+150, paint);
+
+
+
+
+        pdfDocument.finishPage(page);
+
+        // tạo nơi lưu file
+        downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        // tạo file
+        fileName = hoaDonMangVe.getId_HoaDon() + ".pdf";
+        File file = new File(downloadDir, fileName);
+
+        try {
+            // viết dữ liệu lên file
+            FileOutputStream fos = new FileOutputStream(file);
+            pdfDocument.writeTo(fos);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        pdfDocument.close();
+    }
+
+    public void UploadFile(String pdfFilePath) {
+        storageReference = FirebaseStorage.getInstance().getReference();
+        DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("Bill_PDF");
+        File pdfFile = new File(downloadDir, pdfFilePath);
+        Uri fileUri = Uri.fromFile(pdfFile);
+
+        StorageReference reference = storageReference.child("Bill_PDF/" + System.currentTimeMillis() + ".pdf");
+        reference.putFile(fileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                while (!uriTask.isComplete()) ;
+                Uri uri = uriTask.getResult();
+
+                PDF pdf = new PDF(fileName, uri.toString());
+                databaseReference1.child(databaseReference1.push().getKey()).setValue(pdf);
+
+                Toast.makeText(PhieuHoaDonMangVeActivity.this, "Upload File Thanh cong", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("Loi", "Upload failed. Exception: " + e.getMessage());
+            }
+        });
     }
 }
