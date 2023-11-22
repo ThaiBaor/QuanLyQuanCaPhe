@@ -60,7 +60,7 @@ import java.util.Map;
 public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
     final static int REQUEST_CODE = 1232;
     TextView tvMHD, tvGioHD, tvNgayHD, tvTenKH, tvGiaHD, tvTongTien;
-    Button btnQuayLai, btnThanhToan, PDF;
+    Button btnQuayLai, btnThanhToan;
     RecyclerView recyclerView;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
@@ -92,17 +92,12 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
                 finish();
             }
         });
-        PDF.setOnClickListener(new View.OnClickListener() {
+        btnThanhToan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 askPermission();
                 createPDF();
                 UploadFile(fileName);
-            }
-        });
-        btnThanhToan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
                 if (bundle != null) {
                     hoaDonMangVe.setId_HoaDon(bundle.getString("id_HoaDon"));
                     hoaDonMangVe.setDaThanhToan(bundle.getBoolean("daThanhToan"));
@@ -146,7 +141,6 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
         tvTenKH = findViewById(R.id.tvTenKH);
         btnQuayLai = findViewById(R.id.btnQuayLaiMV);
         btnThanhToan = findViewById(R.id.btnThanhToanMV);
-        PDF = findViewById(R.id.btnPDF);
         bmp = BitmapFactory.decodeResource(getResources(), R.drawable.logo);
         qr = BitmapFactory.decodeResource(getResources(), R.drawable.qrcode);
         scaledbmp = Bitmap.createScaledBitmap(bmp, 400, 400, false);
