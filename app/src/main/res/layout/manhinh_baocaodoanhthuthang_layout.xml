@@ -79,6 +79,23 @@
                 android:textSize="20dp"></TextView>
         </LinearLayout>
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chọn năm: "
+            android:textColor="#000"
+            android:textSize="20dp"
+            ></TextView>
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spNam"
+            android:textAlignment="center"></Spinner>
+    </LinearLayout>
     <TableLayout
         android:id="@+id/tbLayout"
         android:layout_width="match_parent"

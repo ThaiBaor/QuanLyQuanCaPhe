@@ -9,8 +9,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -36,12 +39,17 @@ public class BaoCaoDoanhThuThang extends AppCompatActivity {
     ArrayList<ThongKeHoaDon> dataFilter = new ArrayList<>();
     ArrayList<Double> dataDoanhThu = new ArrayList<>();
     ImageButton btnChart;
+
+    ArrayList<String> dataNam = new ArrayList<>();
+    Spinner spNam;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manhinh_baocaodoanhthuthang_layout);
-        getDataHoaDonTaiBanVaMangVe();
         setControl();
+        setDataSPNam();
+        getDataHoaDonTaiBanVaMangVe();
+        spNam.setSelection(10);
     }
 
     private void setEvent() {
@@ -59,17 +67,10 @@ public class BaoCaoDoanhThuThang extends AppCompatActivity {
         inSertTableRow("10");
         inSertTableRow("11");
         inSertTableRow("12");
-        Calendar calendar = Calendar.getInstance();
-        tvTitle.setText("Doanh thu trong năm ");
+        tvTitle.setText("Doanh thu trong năm " + spNam.getSelectedItem());
         NumberFormat nf = NumberFormat.getNumberInstance();
         tvSlHoaDon.setText(dataFilter.size() + "");
         tvDoanhThu.setText(nf.format(getTongDoanhThu()) + "đ");
-        tvDoanhThu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openDiaLog();
-            }
-        });
         btnChart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,27 +83,21 @@ public class BaoCaoDoanhThuThang extends AppCompatActivity {
                 dataDoanhThu.clear();
             }
         });
+        spNam.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-
-    }
-
-    private void openDiaLog(){
-        Calendar calendar = Calendar.getInstance();
-        int yearNow = calendar.get(Calendar.YEAR);
-        int monthNow = calendar.get(Calendar.MONTH);
-        int dayNow = calendar.get(Calendar.DAY_OF_MONTH);
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                //calendar.set(year,month,day);
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                filterDataTheoNam(spNam.getSelectedItem().toString());
             }
-        }, yearNow, 0, 0);
-        datePickerDialog.setTitle("Chọn ngày");
-        datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
-        calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) - 100);
-        datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
-        datePickerDialog.show();
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
+
+
 
     private void getDataHoaDonTaiBanVaMangVe(){
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -335,11 +330,22 @@ public class BaoCaoDoanhThuThang extends AppCompatActivity {
         }
     //}
 
+    private void setDataSPNam(){
+        Calendar calendar = Calendar.getInstance();
+        int nam = calendar.get(Calendar.YEAR);
+        for (int i = nam - 10; i <= nam+10; i++){
+            dataNam.add(i + "");
+        }
+        ArrayAdapter adapter = new ArrayAdapter(BaoCaoDoanhThuThang.this, android.R.layout.simple_spinner_item, dataNam);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spNam.setAdapter(adapter);
+    }
     private void setControl() {
         tbLayout = findViewById(R.id.tbLayout);
         tvSlHoaDon = findViewById(R.id.tvSLHoaDon);
         tvTitle = findViewById(R.id.tvTitle);
         tvDoanhThu = findViewById(R.id.tvDoanhThu);
         btnChart = findViewById(R.id.btnChart);
+        spNam = findViewById(R.id.spNam);
     }
 }
