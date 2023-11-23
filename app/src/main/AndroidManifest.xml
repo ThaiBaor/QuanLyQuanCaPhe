@@ -18,7 +18,9 @@
         android:theme="@style/Theme.QuanLyQuanCaPhe"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
+        <activity
+            android:name=".activities.ThongKeDonHangTheoGioActivity"
+            android:exported="true" />
         <!-- MON -->
         <activity
             android:name=".activities.CapNhatThongTinMonActivity"
@@ -97,10 +99,10 @@
             android:exported="true" />
         <activity
             android:name=".activities.HoaDonTaiBanActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".activities.HoaDonMangVeActivity"
-            android:exported="true"></activity> <!-- DANH SÁCH MÓN KHẢ DỤNG -->
+            android:exported="true" /> <!-- DANH SÁCH MÓN KHẢ DỤNG -->
         <!-- BÁO CÁO BÁN HÀNG -->
         <activity
             android:name=".activities.BaoCaoBanHangActivity"
@@ -127,7 +129,7 @@
             android:name=".activities.DanhSachMonTrongOrderPhaChe_Activity"
             android:exported="false" />
         <activity
-            android:name=".activities.ThongKeDoanhThuTheoThangActivity"
+            android:name=".activities.BieuDoThongKeDonHangTheoGio"
             android:exported="true" />
     </application>
 
