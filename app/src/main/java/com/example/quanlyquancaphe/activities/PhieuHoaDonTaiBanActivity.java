@@ -36,6 +36,7 @@ import com.example.quanlyquancaphe.models.HoaDonTaiBan;
 import com.example.quanlyquancaphe.models.Khu;
 import com.example.quanlyquancaphe.models.PDF;
 import com.example.quanlyquancaphe.ultilities.HoaDonUltility;
+import com.example.quanlyquancaphe.ultilities.HoaDonUltility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -118,6 +119,7 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
                     ref.child(hoaDonTaiBan.getId_HoaDon()).child("daThanhToan").setValue(tt).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+                            HoaDonUltility.getHdInstance().tangSoLuongDaBan(dataGop);
                             Toast.makeText(PhieuHoaDonTaiBanActivity.this, "Thanh toán thành công", Toast.LENGTH_SHORT).show();
                             databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(id_Ban).child("HT");
                             databaseReference.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -230,6 +232,7 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
                 dataChiTietMon.clear();
                 dataChiTietMon.addAll(dataGop);
                 adapter.notifyDataSetChanged();
+
             }
 
             @Override

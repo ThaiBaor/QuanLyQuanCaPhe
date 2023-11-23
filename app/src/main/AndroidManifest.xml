@@ -19,7 +19,9 @@
         android:theme="@style/Theme.QuanLyQuanCaPhe"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
+        <activity
+            android:name=".activities.ThongKeDonHangTheoGioActivity"
+            android:exported="true" />
         <!-- MON -->
         <activity
             android:name=".activities.CapNhatThongTinMonActivity"
@@ -132,6 +134,9 @@
         <activity
             android:name=".activities.DanhSachMonTrongOrderPhaChe_Activity"
             android:exported="false" />
+        <activity
+            android:name=".activities.BieuDoThongKeDonHangTheoGio"
+            android:exported="true" />
     </application>
 
 </manifest>
