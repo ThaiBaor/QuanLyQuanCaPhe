@@ -126,6 +126,9 @@
         <activity
             android:name=".activities.DanhSachMonTrongOrderPhaChe_Activity"
             android:exported="false" />
+        <activity
+            android:name=".activities.ThongKeDoanhThuTheoThangActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
