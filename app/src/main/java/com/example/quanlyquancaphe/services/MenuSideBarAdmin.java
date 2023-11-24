@@ -7,8 +7,8 @@ import android.content.Intent;
 
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.activities.BaoCaoBanHangActivity;
+import com.example.quanlyquancaphe.activities.BaoCaoDoanhThuThangActivity;
 import com.example.quanlyquancaphe.activities.DangNhapActivity;
-import com.example.quanlyquancaphe.activities.DanhSachMonPhucVuActivity;
 import com.example.quanlyquancaphe.activities.DoiMatKhauActivity;
 import com.example.quanlyquancaphe.activities.QuanLyBanActivity;
 import com.example.quanlyquancaphe.activities.QuanLyKhoActivity;
@@ -24,6 +24,9 @@ public class MenuSideBarAdmin {
         switch (layout) {
             case R.id.nav_thongke:
                 chonManHinh(activity, BaoCaoBanHangActivity.class);
+                break;
+            case R.id.nav_thongkedoanhthuthang:
+                chonManHinh(activity, BaoCaoDoanhThuThangActivity.class);
                 break;
             case R.id.nav_qlnhanvien:
                 chonManHinh(activity, QuanLyNhanVienActivity.class);
