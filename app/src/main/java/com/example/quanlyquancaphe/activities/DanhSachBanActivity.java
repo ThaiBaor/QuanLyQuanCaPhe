@@ -73,6 +73,7 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
         setContentView(R.layout.manhinh_danhsachban_layout);
         setConTrol();
         setdrawer();
+        getNotification();
         setEvent();
     }
 
@@ -152,7 +153,7 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
         GetDataBan();
         GetDataKhu();
         GetDataSpinner();
-        getNotification();
+
         getDataDatBan();
         //Set title toolbar
         toolBar.setTitle("Danh sách bàn");
