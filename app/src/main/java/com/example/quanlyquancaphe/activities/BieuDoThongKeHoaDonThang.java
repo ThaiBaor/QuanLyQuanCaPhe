@@ -39,7 +39,6 @@ public class BieuDoThongKeHoaDonThang extends AppCompatActivity {
     private void setEvent() {
         Intent intent = getIntent();
         List<String> labels = new ArrayList<>();
-        //Bundle bundle = intent.getExtras();
         ArrayList<Double> arrDoanhThu = (ArrayList<Double>)intent.getSerializableExtra("arrDoanhThu");
         barChart.clear();
         for(int i = 0; i< arrDoanhThu.size(); i ++){
@@ -59,7 +58,7 @@ public class BieuDoThongKeHoaDonThang extends AppCompatActivity {
         barChart.animateY(1000, Easing.EaseInOutQuad);
         barChart.invalidate();
 
-        toolbar.setTitle("Biểu đồ báo cáo doanh thu theo tháng");
+        toolbar.setTitle("Biểu đồ");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
