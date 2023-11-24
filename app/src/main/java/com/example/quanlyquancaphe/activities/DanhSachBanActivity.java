@@ -9,6 +9,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -215,7 +216,7 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
                                     // Gắn id_Ban cho giỏ hàng
                                     GioHangActivity.id_Ban = dataBan.get(position).getId_Ban();
                                     // Truyền số chỗ ngồi sang màn hình đặt bàn
-                                    intent.putExtra("soChoNgoi" , dataBan.get(position).getSoChoNgoi());
+                                    intent.putExtra("soChoNgoi", dataBan.get(position).getSoChoNgoi());
                                     startActivity(intent);
                                     return true;
                                 }
@@ -407,20 +408,22 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
         dialog.show();
 
     }
+
     // Get data đặt bàn
-    private void getDataDatBan(){
+    private void getDataDatBan() {
         database = FirebaseDatabase.getInstance();
         reference = database.getReference().child("DatBan");
         valueEventListener = reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 dataDatBan.clear();
-                for (DataSnapshot item: snapshot.getChildren()){
+                for (DataSnapshot item : snapshot.getChildren()) {
                     DatBan datBan = item.getValue(DatBan.class);
                     dataDatBan.add(datBan);
                 }
                 adapter.notifyDataSetChanged();
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -440,7 +443,8 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
                 if (snapshot.child("id").getValue(Integer.class) == null) {
                     return;
                 }
-                if (snapshot.child("id").getValue(Integer.class) == 2) {
+                int id_ThongBao = snapshot.child("id").getValue(Integer.class);
+                if (id_ThongBao == 2 || id_ThongBao == 3) {
                     NotificationUtility.pushNotification(DanhSachBanActivity.this, snapshot.child("contentText").getValue(String.class));
                 }
             }
