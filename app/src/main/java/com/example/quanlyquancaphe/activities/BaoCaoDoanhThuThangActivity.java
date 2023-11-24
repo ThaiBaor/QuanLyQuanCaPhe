@@ -364,7 +364,7 @@ public class BaoCaoDoanhThuThangActivity extends AppCompatActivity implements Na
     }
 
     private void setdrawer(){
-        toolBar.setTitle("Báo cáo bán hàng");
+        toolBar.setTitle("Báo cáo doanh thu tháng");
         toolBar.setNavigationIcon(R.drawable.menu_icon);
         drawerLayout = findViewById(R.id.nav_drawer_chucnang_admin);
         navigationView = findViewById(R.id.nav_view);

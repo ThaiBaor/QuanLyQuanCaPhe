@@ -80,6 +80,9 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
 
     private void setEvent() {
         setNgayHienTai();
+        thongKeHoaDonAdapter = new ThongKeHoaDonAdapter(this, dataFilter, dataBan);
+        recyclerView.setAdapter(thongKeHoaDonAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         tvGiothuNhat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -390,9 +393,6 @@ public class ThongKeHoaDonActivity extends AppCompatActivity implements Navigati
             }
         }
         if(dataFilter != null){
-            thongKeHoaDonAdapter = new ThongKeHoaDonAdapter(this, dataFilter, dataBan);
-            recyclerView.setAdapter(thongKeHoaDonAdapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
             tvSoLuongHoaDon.setText(dataFilter.size()+"");
             thongKeHoaDonAdapter.notifyDataSetChanged();
             NumberFormat nf = NumberFormat.getNumberInstance();
