@@ -32,6 +32,7 @@ android {
 dependencies {
     //Auto generation
     implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.core:core:1.6.0'
     implementation 'com.google.android.material:material:1.10.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.firebase:firebase-database-ktx:20.2.2'
@@ -49,10 +50,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-database'
     implementation 'com.google.firebase:firebase-storage'
     implementation 'com.google.firebase:firebase-messaging'
-    //char
+    //Implement Chart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
     //Implement Glide
     implementation 'com.github.bumptech.glide:glide:4.16.0'
+    //SwipeRefreshLayout
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
 
 }

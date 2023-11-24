@@ -4,33 +4,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:openDrawer="start"
     android:fitsSystemWindows="true"
-    android:orientation="vertical"
     android:background="@drawable/background"
-    tools:context=".activities.HoaDonTaiBanActivity"
-    tools:openDrawer="start">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_margin="10dp"
-        android:orientation="horizontal"
-        android:weightSum="10">
-
-        <EditText
-            android:id="@+id/edtSearchBox"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="10"
-            android:drawableLeft="@drawable/search_icon"
-            android:hint="Search" />
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerviewHDTB"
-        style="@style/quanly_recycleview"
+    tools:context=".activities.HoaDonMangVeActivity"
+    android:orientation="vertical">
+    <androidx.drawerlayout.widget.DrawerLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:textColor="@android:color/white"
-        app:textSize="20sp" />
+        android:id="@+id/nav_drawer_chucnang_thungan">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <include layout="@layout/toolbar"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <EditText
+                    android:id="@+id/edtSearchBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="10"
+                    android:drawableLeft="@drawable/search_icon"
+                    android:hint="Search" />
+            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerviewHDMV"
+                style="@style/quanly_recycleview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:textColor="@android:color/white"
+                app:textSize="20sp" />
+
+        </LinearLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/nav_view"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/nav_drawer_header"
+            app:menu="@menu/nav_drawer_menu_thu_ngan"
+            >
+        </com.google.android.material.navigation.NavigationView>
+    </androidx.drawerlayout.widget.DrawerLayout>
+
 </LinearLayout>

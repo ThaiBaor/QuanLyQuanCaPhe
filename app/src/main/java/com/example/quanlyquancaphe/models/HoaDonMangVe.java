@@ -19,4 +19,11 @@ public class HoaDonMangVe extends HoaDon {
     public void setTenKH(String tenKH) {
         this.tenKH = tenKH;
     }
+
+    @Override
+    public String toString() {
+        return "HoaDonMangVe{" +
+                "tenKH='" + tenKH + '\'' +
+                '}';
+    }
 }

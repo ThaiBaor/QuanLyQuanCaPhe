@@ -74,7 +74,8 @@ public class GioHangActivity extends AppCompatActivity implements GioHangInterfa
                 if (snapshot.child("id").getValue(Integer.class) == null) {
                     return;
                 }
-                if (snapshot.child("id").getValue(Integer.class) == 1) {
+                int id_ThongBao = snapshot.child("id").getValue(Integer.class);
+                if (id_ThongBao == 1) {
                     NotificationUtility.pushNotification(GioHangActivity.this, snapshot.child("contentText").getValue(String.class));
                 }
             }

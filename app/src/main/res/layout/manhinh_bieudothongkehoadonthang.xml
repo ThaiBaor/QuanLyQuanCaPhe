@@ -4,8 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <include layout="@layout/toolbar"></include>
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/chart"
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/bieuDoHoaDonThang"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
 </LinearLayout>

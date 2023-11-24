@@ -9,14 +9,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,13 +27,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.adapters.PhieuHoaDonAdapter;
-import com.example.quanlyquancaphe.models.Ban;
 import com.example.quanlyquancaphe.models.ChiTietMon;
-import com.example.quanlyquancaphe.models.HoaDon;
-import com.example.quanlyquancaphe.models.HoaDonTaiBan;
-import com.example.quanlyquancaphe.models.Khu;
+import com.example.quanlyquancaphe.models.HoaDonMangVe;
 import com.example.quanlyquancaphe.models.PDF;
-import com.example.quanlyquancaphe.ultilities.HoaDonUltility;
 import com.example.quanlyquancaphe.ultilities.HoaDonUltility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -58,42 +52,34 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
+public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
     final static int REQUEST_CODE = 1232;
-    TextView tvMHD, tvGioHD, tvNgayHD, tvBanHD, tvGiaHD, tvKhu, tvTongTien;
+    TextView tvMHD, tvGioHD, tvNgayHD, tvTenKH, tvGiaHD, tvTongTien;
     Button btnQuayLai, btnThanhToan;
-    ImageView ivHinh;
     RecyclerView recyclerView;
-    Bundle bundle;
-    String id_Ban = "";
-    ArrayList<ChiTietMon> dataChiTietMon = new ArrayList<>();
-    ArrayList<ChiTietMon> dataGop = new ArrayList<>();
-    HoaDonTaiBan hoaDonTaiBan = new HoaDonTaiBan();
-    Ban ban = new Ban();
-    Khu khu = new Khu();
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     PhieuHoaDonAdapter adapter;
-    FirebaseStorage firebaseStorage;
-    StorageReference storageReference;
+    Bundle bundle;
+    String tenKH = "";
+    HoaDonMangVe hoaDonMangVe = new HoaDonMangVe();
+    ArrayList<ChiTietMon> dataChiTietMon = new ArrayList<>();
+    ArrayList<ChiTietMon> dataGop = new ArrayList<>();
     Bitmap bmp, scaledbmp, qr, scaledqr;
     String fileName;
     File downloadDir;
+    StorageReference storageReference;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manhinh_phieuhoadontaiban_layout);
+        setContentView(R.layout.manhinh_phieuhoadonmangve_layout);
         bundle = getIntent().getExtras();
         setControl();
         loadDataThongTin();
         datachitietmon();
-        firebaseStorage = FirebaseStorage.getInstance();
-        storageReference = firebaseStorage.getReference();
-        adapter = new PhieuHoaDonAdapter(PhieuHoaDonTaiBanActivity.this, dataChiTietMon);
+        adapter = new PhieuHoaDonAdapter(PhieuHoaDonMangVeActivity.this, dataChiTietMon);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
@@ -110,18 +96,18 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
                 createPDF();
                 UploadFile(fileName);
                 if (bundle != null) {
-                    hoaDonTaiBan.setId_HoaDon(bundle.getString("id_HoaDon"));
-                    hoaDonTaiBan.setDaThanhToan(bundle.getBoolean("daThanhToan"));
+                    hoaDonMangVe.setId_HoaDon(bundle.getString("id_HoaDon"));
+                    hoaDonMangVe.setDaThanhToan(bundle.getBoolean("daThanhToan"));
                     Boolean tt = true;
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference ref = database.getReference("HoaDon").child("TaiBan");
-                    taoChiTietMonQK(hoaDonTaiBan.getId_HoaDon());
-                    ref.child(hoaDonTaiBan.getId_HoaDon()).child("daThanhToan").setValue(tt).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    DatabaseReference ref = database.getReference("HoaDon").child("MangVe");
+                    taoChiTietMonQK(hoaDonMangVe.getId_HoaDon());
+                    ref.child(hoaDonMangVe.getId_HoaDon()).child("daThanhToan").setValue(tt).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             HoaDonUltility.getHdInstance().tangSoLuongDaBan(dataGop);
-                            Toast.makeText(PhieuHoaDonTaiBanActivity.this, "Thanh toán thành công", Toast.LENGTH_SHORT).show();
-                            databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(id_Ban).child("HT");
+                            Toast.makeText(PhieuHoaDonMangVeActivity.this, "Thanh toán thành công", Toast.LENGTH_SHORT).show();
+                            databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(tenKH).child("HT");
                             databaseReference.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
@@ -140,54 +126,49 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
                 dataChiTietMon.clear();
             }
         });
+
     }
 
     private void setControl() {
-        recyclerView = findViewById(R.id.recyclePhieuHoaDon);
-        tvMHD = findViewById(R.id.tvMa);
-        tvGioHD = findViewById(R.id.tvGio);
-        tvGiaHD = findViewById(R.id.tvGiaHD);
-        tvTongTien = findViewById(R.id.tvTongTien);
-        tvBanHD = findViewById(R.id.tvBan);
-        tvNgayHD = findViewById(R.id.tvNgay);
-        tvKhu = findViewById(R.id.tvKhu);
-        btnQuayLai = findViewById(R.id.btnQuayLai);
-        btnThanhToan = findViewById(R.id.btnThanhToan);
-        ivHinh = findViewById(R.id.ivHinh);
+        recyclerView = findViewById(R.id.recyclePhieuHoaDonMV);
+        tvMHD = findViewById(R.id.tvMaMV);
+        tvGioHD = findViewById(R.id.tvGioMV);
+        tvGiaHD = findViewById(R.id.tvGiaHDMV);
+        tvTongTien = findViewById(R.id.tvTongTienMV);
+        tvNgayHD = findViewById(R.id.tvNgayMV);
+        tvTenKH = findViewById(R.id.tvTenKH);
+        btnQuayLai = findViewById(R.id.btnQuayLaiMV);
+        btnThanhToan = findViewById(R.id.btnThanhToanMV);
         bmp = BitmapFactory.decodeResource(getResources(), R.drawable.logo);
         qr = BitmapFactory.decodeResource(getResources(), R.drawable.qrcode);
         scaledbmp = Bitmap.createScaledBitmap(bmp, 400, 400, false);
         scaledqr = Bitmap.createScaledBitmap(qr, 200, 200, false);
     }
-
-    private void loadDataThongTin() {
+    public void loadDataThongTin(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("").setMessage("Đang tải dữ liệu...");
         builder.setCancelable(false);
         AlertDialog dialog = builder.create();
         dialog.show();
         if (bundle != null) {
             NumberFormat nf = NumberFormat.getNumberInstance();
-            hoaDonTaiBan.setId_HoaDon(bundle.getString("id_HoaDon"));
-            tvMHD.setText(hoaDonTaiBan.getId_HoaDon());
-            hoaDonTaiBan.setThoiGian_ThanhToan(bundle.getString("thoiGian_ThanhToan"));
-            tvGioHD.setText(hoaDonTaiBan.getThoiGian_ThanhToan());
-            hoaDonTaiBan.setNgayThanhToan(bundle.getString("ngayThanhToan"));
-            tvNgayHD.setText(hoaDonTaiBan.getNgayThanhToan());
-            hoaDonTaiBan.setId_Ban(bundle.getString("id_Ban"));
-            id_Ban = hoaDonTaiBan.getId_Ban();
-            ban.setTenBan(bundle.getString("tenBan"));
-            tvBanHD.setText(ban.getTenBan());
-            khu.setTenKhu(bundle.getString("tenKhu"));
-            tvKhu.setText(khu.getTenKhu());
-            hoaDonTaiBan.setTongTien(bundle.getDouble("tongTien"));
-            tvTongTien.setText(nf.format(hoaDonTaiBan.getTongTien()) + "đ");
+            hoaDonMangVe.setId_HoaDon(bundle.getString("id_HoaDon"));
+            tvMHD.setText(hoaDonMangVe.getId_HoaDon().substring(0, 13));
+            hoaDonMangVe.setThoiGian_ThanhToan(bundle.getString("thoiGian_ThanhToan"));
+            tvGioHD.setText(hoaDonMangVe.getThoiGian_ThanhToan());
+            hoaDonMangVe.setNgayThanhToan(bundle.getString("ngayThanhToan"));
+            tvNgayHD.setText(hoaDonMangVe.getNgayThanhToan());
+            hoaDonMangVe.setTenKH(bundle.getString("tenKH"));
+            tvTenKH.setText(hoaDonMangVe.getTenKH().substring(9));
+            tenKH = hoaDonMangVe.getTenKH();
+            hoaDonMangVe.setTongTien(bundle.getDouble("tongTien"));
+            tvTongTien.setText(nf.format(hoaDonMangVe.getTongTien()) + "đ");
         }
         dialog.dismiss();
     }
 
     private void datachitietmon() {
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference().child("ChiTietMon").child(id_Ban);
+        databaseReference = firebaseDatabase.getReference().child("ChiTietMon").child(tenKH);
 
         databaseReference.child("HT").addValueEventListener(new ValueEventListener() {
             @Override
@@ -232,7 +213,6 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
                 dataChiTietMon.clear();
                 dataChiTietMon.addAll(dataGop);
                 adapter.notifyDataSetChanged();
-
             }
 
             @Override
@@ -243,7 +223,7 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
     }
 
     public void taoChiTietMonQK(String id_HoaDon) {
-        HoaDonUltility.getHdInstance().thanhToanTaiBan(id_Ban, id_HoaDon);
+        HoaDonUltility.getHdInstance().thanhToanTaiBan(tenKH, id_HoaDon);
     }
 
     public void askPermission() {
@@ -277,14 +257,13 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
         paint.setTextSize(60f);
         paint.setColor(Color.BLACK);
         canvas.drawText("Mã hóa đơn: ", 20, 550, paint);
-        canvas.drawText("Bàn: ", 20, 630, paint);
+        canvas.drawText("Khách hàng: ", 20, 630, paint);
         canvas.drawText("Ngày: ", 20, 710, paint);
 
         paint.setTextAlign(Paint.Align.RIGHT);
         paint.setTextSize(60f);
         paint.setColor(Color.BLACK);
         canvas.drawText("Giờ: ", pageWidth - 410, 710, paint);
-        canvas.drawText("Khu: ", pageWidth - 400, 630, paint);
 
         paint.setTextAlign(Paint.Align.LEFT);
         paint.setTextSize(60f);
@@ -326,15 +305,18 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
         paint.setTextAlign(Paint.Align.LEFT);
         paint.setTextSize(60f);
         paint.setColor(Color.BLACK);
-        canvas.drawText(hoaDonTaiBan.getId_HoaDon(), 400, 550, paint);
-        canvas.drawText(ban.getTenBan(), 170, 630, paint);
-        canvas.drawText(hoaDonTaiBan.getNgayThanhToan(), 200, 710, paint);
+        canvas.drawText(hoaDonMangVe.getId_HoaDon(), 400, 550, paint);
+        canvas.drawText(hoaDonMangVe.getNgayThanhToan(), 200, 710, paint);
+
+        paint.setTextAlign(Paint.Align.LEFT);
+        paint.setTextSize(60f);
+        paint.setColor(Color.BLACK);
+        canvas.drawText(hoaDonMangVe.getTenKH().substring(9), 450, 630, paint);
 
         paint.setTextAlign(Paint.Align.RIGHT);
         paint.setTextSize(60f);
         paint.setColor(Color.BLACK);
-        canvas.drawText(hoaDonTaiBan.getThoiGian_ThanhToan(), pageWidth - 170, 710, paint);
-        canvas.drawText(khu.getTenKhu(), pageWidth - 230, 630, paint);
+        canvas.drawText(hoaDonMangVe.getThoiGian_ThanhToan(), pageWidth - 170, 710, paint);
 
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTextSize(30f);
@@ -350,7 +332,7 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
         paint.setTextAlign(Paint.Align.RIGHT);
         paint.setTextSize(50f);
         paint.setColor(Color.BLACK);
-        canvas.drawText(nf.format(hoaDonTaiBan.getTongTien()) + "đ", pageWidth - 90, pageRemember + 100, paint);
+        canvas.drawText(nf.format(hoaDonMangVe.getTongTien()) + "đ", pageWidth - 90, pageRemember + 100, paint);
 
         // load hình ảnh lên file pdf
         canvas.drawBitmap(scaledqr, 500, pageRemember+150, paint);
@@ -363,7 +345,7 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
         // tạo nơi lưu file
         downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         // tạo file
-        fileName = hoaDonTaiBan.getId_HoaDon() + ".pdf";
+        fileName = hoaDonMangVe.getId_HoaDon() + ".pdf";
         File file = new File(downloadDir, fileName);
 
         try {
@@ -395,7 +377,7 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
                 PDF pdf = new PDF(fileName, uri.toString());
                 databaseReference1.child(databaseReference1.push().getKey()).setValue(pdf);
 
-                Toast.makeText(PhieuHoaDonTaiBanActivity.this, "Upload File Thanh cong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PhieuHoaDonMangVeActivity.this, "Upload File Thanh cong", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -404,5 +386,4 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
             }
         });
     }
-
 }

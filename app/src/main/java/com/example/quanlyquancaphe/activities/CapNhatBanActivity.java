@@ -32,10 +32,6 @@ public class CapNhatBanActivity extends AppCompatActivity {
     Spinner spKhu;
     Button btnUpdate;
     Bundle bundle;
-    String maBan, tenBan;
-    Integer id_Khu, soChoNgoi;
-    ArrayList<Ban> data = new ArrayList<>();
-    ArrayList<Khu> datakhu = new ArrayList<>();
     ArrayList<String> dataSpinner = new ArrayList<>();
     FirebaseDatabase database;
     DatabaseReference reference;
@@ -136,12 +132,12 @@ public class CapNhatBanActivity extends AppCompatActivity {
     private Boolean validate() {
         if (edtTenBan.getText().toString().isEmpty()) {
             edtTenBan.requestFocus();
-            edtTenBan.setError("Empty");
+            edtTenBan.setError("Tên bàn trống");
             return false;
         }
         if (edtSoNguoiNgoi.getText().toString().isEmpty()) {
             edtSoNguoiNgoi.requestFocus();
-            edtSoNguoiNgoi.setError("Empty");
+            edtSoNguoiNgoi.setError("Số chỗ ngồi trống");
             return false;
         }
         return true;

@@ -37,17 +37,17 @@ public class DatBanAdapter extends RecyclerView.Adapter<DatBanViewholder> {
     @Override
     public void onBindViewHolder(@NonNull DatBanViewholder holder, int position) {
         DatBan datBan = dataDatBan.get(position);
-        holder.tvTenKH.setText(datBan.getTenKH());
-        holder.tvSdt.setText(datBan.getSDT());
+        holder.tvTenKH.setText("Tên KH: "+ datBan.getTenKH());
+        holder.tvSdt.setText("SDT: "+ datBan.getSDT());
         holder.tvNgay.setText(datBan.getNgay());
-        holder.tvGio.setText(datBan.getGio());
-        holder.tvSoNguoi.setText(String.valueOf(datBan.getSoNguoi()));
+        holder.tvGio.setText("Giờ đặt: "+datBan.getGio());
+        holder.tvSoNguoi.setText("Số người: "+ String.valueOf(datBan.getSoNguoi()));
         for (Ban ban : dataBan){
             if(datBan.getId_Ban().equals(ban.getId_Ban())){
-                holder.tvTenBan.setText(ban.getTenBan());
+                holder.tvTenBan.setText("Tên bàn: "+ban.getTenBan());
                 for (Khu khu : dataKhu){
                     if (ban.getId_Khu() == khu.getId_Khu()){
-                        holder.tvTenKhu.setText(khu.getTenKhu().toString());
+                        holder.tvTenKhu.setText("Khu: "+khu.getTenKhu().toString());
                         break;
                     }
                 }

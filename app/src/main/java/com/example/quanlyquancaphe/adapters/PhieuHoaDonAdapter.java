@@ -18,12 +18,10 @@ public class PhieuHoaDonAdapter extends RecyclerView.Adapter<PhieuHoaDonViewhold
     Context context;
     Double tongTien;
 
-    String id_Ban;
     ArrayList<ChiTietMon> dataChiTietMon;
 
-    public PhieuHoaDonAdapter(Context context, String id_Ban, ArrayList<ChiTietMon> dataChiTietMon){
+    public PhieuHoaDonAdapter(Context context, ArrayList<ChiTietMon> dataChiTietMon){
         this.context = context;
-        this.id_Ban = id_Ban;
         this.dataChiTietMon = dataChiTietMon;
     }
     @NonNull

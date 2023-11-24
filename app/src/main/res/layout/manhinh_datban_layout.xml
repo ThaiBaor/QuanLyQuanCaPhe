@@ -69,6 +69,7 @@
                 android:background="@drawable/quanly_edittext_background"
                 android:hint="Ngày"
                 android:paddingLeft="10dp"
+                android:enabled="false"
                 android:focusable="false"></EditText>
             <EditText
                 android:id="@+id/edtGio"
@@ -78,7 +79,7 @@
                 android:layout_marginRight="30dp"
                 android:layout_marginLeft="30dp"
                 android:background="@drawable/quanly_edittext_background"
-                android:hint="Giờ"
+                android:hint="Thời gian"
                 android:paddingLeft="10dp"
                 android:focusable="false"></EditText>
         </LinearLayout>
