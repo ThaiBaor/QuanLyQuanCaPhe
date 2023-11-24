@@ -125,6 +125,9 @@
             android:name=".activities.DanhSachMonHoanThanh_Activity"
             android:exported="true" /> <!-- THỐNG KÊ -->
         <activity
+            android:name=".activities.ThongKeActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.ThongKeHoaDonActivity"
             android:exported="true" />
         <activity
@@ -132,6 +135,12 @@
             android:exported="true" />
         <activity
             android:name=".activities.BieuDoThongKeHoaDonThang"
+            android:exported="true" />
+        <activity
+            android:name=".activities.ThongKeDonHangTheoGioActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.BieuDoThongKeDonHangTheoGio"
             android:exported="true" />
         <activity
             android:name=".activities.DanhSachMonTrongOrderPhaChe_Activity"

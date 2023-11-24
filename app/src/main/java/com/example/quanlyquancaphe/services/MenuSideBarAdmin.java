@@ -15,6 +15,7 @@ import com.example.quanlyquancaphe.activities.QuanLyKhoActivity;
 import com.example.quanlyquancaphe.activities.QuanLyKhuActivity;
 import com.example.quanlyquancaphe.activities.QuanLyMonActivity;
 import com.example.quanlyquancaphe.activities.QuanLyNhanVienActivity;
+import com.example.quanlyquancaphe.activities.ThongKeActivity;
 
 public class MenuSideBarAdmin {
     public MenuSideBarAdmin() {
@@ -23,10 +24,7 @@ public class MenuSideBarAdmin {
     public boolean chonManHinh(int layout, Activity activity) {
         switch (layout) {
             case R.id.nav_thongke:
-                chonManHinh(activity, BaoCaoDoanhThuTrongNgayActivity.class);
-                break;
-            case R.id.nav_thongkedoanhthuthang:
-                chonManHinh(activity, BaoCaoDoanhThuThangActivity.class);
+                chonManHinh(activity, ThongKeActivity.class);
                 break;
             case R.id.nav_qlnhanvien:
                 chonManHinh(activity, QuanLyNhanVienActivity.class);

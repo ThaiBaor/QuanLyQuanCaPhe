@@ -11,12 +11,6 @@
     tools:openDrawer="start">
 
     <include layout="@layout/toolbar" />
-
-    <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/nav_drawer_chucnang_admin"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/refresh"
             android:layout_width="match_parent"
@@ -204,14 +198,4 @@
                 </ScrollView>
             </LinearLayout>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/nav_view"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            app:headerLayout="@layout/nav_drawer_header"
-            app:menu="@menu/nav_drawer_menu_admin"/>
-    </androidx.drawerlayout.widget.DrawerLayout>
-
 </LinearLayout>

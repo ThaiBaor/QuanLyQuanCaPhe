@@ -48,10 +48,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BaoCaoDoanhThuTrongNgayActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    DrawerLayout drawerLayout;
-    NavigationView navigationView;
-    ActionBarDrawerToggle actionBarDrawerToggle;
+public class BaoCaoDoanhThuTrongNgayActivity extends AppCompatActivity {
     Toolbar toolbar;
     EditText edtNgay;
     TextView tvDoanhSo, tvDoanhThu;
@@ -76,7 +73,6 @@ public class BaoCaoDoanhThuTrongNgayActivity extends AppCompatActivity implement
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manhinh_baocaodoanhthutrongngay_layout);
         setControl();
-        setdrawer();
         setEvent();
         getAllChiTietMon(edtNgay.getText().toString());
     }
@@ -84,8 +80,12 @@ public class BaoCaoDoanhThuTrongNgayActivity extends AppCompatActivity implement
     private void setEvent() {
         //Set title toolbar
         toolbar.setTitle("Báo cáo bán hàng");
-        toolbar.setNavigationIcon(R.drawable.menu_icon);
-
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         btnChart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -352,25 +352,6 @@ public class BaoCaoDoanhThuTrongNgayActivity extends AppCompatActivity implement
             }
         }
         return hashMap;
-    }
-    private void setdrawer() {
-        drawerLayout = findViewById(R.id.nav_drawer_chucnang_admin);
-        navigationView = findViewById(R.id.nav_view);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav, R.string.close_nav);
-        //setSupportActionBar(toolbar);
-        navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_thongke);
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        MenuSideBarAdmin menuSideBarAdmin = new MenuSideBarAdmin();
-        menuSideBarAdmin.chonManHinh(item.getItemId(), BaoCaoDoanhThuTrongNgayActivity.this);
-        navigationView.setCheckedItem(item.getItemId());
-        drawerLayout.closeDrawer(GravityCompat.START);
-        return true;
     }
 
     //Hàm xóa table row

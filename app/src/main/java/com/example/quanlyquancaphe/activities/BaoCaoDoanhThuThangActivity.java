@@ -36,7 +36,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class BaoCaoDoanhThuThangActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class BaoCaoDoanhThuThangActivity extends AppCompatActivity {
 
     TextView tvSlHoaDon, tvDoanhThu, tvTitle;
     TableLayout tbLayout;
@@ -44,12 +44,6 @@ public class BaoCaoDoanhThuThangActivity extends AppCompatActivity implements Na
     ArrayList<ThongKeHoaDon> dataFilter = new ArrayList<>();
     ArrayList<Double> dataDoanhThu = new ArrayList<>();
     ImageButton btnChart;
-
-    DrawerLayout drawerLayout;
-
-    NavigationView navigationView;
-
-    ActionBarDrawerToggle actionBarDrawerToggle;
     Toolbar toolBar;
     ArrayList<String> dataNam = new ArrayList<>();
     Spinner spNam;
@@ -58,13 +52,13 @@ public class BaoCaoDoanhThuThangActivity extends AppCompatActivity implements Na
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manhinh_baocaodoanhthuthang_layout);
         setControl();
-        setdrawer();
         setDataSPNam();
         getDataHoaDonTaiBanVaMangVe();
         spNam.setSelection(10);
     }
 
     private void setEvent() {
+        toolBar.setTitle("Báo cáo doanh thu tháng");
         tbLayout.removeAllViews();
         insertTitleTable();
         inSertTableRow("1");
@@ -105,6 +99,12 @@ public class BaoCaoDoanhThuThangActivity extends AppCompatActivity implements Na
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+        toolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
     }
@@ -360,28 +360,5 @@ public class BaoCaoDoanhThuThangActivity extends AppCompatActivity implements Na
         btnChart = findViewById(R.id.btnChart);
         spNam = findViewById(R.id.spNam);
         toolBar = findViewById(R.id.toolBar);
-
-    }
-
-    private void setdrawer(){
-        toolBar.setTitle("Báo cáo doanh thu tháng");
-        toolBar.setNavigationIcon(R.drawable.menu_icon);
-        drawerLayout = findViewById(R.id.nav_drawer_chucnang_admin);
-        navigationView = findViewById(R.id.nav_view);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolBar,R.string.open_nav,R.string.close_nav);
-        //setSupportActionBar(toolbar);
-        navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_thongkedoanhthuthang);
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        MenuSideBarAdmin menuSideBarAdmin = new MenuSideBarAdmin();
-        menuSideBarAdmin.chonManHinh(item.getItemId(), BaoCaoDoanhThuThangActivity.this);
-        navigationView.setCheckedItem(item.getItemId());
-        drawerLayout.closeDrawer(GravityCompat.START);
-        return true;
     }
 }

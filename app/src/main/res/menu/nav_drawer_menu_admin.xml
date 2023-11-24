@@ -9,10 +9,7 @@
             android:id="@+id/nav_thongke"
             android:icon="@drawable/thongke_icon"
             android:title="Thống kê"></item>
-        <item
-            android:id="@+id/nav_thongkedoanhthuthang"
-            android:icon="@drawable/thongke_icon"
-            android:title="Doanh thu tất cả tháng"></item>
+
         <item
             android:id="@+id/nav_qlnhanvien"
             android:icon="@drawable/qlnhanvien_icon"
