@@ -45,7 +45,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="150dp"
+                            android:layout_width="140dp"
                             android:layout_height="match_parent"
                             android:paddingBottom="10dp"
                             android:text="Tổng hóa đơn: "
@@ -70,7 +70,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:maxWidth="150dp"
+                            android:maxWidth="140dp"
                             android:text="Số hóa đơn trung bình: "
                             android:textColor="#000"
                             android:textSize="20sp" />
@@ -82,6 +82,7 @@
                             android:gravity="end"
                             android:paddingTop="10dp"
                             android:text="Đang tải"
+                            android:maxWidth="150dp"
                             android:textColor="#1563EA"
                             android:textSize="20sp" />
                     </LinearLayout>
@@ -149,6 +150,7 @@
                 android:id="@+id/tableLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp">
 

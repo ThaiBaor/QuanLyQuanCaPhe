@@ -196,12 +196,13 @@ public class ThongKeDonHangTheoGioActivity extends AppCompatActivity {
         int monthNow = calendar.get(Calendar.MONTH);
         int dayNow = calendar.get(Calendar.DAY_OF_MONTH);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat dateFormat_ = new SimpleDateFormat("yyyy-MM-dd");
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 calendar.set(year, month, day);
                 edtChonNgay.setText(dateFormat.format(calendar.getTime()));
-                getData(dateFormat.format(calendar.getTime()));
+                getData(dateFormat_.format(calendar.getTime()));
             }
         }, yearNow, monthNow, dayNow);
         datePickerDialog.setTitle("Chọn ngày");
