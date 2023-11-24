@@ -58,4 +58,13 @@ public class HoaDon {
     public void setDaThanhToan(Boolean daThanhToan) {
         this.daThanhToan = daThanhToan;
     }
+
+    @Override
+    public String toString() {
+        return "HoaDon{" +
+                "id_HoaDon='" + id_HoaDon + '\'' +
+                ", thoiGian_ThanhToan='" + thoiGian_ThanhToan + '\'' +
+                ", ngayThanhToan='" + ngayThanhToan + '\'' +
+                '}';
+    }
 }

@@ -25,8 +25,7 @@
                 android:text="1293"
                 android:textSize="20dp"
                 android:layout_weight="6"
-                android:layout_marginLeft="5dp"
-                android:textColor="@color/blue" />
+                android:textColor="@color/black" />
             <TextView
                 android:id="@+id/tvGioHDMV"
                 android:layout_width="0dp"
@@ -35,7 +34,7 @@
                 android:textSize="20dp"
                 android:layout_weight="3"
                 android:textAlignment="center"
-                android:textColor="@color/blue"
+                android:textColor="@color/black"
                 />
             <TextView
                 android:id="@+id/tvNgayHDMV"
@@ -46,7 +45,7 @@
                 android:textSize="20dp"
                 android:layout_weight="4"
                 android:layout_marginRight="5dp"
-                android:textColor="@color/blue"
+                android:textColor="@color/black"
                 />
         </LinearLayout>
         <LinearLayout
@@ -56,11 +55,11 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Tên khách hàng:"
+                android:text="Khách hàng:"
                 android:textSize="18dp"
-                android:layout_weight="4"
-                android:textAlignment="textEnd"
-                android:textColor="@color/blue"
+                android:layout_weight="3"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
                 />
             <TextView
                 android:id="@+id/tvTenKH"
@@ -70,7 +69,7 @@
                 android:textSize="20dp"
                 android:layout_weight="5"
                 android:textAlignment="textStart"
-                android:textColor="@color/blue"
+                android:textColor="@color/black"
                 />
             <TextView
                 android:id="@+id/tvGiaHDMV"
@@ -81,7 +80,7 @@
                 android:layout_weight="3"
                 android:textAlignment="textEnd"
                 android:layout_marginRight="5dp"
-                android:textColor="@color/blue"
+                android:textColor="@color/red"
                 android:textStyle="bold"
                 />
         </LinearLayout>

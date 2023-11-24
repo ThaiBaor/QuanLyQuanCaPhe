@@ -43,7 +43,7 @@ public class HoaDonMangVeAdapter extends RecyclerView.Adapter<HoaDonMangVeViewho
         NumberFormat nf = NumberFormat.getNumberInstance();
 
         HoaDonMangVe hoaDonMangVe = data.get(position);
-        holder.tvMHD.setText(hoaDonMangVe.getId_HoaDon().substring(0,13));
+        holder.tvMHD.setText(hoaDonMangVe.getId_HoaDon().substring(0,12));
         holder.tvGioHD.setText(hoaDonMangVe.getThoiGian_ThanhToan());
         holder.tvNgayHD.setText(hoaDonMangVe.getNgayThanhToan());
         holder.tvTenKH.setText(hoaDonMangVe.getTenKH().substring(9));

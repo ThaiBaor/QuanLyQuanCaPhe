@@ -49,7 +49,7 @@ public class HoaDonTaiBanAdapter extends RecyclerView.Adapter<HoaDonTaiBanViewho
     public void onBindViewHolder(@NonNull HoaDonTaiBanViewholder holder, int position) {
         NumberFormat nf = NumberFormat.getNumberInstance();
         HoaDonTaiBan hoaDonTaiBan = data.get(position);
-        holder.tvMHD.setText(hoaDonTaiBan.getId_HoaDon());
+        holder.tvMHD.setText(hoaDonTaiBan.getId_HoaDon().substring(0,12));
         holder.tvGioHD.setText(hoaDonTaiBan.getThoiGian_ThanhToan());
         holder.tvNgayHD.setText(hoaDonTaiBan.getNgayThanhToan());
         for (Ban item : dataBan){
