@@ -20,17 +20,26 @@ import com.example.quanlyquancaphe.models.DatBan;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CapNhatDatBanActivity extends AppCompatActivity {
+    FirebaseDatabase database;
+    DatabaseReference reference;
+    ValueEventListener valueEventListener;
+    ArrayList<Ban> dataBan = new ArrayList<>();
     Toolbar toolbar;
     Bundle bundle;
     EditText edtTenKH, edtSDT, edtSoNguoi, edtNgay, edtGio;
     Button btnCapNhat;
+    String id_Ban;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,13 +52,13 @@ public class CapNhatDatBanActivity extends AppCompatActivity {
 
     private void setEvent() {
         //set title toolbar
-        toolbar.setTitle("Đặt bàn");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+        GetDataBan();
         //set dữ liệu
         if(bundle != null){
             edtTenKH.setText(bundle.getString("tenKH"));
@@ -57,13 +66,9 @@ public class CapNhatDatBanActivity extends AppCompatActivity {
             edtSoNguoi.setText(String.valueOf(bundle.getInt("soNguoi")));
             edtNgay.setText(bundle.getString("ngay"));
             edtGio.setText(bundle.getString("gio"));
+            id_Ban = bundle.getString("id_Ban");
+
         }
-        edtNgay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ChonNgay();
-            }
-        });
         edtGio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,7 +78,7 @@ public class CapNhatDatBanActivity extends AppCompatActivity {
         btnCapNhat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validate() == true){
+                if (validate(dataBan) == true){
                     Update();
                     finish();
                 }
@@ -107,7 +112,7 @@ public class CapNhatDatBanActivity extends AppCompatActivity {
         edtGio.setText("");
     }
     //hàm kiểm tra giá trị nhập
-    private Boolean validate() {
+    private Boolean validate(ArrayList<Ban> bans) {
         if (edtTenKH.getText().toString().isEmpty()) {
             edtTenKH.requestFocus();
             edtTenKH.setError("Tên khách hàng trống");
@@ -118,39 +123,52 @@ public class CapNhatDatBanActivity extends AppCompatActivity {
             edtSDT.setError("Số điện thoại trống");
             return false;
         }
+        if(edtSDT.getText().toString().length() != 10){
+            edtSDT.requestFocus();
+            edtSDT.setError("SĐT không đúng");
+            return false;
+        }
         if (edtSoNguoi.getText().toString().isEmpty()) {
             edtSoNguoi.requestFocus();
             edtSoNguoi.setError("Số người trống");
             return false;
         }
-        if (edtNgay.getText().toString().isEmpty()) {
-            edtNgay.requestFocus();
-            edtNgay.setError("Ngày đặt trống");
-            return false;
+        for (Ban item: bans){
+            if (id_Ban.equals(item.getId_Ban())){
+                int slNguoi = item.getSoChoNgoi();
+                if (Integer.parseInt(edtSoNguoi.getText().toString())> slNguoi){
+                    edtSoNguoi.requestFocus();
+                    edtSoNguoi.setError("Số người nhiều hơn số chỗ ngồi");
+                    return false;
+                }
+            }
         }
         if (edtGio.getText().toString().isEmpty()) {
             edtGio.requestFocus();
             edtGio.setError("Giờ đặt trống");
             return false;
         }
-        return true;
-    }
-    private void ChonNgay(){
-        //Lấy ngày hiện tại
-        Calendar calendar = Calendar.getInstance();
-        int ngay = calendar.get(Calendar.DATE);
-        int thang = calendar.get(Calendar.MONTH);
-        int nam = calendar.get(Calendar.YEAR);
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            //Set lại ngày được chọn
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                calendar.set(year,month, dayOfMonth);
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                edtNgay.setText(simpleDateFormat.format(calendar.getTime()));
+        if (edtGio.getText().toString() != null){
+            // Lấy thời gian hiện tại và thời gian đặt
+            String [] time = edtGio.getText().toString().split(":");
+            Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+            Integer gio = Integer.parseInt(time[0]);
+            Integer phut = Integer.parseInt(time[1]);
+            Calendar timeHT = Calendar.getInstance();
+            Calendar timeDat = Calendar.getInstance();
+            timeHT.set(Calendar.HOUR_OF_DAY,timeHT.get(Calendar.HOUR_OF_DAY));
+            timeHT.set(Calendar.MINUTE, timeHT.get(Calendar.MINUTE));
+            timeDat.set(Calendar.HOUR_OF_DAY, gio);
+            timeDat.set(Calendar.MINUTE, phut);
+            //Nếu giờ đặt là quá khứ, không thể đặt
+            if (timeDat.compareTo(timeHT) <= 0) {
+                edtGio.requestFocus();
+                edtGio.setError("Không thể đặt");
+                Toast.makeText(this, "Không thể đặt! Vui lòng chọn giờ phù hợp", Toast.LENGTH_SHORT).show();
+                return false;
             }
-        },nam,thang, ngay);
-        datePickerDialog.show();
+        }
+        return true;
     }
     //Hàm chọn giờ cho editText giờ
     private void ChonGio(){
@@ -166,6 +184,24 @@ public class CapNhatDatBanActivity extends AppCompatActivity {
             }
         },gio, phut, true);
         timePickerDialog.show();
+    }
+    private void GetDataBan() {
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference().child("Ban");
+        valueEventListener = reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dataBan.clear();
+                for (DataSnapshot item : snapshot.getChildren()) {
+                    Ban ban = item.getValue(Ban.class);
+                    dataBan.add(ban);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
 
     private void setConTrol() {

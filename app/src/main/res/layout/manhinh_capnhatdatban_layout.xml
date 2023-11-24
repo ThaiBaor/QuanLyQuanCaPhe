@@ -69,7 +69,8 @@
                 android:background="@drawable/quanly_edittext_background"
                 android:hint="Ngày"
                 android:paddingLeft="10dp"
-                android:focusable="false"></EditText>
+                android:focusable="false"
+                android:enabled="false"></EditText>
             <EditText
                 android:id="@+id/edtGio"
                 android:layout_width="0dp"

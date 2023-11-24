@@ -5,11 +5,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-<<<<<<< HEAD
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android:requestLegacyExternalStorage=true" />
-=======
->>>>>>> hoai
 
     <application
         android:name=".services.MyApplication"
@@ -95,7 +92,6 @@
             android:exported="true" /> <!-- HÓA ĐƠN -->
         <activity
             android:name=".activities.PhieuHoaDonTaiBanActivity"
-<<<<<<< HEAD
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -103,9 +99,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-=======
-            android:exported="true" />
->>>>>>> hoai
         <activity
             android:name=".activities.PhieuHoaDonMangVeActivity"
             android:exported="true" />
@@ -117,10 +110,10 @@
             android:exported="true" /> <!-- DANH SÁCH MÓN KHẢ DỤNG -->
         <!-- BÁO CÁO BÁN HÀNG -->
         <activity
-            android:name=".activities.BaoCaoBanHangActivity"
+            android:name=".activities.BaoCaoDoanhThuTrongNgayActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.ChartActivity"
+            android:name=".activities.BieuDoDoanhThuTrongNgayActivity"
             android:exported="true" />
         <activity
             android:name=".activities.DanhSachMonKhaDungActivity"
