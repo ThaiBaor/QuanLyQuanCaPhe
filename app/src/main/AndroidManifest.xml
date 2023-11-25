@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android:requestLegacyExternalStorage=true" />
 
     <application
         android:name=".services.MyApplication"
@@ -18,9 +19,7 @@
         android:theme="@style/Theme.QuanLyQuanCaPhe"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".activities.ThongKeDonHangTheoGioActivity"
-            android:exported="true" />
+
         <!-- MON -->
         <activity
             android:name=".activities.CapNhatThongTinMonActivity"
@@ -93,7 +92,13 @@
             android:exported="true" /> <!-- HÓA ĐƠN -->
         <activity
             android:name=".activities.PhieuHoaDonTaiBanActivity"
-            android:exported="true" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activities.PhieuHoaDonMangVeActivity"
             android:exported="true" />
@@ -105,10 +110,10 @@
             android:exported="true" /> <!-- DANH SÁCH MÓN KHẢ DỤNG -->
         <!-- BÁO CÁO BÁN HÀNG -->
         <activity
-            android:name=".activities.BaoCaoBanHangActivity"
+            android:name=".activities.BaoCaoDoanhThuTrongNgayActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.ChartActivity"
+            android:name=".activities.BieuDoDoanhThuTrongNgayActivity"
             android:exported="true" />
         <activity
             android:name=".activities.DanhSachMonKhaDungActivity"
@@ -120,17 +125,26 @@
             android:name=".activities.DanhSachMonHoanThanh_Activity"
             android:exported="true" /> <!-- THỐNG KÊ -->
         <activity
+            android:name=".activities.ThongKeActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.ThongKeHoaDonActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.BaoCaoDoanhThuThangActivity"
             android:exported="true" />
         <activity
             android:name=".activities.BieuDoThongKeHoaDonThang"
             android:exported="true" />
         <activity
-            android:name=".activities.DanhSachMonTrongOrderPhaChe_Activity"
-            android:exported="false" />
+            android:name=".activities.ThongKeDonHangTheoGioActivity"
+            android:exported="true" />
         <activity
             android:name=".activities.BieuDoThongKeDonHangTheoGio"
             android:exported="true" />
+        <activity
+            android:name=".activities.DanhSachMonTrongOrderPhaChe_Activity"
+            android:exported="false" />
     </application>
 
 </manifest>

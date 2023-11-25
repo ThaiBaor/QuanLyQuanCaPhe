@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:paddingRight="8dp"
                     android:text="Mã hóa đơn:"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="16dp" />
 
                 <TextView
@@ -65,85 +65,33 @@
                     android:text="09123"
                     android:textSize="16dp" />
 
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="40dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="Bàn: "
-                    android:textAlignment="textEnd"
+                    android:textAlignment="textStart"
                     android:textSize="16dp" />
 
                 <TextView
                     android:id="@+id/tvBan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="5"
                     android:textSize="16dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="115dp"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="8dp"
-                    android:text="Tên phục vụ:"
-                    android:textAlignment="center"
-                    android:textSize="16dp" />
-
-                <TextView
-                    android:id="@+id/tvTenNV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Nguyễn Văn Tèo"
-                    android:textSize="16dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
-                    android:text="Ngày:"
-                    android:textAlignment="center"
-                    android:textSize="16dp" />
-
-                <TextView
-                    android:id="@+id/tvNgay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="30/10/2023"
-                    android:textSize="16dp"
-                    android:layout_weight="4"/>
-
-                <TextView
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="8dp"
-                    android:text="Giờ:"
-                    android:textAlignment="textEnd"
-                    android:textSize="16dp" />
-
-                <TextView
-                    android:id="@+id/tvGio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="10:00"
-                    android:textSize="16dp"
-                    android:layout_weight="4"/>
-
-                <TextView
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="8dp"
-                    android:text="Khu:"
+                    android:layout_weight="1"
+                    android:text="Khu: "
                     android:textAlignment="textEnd"
                     android:textSize="16dp" />
 
@@ -151,9 +99,47 @@
                     android:id="@+id/tvKhu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    android:layout_weight="1"
                     android:text="Khu A"
                     android:textSize="16dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:text="Ngày:"
+                    android:textAlignment="textStart"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/tvNgay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="30/10/2023"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:text="Giờ: "
+                    android:layout_weight="1"
+                    android:textAlignment="textEnd"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/tvGio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="10:00"
+                    android:textSize="16dp" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -226,13 +212,26 @@
                 android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:src="@drawable/qrcode" />
         </LinearLayout>
     </ScrollView>
 
+<!--    <LinearLayout-->
+<!--        android:layout_marginTop="-10dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="30dp"-->
+<!--        android:layout_gravity="center">-->
+
+<!--        <EditText-->
+<!--            android:gravity="center"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:text="dsjkfkl"></EditText>-->
+<!--    </LinearLayout>-->
+
     <LinearLayout
         android:layout_width="match_parent"
-
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:gravity="end"
@@ -245,13 +244,7 @@
             android:layout_margin="15dp"
             android:layout_weight="1"
             android:text="Quay lại" />
-        <Button
-            android:id="@+id/btnPDF"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:layout_weight="1"
-            android:text="PDF" />
+
 
         <Button
             android:id="@+id/btnThanhToan"

@@ -13,28 +13,35 @@
             android:id="@+id/tvTenBan"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:text="Bàn 1"
-            android:textSize="20dp"
-            android:textColor="#000"
-            android:gravity="left"
-            android:layout_marginLeft="10dp">
+            android:textSize="23dp"
+            android:textColor="#D13D3D"
+            android:gravity="center"
+            android:textStyle="bold">
         </TextView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
         <TextView
             android:id="@+id/tvTenKhu"
-            android:layout_width="0dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1"
+            android:gravity="left"
             android:text="Khu A"
-            android:textSize="20dp"
             android:textColor="#000"
-            android:gravity="center">
-        </TextView>
+            android:textSize="20dp"></TextView>
         <TextView
             android:id="@+id/tvGio"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
+            android:layout_weight="1"
             android:text="10:30"
             android:textColor="#000"
             android:gravity="right"
@@ -52,10 +59,10 @@
             android:id="@+id/tvTenKH"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:text="Bảo Châu"
             android:textSize="20dp"
-            android:textColor="#000"
+            android:textColor="#D13D3D"
             android:gravity="left"
             android:layout_marginLeft="10dp">
         </TextView>
@@ -82,7 +89,7 @@
             android:layout_weight="1"
             android:text="0347951635"
             android:textSize="20dp"
-            android:textColor="#000"
+            android:textColor="#D13D3D"
             android:gravity="left"
             android:layout_marginLeft="10dp">
         </TextView>
@@ -90,7 +97,7 @@
             android:id="@+id/tvSoNguoi"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:text="Số người: 3"
             android:textSize="20dp"
             android:textColor="#000"

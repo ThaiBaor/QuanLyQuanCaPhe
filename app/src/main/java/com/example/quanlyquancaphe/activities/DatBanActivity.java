@@ -24,14 +24,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.SimpleTimeZone;
 
 public class DatBanActivity extends AppCompatActivity {
     Toolbar toolbar;
     EditText edtTenKH, edtSDT, edtSoNguoi, edtNgay, edtGio;
     Button btnDat, btnDatBanNgay;
+    Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,20 +43,18 @@ public class DatBanActivity extends AppCompatActivity {
         setContentView(R.layout.manhinh_datban_layout);
         setConTrol();
         setEvent();
+        bundle = getIntent().getExtras();
     }
 
     private void setEvent() {
         toolbar.setTitle("Đặt bàn");
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        edtNgay.setText(simpleDateFormat.format(calendar.getTime()));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
-            }
-        });
-        edtNgay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ChonNgay();
             }
         });
         edtGio.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +66,7 @@ public class DatBanActivity extends AppCompatActivity {
         btnDat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validate() == true) {
+                if (validate(bundle.getInt("soChoNgoi")) == true) {
                     AddDatBan();
                     finish();
                 }
@@ -77,28 +79,8 @@ public class DatBanActivity extends AppCompatActivity {
                 Intent intent = new Intent(DatBanActivity.this, DanhSachMonPhucVuActivity.class);
                 startActivity(intent);
                 finish();
-                //Toast.makeText(DatBanActivity.this, "Đặt bàn thành công", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    //Hàm chọn ngày cho editText ngày
-    private void ChonNgay() {
-        //Lấy ngày hiện tại
-        Calendar calendar = Calendar.getInstance();
-        int ngay = calendar.get(Calendar.DATE);
-        int thang = calendar.get(Calendar.MONTH);
-        int nam = calendar.get(Calendar.YEAR);
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            //Set lại ngày được chọn
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                calendar.set(year, month, dayOfMonth);
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                edtNgay.setText(simpleDateFormat.format(calendar.getTime()));
-            }
-        }, nam, thang, ngay);
-        datePickerDialog.show();
     }
 
     //Hàm chọn giờ cho editText giờ
@@ -157,7 +139,7 @@ public class DatBanActivity extends AppCompatActivity {
     }
 
     //hàm kiểm tra giá trị nhập
-    private Boolean validate() {
+    private Boolean validate(Integer soChoNgoi){
         if (edtTenKH.getText().toString().isEmpty()) {
             edtTenKH.requestFocus();
             edtTenKH.setError("Tên khách hàng trống");
@@ -168,20 +150,44 @@ public class DatBanActivity extends AppCompatActivity {
             edtSDT.setError("Số điện thoại trống");
             return false;
         }
+        if(edtSDT.getText().toString().length() != 10){
+            edtSDT.requestFocus();
+            edtSDT.setError("SĐT không đúng");
+            return false;
+        }
         if (edtSoNguoi.getText().toString().isEmpty()) {
             edtSoNguoi.requestFocus();
             edtSoNguoi.setError("Số người trống");
             return false;
         }
-        if (edtNgay.getText().toString().isEmpty()) {
-            edtNgay.requestFocus();
-            edtNgay.setError("Ngày đặt trống");
+        if (Integer.parseInt(edtSoNguoi.getText().toString()) > soChoNgoi) {
+            edtSoNguoi.requestFocus();
+            edtSoNguoi.setError("Số người nhiều hơn số chỗ ngồi");
             return false;
         }
         if (edtGio.getText().toString().isEmpty()) {
             edtGio.requestFocus();
-            edtGio.setError("Giờ đặt trống");
+            edtGio.setError("Trống");
             return false;
+        }
+        if (edtGio.getText().toString() != null){
+            // Lấy thời gian hiện tại và thời gian đặt
+            String [] time = edtGio.getText().toString().split(":");
+            Integer gio = Integer.parseInt(time[0]);
+            Integer phut = Integer.parseInt(time[1]);
+            Calendar timeHT = Calendar.getInstance();
+            Calendar timeDat = Calendar.getInstance();
+            timeHT.set(Calendar.HOUR_OF_DAY,timeHT.get(Calendar.HOUR_OF_DAY));
+            timeHT.set(Calendar.MINUTE, timeHT.get(Calendar.MINUTE));
+            timeDat.set(Calendar.HOUR_OF_DAY, gio);
+            timeDat.set(Calendar.MINUTE, phut);
+            //Nếu giờ đặt là quá khứ, không thể đặt
+            if (timeDat.compareTo(timeHT) <= 0) {
+                edtGio.requestFocus();
+                edtGio.setError("Không thể đặt");
+                Toast.makeText(this, "Không thể đặt! Vui lòng chọn giờ phù hợp", Toast.LENGTH_SHORT).show();
+                return false;
+            }
         }
         return true;
     }
