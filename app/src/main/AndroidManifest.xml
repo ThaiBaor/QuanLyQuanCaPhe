@@ -19,8 +19,12 @@
         android:theme="@style/Theme.QuanLyQuanCaPhe"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
-        <!-- MON -->
+        <activity
+            android:name=".activities.ThemPhieuGiamGiaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.QuanLyPhieuGiamGiaActivity"
+            android:exported="true" /> <!-- MON -->
         <activity
             android:name=".activities.CapNhatThongTinMonActivity"
             android:exported="false" />
