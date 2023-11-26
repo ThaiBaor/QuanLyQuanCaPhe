@@ -288,10 +288,32 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
                             menu.getItem(3).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                                 @Override
                                 public boolean onMenuItemClick(@NonNull MenuItem item) {
-                                    // Tạo hóa đơn cho thu ngân
-                                    HoaDonUltility.getHdInstance().taoHoaDonTaiBan(DanhSachBanActivity.this, dataBan.get(position).getId_Ban());
-                                    //sau khi thanh toán, chuyển trạng thái bàn thành 0: bàn trống
-                                    ChuyenTrangThaiBan(dataBan.get(position).getId_Ban(), 0);
+                                    // Kiểm tra món trong bàn đã xong hết chưa
+                                    kiemTraMonVanCon(dataBan.get(position).getId_Ban(), vanConMon -> {
+                                        // Nếu không còn thì tạo hóa đơn
+                                        if (!vanConMon) {
+                                            // Tạo hóa đơn cho thu ngân
+                                            HoaDonUltility.getHdInstance().taoHoaDonTaiBan(DanhSachBanActivity.this, dataBan.get(position).getId_Ban());
+                                            //sau khi thanh toán, chuyển trạng thái bàn thành 0: bàn trống
+                                            ChuyenTrangThaiBan(dataBan.get(position).getId_Ban(), 0);
+                                        }
+                                        //  Nếu còn thì cảnh báo bằng dialog
+                                        else {
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(DanhSachBanActivity.this);
+                                            builder.setCancelable(true);
+                                            builder.setTitle("Cảnh báo");
+                                            builder.setMessage("!!! Vẫn còn món trong bàn chưa xong.");
+                                            builder.setPositiveButton("Thanh toán", (dialogInterface, i) -> {
+                                                HoaDonUltility.getHdInstance().taoHoaDonTaiBan(DanhSachBanActivity.this, dataBan.get(position).getId_Ban());
+                                                ChuyenTrangThaiBan(dataBan.get(position).getId_Ban(), 0);
+                                            });
+                                            builder.setNegativeButton("Hủy", (dialogInterface, i) -> {
+
+                                            });
+                                            AlertDialog dialog = builder.create();
+                                            dialog.show();
+                                        }
+                                    });
                                     return true;
                                 }
                             });
@@ -314,6 +336,33 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
                 startActivity(intent);
             }
         });
+    }
+
+    // Hàm kiểm tra xem bàn có còn món chưa hoàn thành hay không
+    private void kiemTraMonVanCon(String id_Ban, kiemTraMonVanConTrongBanListener listener) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(id_Ban).child("HT");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    for (DataSnapshot item : dataSnapshot.getChildren()) {
+                        if (item.child("id_TrangThai").getValue(Integer.class) != 3) {
+                            listener.kiemTraMonVanConTrongBan(true);
+                            return;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    interface kiemTraMonVanConTrongBanListener {
+        void kiemTraMonVanConTrongBan(boolean vanConMon);
     }
 
     //Hàm hiển thị bàn theo khu
@@ -455,6 +504,7 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
             }
         });
     }
+
 
     private void setdrawer() {
         toolBar = findViewById(R.id.toolBar);
