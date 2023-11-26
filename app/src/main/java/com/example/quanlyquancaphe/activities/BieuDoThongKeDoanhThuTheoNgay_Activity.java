@@ -65,7 +65,7 @@ public class BieuDoThongKeDoanhThuTheoNgay_Activity extends AppCompatActivity {
             Chart.add(new Entry(key.get(i), value.get(i).floatValue()));
         }
 
-        LineDataSet dataSet = new LineDataSet(Chart, "Biểu đồ thống kê danh thu từng tháng ");
+        LineDataSet dataSet = new LineDataSet(Chart, "Biểu đồ thống kê danh theo tháng ");
         dataSet.setColor(Color.BLUE);
         dataSet.setValueTextColor(Color.BLACK);
         dataSet.setValueTextSize(10f);

@@ -225,9 +225,62 @@ public class ThongKeDoanhThuTheoNgay_Activity extends AppCompatActivity {
         }
         return haskMap;
     }
+    private void insertTitleTable(){
+        TableRow tableRow = new TableRow(this);
+        tableRow.setLayoutParams(new TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.WRAP_CONTENT
+        ));
+        tableRow.setWeightSum(2);
+        // Tạo cột
+        // Cột 1
+        TextView textView1 = new TextView(this);
+        textView1.setLayoutParams(new TableRow.LayoutParams(
+                TableLayout.LayoutParams.WRAP_CONTENT,
+                TableLayout.LayoutParams.WRAP_CONTENT,
+                1
+
+        ));
+
+        textView1.setTextSize(20);
+        textView1.setPadding(0,10,0,10);
+        textView1.setTextColor(Color.BLACK);
+        textView1.setGravity(Gravity.CENTER);
+        textView1.setBackgroundResource(R.drawable.table_border_title);
+        textView1.setText("Ngày");
+        // Thêm TextView vào TableRow
+        tableRow.addView(textView1);
+        // Cột 2
+        TextView textView2 = new TextView(this);
+        textView2.setLayoutParams(new TableRow.LayoutParams(
+                TableLayout.LayoutParams.WRAP_CONTENT,
+                TableLayout.LayoutParams.WRAP_CONTENT,
+                1
+
+        ));
+        textView2.setPadding(0,10,0,10);
+        textView2.setTextSize(20);
+        textView2.setTextColor(Color.BLACK);
+        textView2.setGravity(Gravity.CENTER);
+        textView2.setBackgroundResource(R.drawable.table_border_title);
+        textView2.setText("Danh Thu");
+        // Thêm TextView vào TableRow
+        tableRow.addView(textView2);
+        // Cột 3
+        TextView textView3 = new TextView(this);
+        textView3.setLayoutParams(new TableRow.LayoutParams(
+                TableLayout.LayoutParams.WRAP_CONTENT,
+                TableLayout.LayoutParams.WRAP_CONTENT,
+                1
+
+        ));
+        // Thêm TableRow vào TableLayout
+        tbLayout.addView(tableRow);
+    }
 
     private void createTable(@NonNull Map<Integer, Integer> map) {
         tbLayout.removeAllViews();
+        insertTitleTable();
         // Tạo hàng
         for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
             TableRow tableRow = new TableRow(this);
