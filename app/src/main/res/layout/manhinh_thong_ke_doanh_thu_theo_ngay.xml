@@ -5,8 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/background"
     tools:context=".activities.ThongKeDoanhThuTheoNgay_Activity">
-    <include layout="@layout/toolbar"/>
+
+    <include layout="@layout/toolbar" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -24,49 +27,62 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="5">
+                    android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_margin="10dp"
-                        android:layout_weight="1"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:src="@drawable/money_icon" />
 
                     <LinearLayout
                         android:layout_gravity="center"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_weight="1"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="Tổng doanh thu : "
-                            android:textColor="#000"
+                            android:layout_weight="1"
+                            android:text="Tổng doanh thu: "
                             android:textSize="20dp" />
 
                         <TextView
-                            android:layout_weight="1"
                             android:id="@+id/tvDoanhThu"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="..."
-                            android:textColor="#1563EA"
+                            android:layout_weight="1"
+                            android:text="loading ..."
+                            android:textColor="@color/red"
                             android:textSize="20dp" />
-
                     </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="right">
+                    <TextView
+                        android:textSize="20dp"
+                        android:text="Chọn tháng: "
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"/>
+                    <Spinner
+                        android:id="@+id/spNgay"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp" />
+                </LinearLayout>
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/table_border_title"
@@ -75,10 +91,10 @@
                         android:text="Ngày"
                         android:textColor="#000"
                         android:textSize="20dp"
-                        android:textStyle="bold"></TextView>
+                        android:textStyle="bold" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/table_border_title"
@@ -87,7 +103,8 @@
                         android:text="Doanh thu"
                         android:textColor="#000"
                         android:textSize="20dp"
-                        android:textStyle="bold"></TextView>
+                        android:textStyle="bold" />
+
                 </LinearLayout>
 
                 <TableLayout

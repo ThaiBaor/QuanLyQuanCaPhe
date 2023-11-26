@@ -73,7 +73,7 @@
             android:name=".activities.DanhSachBanActivity"
             android:exported="true" /> <!-- ĐĂNG NHẬP -->
         <activity
-            android:name=".activities.DangNhapActivity"
+            android:name=".activities.ThongKeDoanhThuTheoNgay_Activity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

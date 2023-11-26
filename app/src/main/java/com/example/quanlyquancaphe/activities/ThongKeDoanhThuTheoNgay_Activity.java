@@ -10,8 +10,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -25,6 +28,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -37,6 +42,7 @@ public class ThongKeDoanhThuTheoNgay_Activity extends AppCompatActivity {
     TextView tvNgay, tvDoanhThu;
     ImageButton btnChart;
     TableLayout tbLayout;
+    Spinner spinner;
     HashMap<Integer, Integer> hashMap = new HashMap<>();
     List<String> listNgay = new ArrayList<>();
     List<Double> listDouble = new ArrayList<>();
@@ -47,10 +53,8 @@ public class ThongKeDoanhThuTheoNgay_Activity extends AppCompatActivity {
     ArrayList<Integer> listKey = new ArrayList<>();
     ArrayList<Integer> listValues = new ArrayList<>();
     LocalDate currentDate = LocalDate.now();
-    // Lấy số ngày trong tháng hiện tại
-    int daysInCurrentMonth = currentDate.lengthOfMonth();
-    Integer today = daysInCurrentMonth;
-    float count = 0 ;
+    int monthHienTai = currentDate.getMonthValue();
+
     Toolbar toolbar;
 
     @Override
@@ -65,13 +69,40 @@ public class ThongKeDoanhThuTheoNgay_Activity extends AppCompatActivity {
                 finish();
             }
         });
-        tongDoanhSoTheoNgay(today);
+        // tongDoanhSoTheoNgay(monthHienTai);
+        chonNgay(monthHienTai);
     }
 
+    private void chonNgay(Integer monthHienTai) {
+        // Gọi hàm tổng danh thu
+        tongDoanhSoTheoNgay(monthHienTai);
+        List<Integer> listSpinner = new ArrayList<>();
+        for (int i = 1; i <= 12; i++) {
+            listSpinner.add(i );
+            ArrayAdapter<Integer> adapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, listSpinner);
+            spinner.setAdapter(adapter);
+        }
+        spinner.setSelection(monthHienTai-1, false);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Integer selectedMonth = (Integer) adapterView.getItemAtPosition(i);
+                tbLayout.removeAllViews();
+                tongDoanhSoTheoNgay(selectedMonth);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+    }
+
+    // đẩy dữ liệu
     private void setEvent(HashMap<Integer, Integer> map) {
         btnChart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                listKey.clear();
+                listValues.clear();
                 Intent intent = new Intent(ThongKeDoanhThuTheoNgay_Activity.this, BieuDoThongKeDoanhThuTheoNgay_Activity.class);
                 for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
                     Integer key = entry.getKey();
@@ -84,19 +115,26 @@ public class ThongKeDoanhThuTheoNgay_Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
     }
 
-    private void tongDoanhSoTheoNgay(Integer today) {
+    private void tongDoanhSoTheoNgay(Integer monthValues) {
+        // Lấy ngày trong tháng
+        Calendar calendar = Calendar.getInstance();
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, monthValues+1);
+        int numberOfDaysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("HoaDon");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (int i = 0; i < today; i++) {
-                    hashMap.put(i + 1, 0);
+                hashMap.clear();
+                for (int i = 1; i <= numberOfDaysInMonth; i++) {
+                    hashMap.put(i , 0);
                 }
+                listHoaDon.clear();
+                listTime.clear();
                 for (DataSnapshot dataSnapshot : snapshot.child("TaiBan").getChildren()) {
                     Boolean thanhToan = dataSnapshot.child("daThanhToan").getValue(Boolean.class);
                     if (thanhToan) {
@@ -111,22 +149,26 @@ public class ThongKeDoanhThuTheoNgay_Activity extends AppCompatActivity {
                         listTime.add(hoaDon);
                     }
                 }
+                // Tính tổng tiền
                 thongke = Thongke(listHoaDon);
+                listNgay.clear();
+                listDouble.clear();
                 for (Map.Entry<String, HoaDon> _TB : thongke.entrySet()) {
-                    //
                     if (!listTime.isEmpty()) {
                         thongke_MangVe = Thongke(listTime);
                         for (Map.Entry<String, HoaDon> _MV : thongke_MangVe.entrySet()) {
-                            if (_TB.getValue().getNgayThanhToan().equals(_MV.getValue().getNgayThanhToan())) {
-                                Double _id_Tong = _TB.getValue().getTongTien() + _MV.getValue().getTongTien() + _TB.getValue().getTongTien();
-                                String _ngay_TT = _TB.getValue().getNgayThanhToan();
-                                listNgay.add(_ngay_TT);
-                                listDouble.add(_id_Tong);
-                            } else {
-                                Double _id_Tong = _TB.getValue().getTongTien();
-                                String _ngay_TT = _TB.getValue().getNgayThanhToan();
-                                listNgay.add(_ngay_TT);
-                                listDouble.add(_id_Tong);
+                            if (_TB.getValue().getNgayThanhToan() != null && _MV.getValue().getNgayThanhToan() != null) {
+                                if (_TB.getValue().getNgayThanhToan().equals(_MV.getValue().getNgayThanhToan())) {
+                                    Double _id_Tong = _TB.getValue().getTongTien() + _MV.getValue().getTongTien() + _TB.getValue().getTongTien();
+                                    String _ngay_TT = _TB.getValue().getNgayThanhToan();
+                                    listNgay.add(_ngay_TT);
+                                    listDouble.add(_id_Tong);
+                                } else {
+                                    Double _id_Tong = _TB.getValue().getTongTien();
+                                    String _ngay_TT = _TB.getValue().getNgayThanhToan();
+                                    listNgay.add(_ngay_TT);
+                                    listDouble.add(_id_Tong);
+                                }
                             }
                         }
                     } else {
@@ -142,23 +184,27 @@ public class ThongKeDoanhThuTheoNgay_Activity extends AppCompatActivity {
                         String a = listNgay.get(j);
                         String[] values = a.split("-");
                         int value = Integer.parseInt(values[2]);
-                        if (i == value) {
-                            if (j < listDouble.size()) {
-                                entry.setValue(listDouble.get(j).intValue());
+                        int month = Integer.parseInt(values[1]);
+                        if (month == monthValues) {
+                            if (i == value) {
+                                if (j < listDouble.size()) {
+                                    entry.setValue(listDouble.get(j).intValue());
+                                }
                             }
                         }
                     }
                 }
-                //Tính tổng doanh thu
+                Integer count = 0;
                 for (Map.Entry<Integer, Integer> entry : hashMap.entrySet()) {
-                 float getValues = entry.getValue().floatValue();
-                 count+= getValues;
-                  tvDoanhThu.setText(String.valueOf(count)+"đ");
+                    Integer value = entry.getValue();
+                    count += value;
+                    DecimalFormat decimalFormat = new DecimalFormat("#,###");
+                    String formattedNumber = decimalFormat.format(count);
+                    tvDoanhThu.setText(String.valueOf(formattedNumber)+" đ");
                 }
                 createTable(hashMap);
                 setEvent(hashMap);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
@@ -176,7 +222,6 @@ public class ThongKeDoanhThuTheoNgay_Activity extends AppCompatActivity {
             } else {
                 haskMap.put(ngayThanhToan, id_HD);
             }
-
         }
         return haskMap;
     }
@@ -203,7 +248,7 @@ public class ThongKeDoanhThuTheoNgay_Activity extends AppCompatActivity {
             tvThang.setPadding(10, 10, 10, 10);
             tvThang.setTextSize(20);
             tvThang.setTextColor(Color.BLACK);
-            tvThang.setGravity(Gravity.CENTER);
+            tvThang.setGravity(Gravity.CENTER_HORIZONTAL);
             tvThang.setBackgroundResource(R.drawable.table_border);
             tvThang.setText("Ngày " + entry.getKey());
             // Thêm TextView vào TableRow
@@ -235,5 +280,6 @@ public class ThongKeDoanhThuTheoNgay_Activity extends AppCompatActivity {
         btnChart = findViewById(R.id.btnChart);
         tbLayout = findViewById(R.id.tbLayout);
         toolbar = findViewById(R.id.toolBar);
+        spinner = findViewById(R.id.spNgay);
     }
 }
