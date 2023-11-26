@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,13 +11,11 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.models.HoaDon;
@@ -30,7 +27,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,7 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ThongKeDoanhThuTheoNgay_Activity extends AppCompatActivity {
+public class ThongKeDoanhThuTrongThangActivity extends AppCompatActivity {
     TextView tvNgay, tvDoanhThu;
     ImageButton btnChart;
     TableLayout tbLayout;
@@ -60,7 +56,7 @@ public class ThongKeDoanhThuTheoNgay_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manhinh_thong_ke_doanh_thu_theo_ngay);
+        setContentView(R.layout.manhinh_thongkedoanhthutrongthang_layout);
         setCtrol();
         toolbar.setTitle("Thống kê doanh thu theo tháng");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -103,7 +99,7 @@ public class ThongKeDoanhThuTheoNgay_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 listKey.clear();
                 listValues.clear();
-                Intent intent = new Intent(ThongKeDoanhThuTheoNgay_Activity.this, BieuDoThongKeDoanhThuTheoNgay_Activity.class);
+                Intent intent = new Intent(ThongKeDoanhThuTrongThangActivity.this, BieuDoThongKeDoanhThuTheoNgay_Activity.class);
                 for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
                     Integer key = entry.getKey();
                     listKey.add(key);
@@ -319,7 +315,8 @@ public class ThongKeDoanhThuTheoNgay_Activity extends AppCompatActivity {
             tvSoHoaDon.setTextColor(Color.BLACK);
             tvSoHoaDon.setGravity(Gravity.CENTER);
             tvSoHoaDon.setBackgroundResource(R.drawable.table_border);
-            tvSoHoaDon.setText(entry.getValue() + "");
+            NumberFormat nf = NumberFormat.getNumberInstance();
+            tvSoHoaDon.setText(nf.format(entry.getValue()) + "đ");
             // Thêm TextView vào TableRow
             tableRow.addView(tvSoHoaDon);
 

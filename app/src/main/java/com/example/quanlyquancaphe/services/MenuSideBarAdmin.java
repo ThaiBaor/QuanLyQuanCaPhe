@@ -6,8 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 
 import com.example.quanlyquancaphe.R;
-import com.example.quanlyquancaphe.activities.BaoCaoDoanhThuTrongNgayActivity;
-import com.example.quanlyquancaphe.activities.BaoCaoDoanhThuThangActivity;
 import com.example.quanlyquancaphe.activities.DangNhapActivity;
 import com.example.quanlyquancaphe.activities.DoiMatKhauActivity;
 import com.example.quanlyquancaphe.activities.QuanLyBanActivity;
