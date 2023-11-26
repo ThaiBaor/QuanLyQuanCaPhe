@@ -15,7 +15,9 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +36,7 @@ import com.example.quanlyquancaphe.models.HoaDonMangVe;
 import com.example.quanlyquancaphe.models.HoaDonTaiBan;
 import com.example.quanlyquancaphe.models.Khu;
 import com.example.quanlyquancaphe.models.PDF;
+import com.example.quanlyquancaphe.models.PhieuGiamGia;
 import com.example.quanlyquancaphe.ultilities.HoaDonUltility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -53,23 +56,31 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
     final static int REQUEST_CODE = 1232;
-    TextView tvMHD, tvGioHD, tvNgayHD, tvTenKH, tvGiaHD, tvTongTien;
+    TextView tvMHD, tvGioHD, tvNgayHD, tvTenKH, tvGiaHD, tvTongTien, tvtongTienSauGiam;
+    EditText maGiamGia;
     Button btnQuayLai, btnThanhToan;
     RecyclerView recyclerView;
+    Switch swGiamGia;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     PhieuHoaDonAdapter adapter;
     Bundle bundle;
-    String tenKH = "";
+    String tenKH = "", id_Phieu = "";
+    Double tongTienSauGiam = 0.0;
+    Boolean check = false;
     HoaDonMangVe hoaDonMangVe = new HoaDonMangVe();
     ArrayList<ChiTietMon> dataChiTietMon = new ArrayList<>();
     ArrayList<ChiTietMon> dataGop = new ArrayList<>();
+    ArrayList<PhieuGiamGia> dataPhieuGiamGia = new ArrayList<>();
+    PhieuGiamGia phieuGiamGiaDaSuDung = new PhieuGiamGia();
     Bitmap bmp, scaledbmp, qr, scaledqr;
     String fileName;
     File downloadDir;
@@ -82,6 +93,7 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
         setControl();
         loadDataThongTin();
         datachitietmon();
+        loadDataPhieuGiamGia();
         adapter = new PhieuHoaDonAdapter(PhieuHoaDonMangVeActivity.this, dataChiTietMon);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setAdapter(adapter);
@@ -105,6 +117,10 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference ref = database.getReference("HoaDon").child("MangVe");
                     taoChiTietMonQK(hoaDonMangVe.getId_HoaDon());
+                    if (check){
+                        taoPhieuGiamGiaDaSuDung(hoaDonMangVe.getId_HoaDon(),id_Phieu);
+                    }
+                    resetTongTienHoaDon(hoaDonMangVe.getId_HoaDon(), tongTienSauGiam);
                     ref.child(hoaDonMangVe.getId_HoaDon()).child("daThanhToan").setValue(tt).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -128,10 +144,46 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
                 dataChiTietMon.clear();
             }
         });
-
+        swGiamGia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NumberFormat nf = NumberFormat.getNumberInstance();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                LocalDate currentDate = LocalDate.now();
+                if (swGiamGia.isChecked()) {
+                    for (PhieuGiamGia item : dataPhieuGiamGia) {
+                        LocalDate otherDate = LocalDate.parse(item.getNgayHetHan(), formatter);
+                        if (currentDate.compareTo(otherDate) < 0) {
+                            if (item.getId_Phieu().equals(maGiamGia.getText().toString())) {
+                                tongTienSauGiam = hoaDonMangVe.getTongTien() - hoaDonMangVe.getTongTien() * item.getGiaTri() / 100;
+                                tvtongTienSauGiam.setText(nf.format(tongTienSauGiam) + "đ");
+                                id_Phieu = item.getId_Phieu();
+                                swGiamGia.setChecked(true);
+                                check = true;
+                                return;
+                            } else {
+                                Toast.makeText(PhieuHoaDonMangVeActivity.this, "Mã Không tồn tại!", Toast.LENGTH_SHORT).show();
+                                swGiamGia.setChecked(false);
+                                check = false;
+                            }
+                        } else {
+                            Toast.makeText(PhieuHoaDonMangVeActivity.this, "Mã đã hết hạn!", Toast.LENGTH_SHORT).show();
+                            swGiamGia.setChecked(false);
+                            check = false;
+                        }
+                    }
+                }
+                else {
+                    tvtongTienSauGiam.setText(nf.format(hoaDonMangVe.getTongTien())+"đ");
+                }
+            }
+        });
     }
 
     private void setControl() {
+        tvtongTienSauGiam = findViewById(R.id.tvTongTienDaGiamMV);
+        maGiamGia = findViewById(R.id.maGiamGiaHDMV);
+        swGiamGia = findViewById(R.id.swMaGiamGiaHoaDonMV);
         recyclerView = findViewById(R.id.recyclePhieuHoaDonMV);
         tvMHD = findViewById(R.id.tvMaMV);
         tvGioHD = findViewById(R.id.tvGioMV);
@@ -164,6 +216,7 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
             tenKH = hoaDonMangVe.getTenKH();
             hoaDonMangVe.setTongTien(bundle.getDouble("tongTien"));
             tvTongTien.setText(nf.format(hoaDonMangVe.getTongTien()) + "đ");
+            tvtongTienSauGiam.setText(nf.format(hoaDonMangVe.getTongTien()) + "đ");
         }
         dialog.dismiss();
     }
@@ -223,7 +276,7 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
         });
     }
     public void taoChiTietMonQK(String id_HoaDon){
-        HoaDonUltility.getHdInstance().thanhToanTaiBan(tenKH, id_HoaDon);
+        HoaDonUltility.getHdInstance().thanhToanMangVe(tenKH, id_HoaDon);
     }
 
     public void askPermission() {
@@ -385,5 +438,51 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
                 Log.e("Loi", "Upload failed. Exception: " + e.getMessage());
             }
         });
+    }
+    public void loadDataPhieuGiamGia() {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference().child("PhieuGiamGia");
+        databaseReference.child("ChuaSuDung").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    PhieuGiamGia phieuGiamGia1 = dataSnapshot.getValue(PhieuGiamGia.class);
+                    dataPhieuGiamGia.add(phieuGiamGia1);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public void taoPhieuGiamGiaDaSuDung(String id_HoaDon, String id_Phieu){
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("PhieuGiamGia").child("ChuaSuDung");
+        databaseReference.child(id_Phieu).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                phieuGiamGiaDaSuDung = snapshot.getValue(PhieuGiamGia.class);
+                phieuGiamGiaDaSuDung.setId_HoaDon(id_HoaDon);
+                DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("PhieuGiamGia");
+                databaseReference1.child("DaSuDung").child(id_Phieu).setValue(phieuGiamGiaDaSuDung);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("PhieuGiamGia").child("ChuaSuDung");
+        databaseReference1.child(id_Phieu).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+
+            }
+        });
+    }
+    public void resetTongTienHoaDon(String id_HoaDon, Double tongTien){
+        databaseReference = FirebaseDatabase.getInstance().getReference("HoaDon").child("TaiBan");
+        databaseReference.child(id_HoaDon).child("tongTien").setValue(tongTien);
     }
 }
