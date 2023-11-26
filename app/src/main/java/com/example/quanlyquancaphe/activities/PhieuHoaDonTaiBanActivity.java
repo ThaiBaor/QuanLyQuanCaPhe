@@ -16,7 +16,10 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +38,7 @@ import com.example.quanlyquancaphe.models.HoaDon;
 import com.example.quanlyquancaphe.models.HoaDonTaiBan;
 import com.example.quanlyquancaphe.models.Khu;
 import com.example.quanlyquancaphe.models.PDF;
+import com.example.quanlyquancaphe.models.PhieuGiamGia;
 import com.example.quanlyquancaphe.ultilities.HoaDonUltility;
 import com.example.quanlyquancaphe.ultilities.HoaDonUltility;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -55,7 +59,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -63,14 +71,20 @@ import java.util.concurrent.Executors;
 
 public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
     final static int REQUEST_CODE = 1232;
-    TextView tvMHD, tvGioHD, tvNgayHD, tvBanHD, tvGiaHD, tvKhu, tvTongTien;
+    TextView tvMHD, tvGioHD, tvNgayHD, tvBanHD, tvGiaHD, tvKhu, tvTongTien, tvtongTienSauGiam;
+    EditText maGiamGia;
     Button btnQuayLai, btnThanhToan;
     ImageView ivHinh;
+    Switch swGiamGia;
     RecyclerView recyclerView;
     Bundle bundle;
-    String id_Ban = "";
+    String id_Ban = "", id_Phieu = "";
+    Double tongTienSauGiam = 0.0;
+    Boolean check = false;
     ArrayList<ChiTietMon> dataChiTietMon = new ArrayList<>();
     ArrayList<ChiTietMon> dataGop = new ArrayList<>();
+    ArrayList<PhieuGiamGia> dataPhieuGiamGia = new ArrayList<>();
+    PhieuGiamGia phieuGiamGiaDaSuDung = new PhieuGiamGia();
     HoaDonTaiBan hoaDonTaiBan = new HoaDonTaiBan();
     Ban ban = new Ban();
     Khu khu = new Khu();
@@ -91,6 +105,7 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
         setControl();
         loadDataThongTin();
         datachitietmon();
+        loadDataPhieuGiamGia();
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
         adapter = new PhieuHoaDonAdapter(PhieuHoaDonTaiBanActivity.this, dataChiTietMon);
@@ -116,6 +131,10 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference ref = database.getReference("HoaDon").child("TaiBan");
                     taoChiTietMonQK(hoaDonTaiBan.getId_HoaDon());
+                    if (check){
+                        taoPhieuGiamGiaDaSuDung(hoaDonTaiBan.getId_HoaDon(),id_Phieu);
+                    }
+                    resetTongTienHoaDon(hoaDonTaiBan.getId_HoaDon(), tongTienSauGiam);
                     ref.child(hoaDonTaiBan.getId_HoaDon()).child("daThanhToan").setValue(tt).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -125,10 +144,9 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
                             databaseReference.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
-
+                                    finish();
                                 }
                             });
-                            finish();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -140,9 +158,46 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
                 dataChiTietMon.clear();
             }
         });
+        swGiamGia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NumberFormat nf = NumberFormat.getNumberInstance();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                LocalDate currentDate = LocalDate.now();
+                if (swGiamGia.isChecked()) {
+                    for (PhieuGiamGia item : dataPhieuGiamGia) {
+                        LocalDate otherDate = LocalDate.parse(item.getNgayHetHan(), formatter);
+                        if (currentDate.compareTo(otherDate) < 0) {
+                            if (item.getId_Phieu().equals(maGiamGia.getText().toString())) {
+                                tongTienSauGiam = hoaDonTaiBan.getTongTien() - hoaDonTaiBan.getTongTien() * item.getGiaTri() / 100;
+                                tvtongTienSauGiam.setText(nf.format(tongTienSauGiam) + "đ");
+                                id_Phieu = item.getId_Phieu();
+                                swGiamGia.setChecked(true);
+                                check = true;
+                                return;
+                            } else {
+                                Toast.makeText(PhieuHoaDonTaiBanActivity.this, "Mã Không tồn tại!", Toast.LENGTH_SHORT).show();
+                                swGiamGia.setChecked(false);
+                                check = false;
+                            }
+                        } else {
+                            Toast.makeText(PhieuHoaDonTaiBanActivity.this, "Mã đã hết hạn!", Toast.LENGTH_SHORT).show();
+                            swGiamGia.setChecked(false);
+                            check = false;
+                        }
+                    }
+                }
+                else {
+                    tvtongTienSauGiam.setText(nf.format(hoaDonTaiBan.getTongTien())+"đ");
+                }
+            }
+        });
     }
 
     private void setControl() {
+        tvtongTienSauGiam = findViewById(R.id.tvTongTienDaGiam);
+        maGiamGia = findViewById(R.id.maGiamGiaHDTB);
+        swGiamGia = findViewById(R.id.swMaGiamGiaHoaDonMV);
         recyclerView = findViewById(R.id.recyclePhieuHoaDon);
         tvMHD = findViewById(R.id.tvMa);
         tvGioHD = findViewById(R.id.tvGio);
@@ -181,6 +236,7 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
             tvKhu.setText(khu.getTenKhu());
             hoaDonTaiBan.setTongTien(bundle.getDouble("tongTien"));
             tvTongTien.setText(nf.format(hoaDonTaiBan.getTongTien()) + "đ");
+            tvtongTienSauGiam.setText(nf.format(hoaDonTaiBan.getTongTien()) + "đ");
         }
         dialog.dismiss();
     }
@@ -266,8 +322,6 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
         canvas.drawBitmap(scaledbmp, 400, 0, paint);
 
 
-
-
         titlePaint.setTextAlign(Paint.Align.CENTER);
         titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.ITALIC));
         titlePaint.setTextSize(50);
@@ -339,7 +393,7 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTextSize(30f);
         paint.setColor(Color.BLACK);
-        canvas.drawText( "Cảm ơn quý khách vì sự ủng hộ. Chúng tôi luôn sẵn lòng phục vụ bạn!", pageWidth/2, pageRemember + 400, paint);
+        canvas.drawText("Cảm ơn quý khách vì sự ủng hộ. Chúng tôi luôn sẵn lòng phục vụ bạn!", pageWidth / 2, pageRemember + 400, paint);
 
         paint.setTextAlign(Paint.Align.LEFT);
         paint.setTextSize(50f);
@@ -353,9 +407,7 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
         canvas.drawText(nf.format(hoaDonTaiBan.getTongTien()) + "đ", pageWidth - 90, pageRemember + 100, paint);
 
         // load hình ảnh lên file pdf
-        canvas.drawBitmap(scaledqr, 500, pageRemember+150, paint);
-
-
+        canvas.drawBitmap(scaledqr, 500, pageRemember + 150, paint);
 
 
         pdfDocument.finishPage(page);
@@ -405,4 +457,50 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
         });
     }
 
+    public void loadDataPhieuGiamGia() {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference().child("PhieuGiamGia");
+        databaseReference.child("ChuaSuDung").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    PhieuGiamGia phieuGiamGia1 = dataSnapshot.getValue(PhieuGiamGia.class);
+                    dataPhieuGiamGia.add(phieuGiamGia1);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public void taoPhieuGiamGiaDaSuDung(String id_HoaDon, String id_Phieu){
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("PhieuGiamGia").child("ChuaSuDung");
+        databaseReference.child(id_Phieu).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                phieuGiamGiaDaSuDung = snapshot.getValue(PhieuGiamGia.class);
+                phieuGiamGiaDaSuDung.setId_HoaDon(id_HoaDon);
+                DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("PhieuGiamGia");
+                databaseReference1.child("DaSuDung").child(id_Phieu).setValue(phieuGiamGiaDaSuDung);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("PhieuGiamGia").child("ChuaSuDung");
+        databaseReference1.child(id_Phieu).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+
+            }
+        });
+    }
+    public void resetTongTienHoaDon(String id_HoaDon, Double tongTien){
+        databaseReference = FirebaseDatabase.getInstance().getReference("HoaDon").child("TaiBan");
+        databaseReference.child(id_HoaDon).child("tongTien").setValue(tongTien);
+    }
 }
