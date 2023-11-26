@@ -1,6 +1,7 @@
 package com.example.quanlyquancaphe.fragments;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,10 +10,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.quanlyquancaphe.R;
@@ -31,6 +35,8 @@ import java.util.ArrayList;
 
 
 public class DanhSachMonKhacFragment extends Fragment {
+    ImageButton btnCart;
+    EditText edtSearchBox;
     RecyclerView rvDSMon;
     ArrayList<MonTrongDS> data = new ArrayList<>();
     DanhSachMonPhucVuAdapter adapter;
@@ -99,8 +105,8 @@ public class DanhSachMonKhacFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadData();
         adapter = new DanhSachMonPhucVuAdapter(getActivity(), data, buttonClickListener);
+        loadData("", adapter);
 
     }
 
@@ -110,22 +116,49 @@ public class DanhSachMonKhacFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_danhsachmonkhac_layout, container, false);
         rvDSMon = rootView.findViewById(R.id.rvDSMon);
+        btnCart = rootView.findViewById(R.id.btnCart);
+        edtSearchBox = rootView.findViewById(R.id.edtSearchBox);
+        btnCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), GioHangActivity.class);
+                startActivity(intent);
+            }
+        });
+        edtSearchBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                loadData(edtSearchBox.getText().toString().trim().toLowerCase(), adapter);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         rvDSMon.setLayoutManager(new LinearLayoutManager(getContext()));
         rvDSMon.setAdapter(adapter);
         return rootView;
     }
 
-    private void loadData() {
+    private void loadData(String key, DanhSachMonPhucVuAdapter adapter) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()).setTitle("").setMessage("Đang tải dữ liệu...");
         builder.setCancelable(false);
         AlertDialog dialog = builder.create();
         dialog.show();
+        data.clear();
+        adapter.notifyDataSetChanged();
         databaseReference = FirebaseDatabase.getInstance().getReference("Mon");
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 MonTrongDS mon = snapshot.getValue(MonTrongDS.class);
-                if (mon.getId_Loai() == 2) {
+                if (mon.getId_Loai() == 2 && mon.getTenMon().toLowerCase().contains(key.trim().toLowerCase())) {
                     data.add(mon);
                     adapter.notifyItemInserted(data.size());
                 }
@@ -135,7 +168,7 @@ public class DanhSachMonKhacFragment extends Fragment {
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 MonTrongDS mon = snapshot.getValue(MonTrongDS.class);
-                if (mon.getId_Loai() == 2) {
+                if (mon.getId_Loai() == 2 && mon.getTenMon().toLowerCase().contains(key.trim().toLowerCase())) {
                     for (int i = 0; i < data.size(); i++) {
                         if (data.get(i).getId_Mon().equals(mon.getId_Mon())) {
                             data.set(i, mon);
@@ -151,7 +184,7 @@ public class DanhSachMonKhacFragment extends Fragment {
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                 int changedPosition = 0;
                 MonTrongDS mon = snapshot.getValue(MonTrongDS.class);
-                if (mon.getId_Loai() == 2) {
+                if (mon.getId_Loai() == 2 && mon.getTenMon().toLowerCase().contains(key.trim().toLowerCase())) {
                     for (int i = 0; i < data.size(); i++) {
                         if (mon.getId_Mon().equals(data.get(i).getId_Mon())) {
                             changedPosition = i;
