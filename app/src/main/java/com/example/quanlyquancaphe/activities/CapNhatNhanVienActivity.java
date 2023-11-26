@@ -196,9 +196,7 @@ public class CapNhatNhanVienActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 ViTri vitri = arrayListSpinner.get(i);
                 itemsViTri = vitri.getVitri();
-
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 spEditViTri.setSelection(0);

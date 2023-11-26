@@ -88,6 +88,7 @@ public class DanhSachMonTrongOrderPhaCheAdapter extends RecyclerView.Adapter<Dan
                             Boolean get_Id_TT = dataSnapshot.child("hetMon").getValue(Boolean.class);
                             if (get_Id_TT != null) {
                                 if (get_Id_TT) {
+                                    holder.cardView.setCardBackgroundColor(Color.parseColor("#E7E7E7"));
                                     holder.swTrangThai.setChecked(false);
                                     holder.ibtnWaiting.setVisibility(View.INVISIBLE);
                                     holder.ibtnComplete.setVisibility(View.INVISIBLE);
@@ -199,6 +200,7 @@ public class DanhSachMonTrongOrderPhaCheAdapter extends RecyclerView.Adapter<Dan
                         }
                     });
                 }else {
+                    holder.cardView.setCardBackgroundColor(Color.parseColor("#E7E7E7"));
                     String tenMon = list_CT.get(holder.getBindingAdapterPosition()).getTenMon();
                     NotificationUtility.updateNotiOnFirebase(1, "Hết Món: "+tenMon);
                     Map<String, Object> mSwitch_On = new HashMap<>();
