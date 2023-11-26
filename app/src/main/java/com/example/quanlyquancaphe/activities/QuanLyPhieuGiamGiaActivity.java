@@ -2,7 +2,11 @@ package com.example.quanlyquancaphe.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.AlertDialog;
@@ -10,6 +14,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,8 +26,10 @@ import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.adapters.QuanLyPhieuGiamGiaAdapter;
 import com.example.quanlyquancaphe.models.Mon;
 import com.example.quanlyquancaphe.models.PhieuGiamGia;
+import com.example.quanlyquancaphe.services.MenuSideBarAdmin;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,18 +41,27 @@ import com.tsuryo.swipeablerv.SwipeableRecyclerView;
 
 import java.util.ArrayList;
 
-public class QuanLyPhieuGiamGiaActivity extends AppCompatActivity {
+public class QuanLyPhieuGiamGiaActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     SwipeableRecyclerView listPhieu;
     EditText edtSearch;
     ImageButton btnDaSuDung, btnSort, btnAdd;
     ArrayList<PhieuGiamGia> data = new ArrayList<>();
     QuanLyPhieuGiamGiaAdapter adapter;
 
+    DrawerLayout drawerLayout;
+
+    Toolbar toolBar;
+
+    NavigationView navigationView;
+
+    ActionBarDrawerToggle actionBarDrawerToggle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manhinh_quanlyphieugiamgia_layout);
         setControl();
+        setdrawer();
         adapter = new QuanLyPhieuGiamGiaAdapter(data, this);
         listPhieu.setLayoutManager(new LinearLayoutManager(this));
         listPhieu.setAdapter(adapter);
@@ -177,5 +193,28 @@ public class QuanLyPhieuGiamGiaActivity extends AppCompatActivity {
         btnSort = findViewById(R.id.btnSort);
         btnAdd = findViewById(R.id.btnAdd);
         listPhieu = findViewById(R.id.listPhieu);
+        toolBar = findViewById(R.id.toolBar);
+    }
+
+    private void setdrawer(){
+        toolBar.setTitle("Quản lý phiếu giảm giá");
+        toolBar.setNavigationIcon(R.drawable.menu_icon);
+        drawerLayout = findViewById(R.id.nav_drawer_chucnang_admin);
+        navigationView = findViewById(R.id.nav_view);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolBar,R.string.open_nav,R.string.close_nav);
+        //setSupportActionBar(toolbar);
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_qlphieugiamgia);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        MenuSideBarAdmin menuSideBarAdmin = new MenuSideBarAdmin();
+        menuSideBarAdmin.chonManHinh(item.getItemId(), QuanLyPhieuGiamGiaActivity.this);
+        navigationView.setCheckedItem(item.getItemId());
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 }

@@ -15,6 +15,7 @@ import com.example.quanlyquancaphe.activities.QuanLyKhoActivity;
 import com.example.quanlyquancaphe.activities.QuanLyKhuActivity;
 import com.example.quanlyquancaphe.activities.QuanLyMonActivity;
 import com.example.quanlyquancaphe.activities.QuanLyNhanVienActivity;
+import com.example.quanlyquancaphe.activities.QuanLyPhieuGiamGiaActivity;
 import com.example.quanlyquancaphe.activities.ThongKeActivity;
 
 public class MenuSideBarAdmin {
@@ -40,6 +41,9 @@ public class MenuSideBarAdmin {
                 break;
             case R.id.nav_qlkho:
                 chonManHinh(activity, QuanLyKhoActivity.class);
+                break;
+            case R.id.nav_qlphieugiamgia:
+                chonManHinh(activity, QuanLyPhieuGiamGiaActivity.class);
                 break;
             case R.id.nav_doimatkhau:
                 Intent intent = new Intent(activity, DoiMatKhauActivity.class);
