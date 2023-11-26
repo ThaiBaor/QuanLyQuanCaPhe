@@ -80,7 +80,7 @@ public class DanhSachOrderPhaCheAdapter extends RecyclerView.Adapter<DanhSachOrd
                 Intent intent = new Intent(context, DanhSachMonTrongOrderPhaChe_Activity.class);
                 String id = list_DanhSachOder.get(holder.getAdapterPosition()).getId_Ban();
                 String id_ten = list_DanhSachOder.get(holder.getAdapterPosition()).getTenKH();
-                intent.putExtra("time" ,list_DanhSachOder.get(holder.getAdapterPosition()).getGioGoiMon());
+                intent.putExtra("time", list_DanhSachOder.get(holder.getAdapterPosition()).getGioGoiMon());
                 if (id.equals(" ")) {
                     intent.putExtra("key", id_ten);
                 } else {
