@@ -281,6 +281,7 @@ public class ThemNhanVienActivity extends AppCompatActivity {
             }
         });
     }
+
     private void setCtrol() {
         ivAvatar = findViewById(R.id.ivAvatarNhanVien);
         ivImagesCCCDS = findViewById(R.id.ivCCCDSau);

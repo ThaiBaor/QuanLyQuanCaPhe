@@ -4,6 +4,16 @@ public class PhieuGiamGia {
     private String id_Phieu, ngayHetHan, id_HoaDon=" ";
     private Integer giaTri;
 
+    @Override
+    public String toString() {
+        return "PhieuGiamGia{" +
+                "id_Phieu='" + id_Phieu + '\'' +
+                ", ngayHetHan='" + ngayHetHan + '\'' +
+                ", id_HoaDon='" + id_HoaDon + '\'' +
+                ", giaTri=" + giaTri +
+                '}';
+    }
+
     public PhieuGiamGia() {
     }
 

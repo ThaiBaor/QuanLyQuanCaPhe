@@ -31,6 +31,10 @@
             android:icon="@drawable/qlkho_icon"
             android:title="Quản lý kho"></item>
         <item
+            android:id="@+id/nav_qlphieugiamgia"
+            android:icon="@drawable/phieugiamgia_icon"
+            android:title="Quản lý phiếu giảm giá"></item>
+        <item
             android:id="@+id/nav_doimatkhau"
             android:icon="@drawable/lock_icon"
             android:title="Đổi mật khẩu"></item>

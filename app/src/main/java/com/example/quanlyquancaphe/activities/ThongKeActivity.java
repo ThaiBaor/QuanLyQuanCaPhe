@@ -18,16 +18,14 @@ import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.services.MenuSideBarAdmin;
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ThongKeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
-    Button btnDTTheoNgay, btnDTTheoThang, btnDHTheoGio, btnHDTheoThang;
+    Button btnDTTheoNgay, btnDTTrongThang, btnDHTheoGio, btnDTTrongNam;
     Integer [] arr;
     Map<Integer,Button> hashMap = new HashMap<>();
     Toolbar toolBar;
@@ -51,9 +49,9 @@ public class ThongKeActivity extends AppCompatActivity implements NavigationView
         arr = randomArr();
         // put button vào map
         hashMap.put(arr[0], btnDTTheoNgay);
-        hashMap.put(arr[1], btnDTTheoThang);
+        hashMap.put(arr[1], btnDTTrongThang);
         hashMap.put(arr[2], btnDHTheoGio);
-        hashMap.put(arr[3], btnHDTheoThang);
+        hashMap.put(arr[3], btnDTTrongNam);
         // Duyệt map, set lại background
         for (Map.Entry<Integer, Button> entry : hashMap.entrySet() ){
             if (entry.getKey() == 1){
@@ -81,10 +79,17 @@ public class ThongKeActivity extends AppCompatActivity implements NavigationView
                 chuyenManHinh(ThongKeActivity.this, BaoCaoDoanhThuTrongNgayActivity.class);
             }
         });
-        btnHDTheoThang.setOnClickListener(new View.OnClickListener() {
+
+        btnDTTrongNam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                chuyenManHinh(ThongKeActivity.this, BaoCaoDoanhThuThangActivity.class);
+                chuyenManHinh(ThongKeActivity.this, BaoCaoDoanhThuTrongNamActivity.class);
+            }
+        });
+        btnDTTrongThang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chuyenManHinh(ThongKeActivity.this, ThongKeDoanhThuTrongThangActivity.class);
             }
         });
     }
@@ -100,9 +105,9 @@ public class ThongKeActivity extends AppCompatActivity implements NavigationView
 
     private void setControl() {
         btnDTTheoNgay = findViewById(R.id.btnDTTrongNgay);
-        btnDTTheoThang = findViewById(R.id.btnDTTheoThang);
+        btnDTTrongThang = findViewById(R.id.btnDTTrongThang);
         btnDHTheoGio = findViewById(R.id.btnDHTheoGio);
-        btnHDTheoThang = findViewById(R.id.btnHDTheoThang);
+        btnDTTrongNam = findViewById(R.id.btnDTTrongNam);
         toolBar = findViewById(R.id.toolBar);
     }
     private void setdrawer(){

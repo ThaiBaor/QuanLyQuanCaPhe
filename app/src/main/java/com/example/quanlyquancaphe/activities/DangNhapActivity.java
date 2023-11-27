@@ -67,7 +67,6 @@ public class DangNhapActivity extends AppCompatActivity {
                     if (kiemTraDangNhap(taiKhoanData, matKhauData)) {
                         tenDangNhap = taiKhoanData;
                         dangNhapTheoRole(viTri);
-                        Toast.makeText(DangNhapActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(DangNhapActivity.this, "Mật khẩu sai. Vui lòng kiểm tra lại", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();

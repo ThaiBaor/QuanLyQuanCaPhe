@@ -19,12 +19,17 @@
         android:theme="@style/Theme.QuanLyQuanCaPhe"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <!-- PHIẾU GIẢM GIÁ -->
         <activity
             android:name=".activities.ThemPhieuGiamGiaActivity"
             android:exported="false" />
         <activity
             android:name=".activities.QuanLyPhieuGiamGiaActivity"
-            android:exported="true" /> <!-- MON -->
+            android:exported="true" />
+        <!-- MON -->
+        <activity
+            android:name=".activities.BieuDoThongKeDoanhThuTheoNgay_Activity"
+            android:exported="false" />
         <activity
             android:name=".activities.CapNhatThongTinMonActivity"
             android:exported="false" />
@@ -33,16 +38,19 @@
             android:exported="true" />
         <activity
             android:name=".activities.ThemMonActivity"
-            android:exported="false" /> <!-- NGUYEN LIEU -->
+            android:exported="false" />
+        <!-- NGUYEN LIEU -->
         <activity
             android:name=".activities.QuanLyKhoActivity"
             android:exported="true" />
         <activity
             android:name=".activities.ThemNguyenLieuActivity"
-            android:exported="false" /> <!-- KHU -->
+            android:exported="false" />
+        <!-- KHU -->
         <activity
             android:name=".activities.QuanLyKhuActivity"
-            android:exported="false" /> <!-- BAN -->
+            android:exported="false" />
+        <!-- BAN -->
         <activity
             android:name=".activities.QuanLyBanActivity"
             android:exported="true" />
@@ -51,7 +59,8 @@
             android:exported="false" />
         <activity
             android:name=".activities.CapNhatBanActivity"
-            android:exported="false" /> <!-- ĐẶT BÀN -->
+            android:exported="false" />
+        <!-- ĐẶT BÀN -->
         <activity
             android:name=".activities.CapNhatDatBanActivity"
             android:exported="true" />
@@ -60,7 +69,8 @@
             android:exported="true" />
         <activity
             android:name=".activities.DSBanDaDatActivity"
-            android:exported="true" /> <!-- NHAN VIEN -->
+            android:exported="true" />
+        <!-- NHAN VIEN -->
         <activity
             android:name=".activities.CapNhatNhanVienActivity"
             android:exported="false" />
@@ -69,13 +79,15 @@
             android:exported="false" />
         <activity
             android:name=".activities.QuanLyNhanVienActivity"
-            android:exported="true" /> <!-- DANH SÁCH BÀN -->
+            android:exported="true" />
+        <!-- DANH SÁCH BÀN -->
         <activity
             android:name=".activities.DanhSachBanActivity"
-            android:exported="true" /> <!-- ĐĂNG NHẬP -->
+            android:exported="true" />
+        <!-- ĐĂNG NHẬP -->
         <activity
             android:name=".activities.DangNhapActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -84,25 +96,22 @@
         </activity>
         <activity
             android:name=".activities.DoiMatKhauActivity"
-            android:exported="true" /> <!-- MENU -->
+            android:exported="true" />
+        <!-- MENU -->
         <activity
             android:name=".activities.MenuChucNangQuanLyActicity"
-            android:exported="true" /> <!-- GIỎ HÀNG -->
+            android:exported="true" />
+        <!-- GIỎ HÀNG -->
         <activity
             android:name=".activities.GioHangActivity"
             android:exported="true" />
         <activity
             android:name=".activities.DanhSachMonPhucVuActivity"
-            android:exported="true" /> <!-- HÓA ĐƠN -->
+            android:exported="true" />
+        <!-- HÓA ĐƠN -->
         <activity
             android:name=".activities.PhieuHoaDonTaiBanActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".activities.PhieuHoaDonMangVeActivity"
             android:exported="true" />
@@ -111,8 +120,24 @@
             android:exported="true" />
         <activity
             android:name=".activities.HoaDonMangVeActivity"
-            android:exported="true" /> <!-- DANH SÁCH MÓN KHẢ DỤNG -->
-        <!-- BÁO CÁO BÁN HÀNG -->
+            android:exported="true" />
+
+        <!-- DANH SÁCH MÓN KHẢ DỤNG -->
+        <activity
+            android:name=".activities.DanhSachMonKhaDungActivity"
+            android:exported="true" />
+        <!-- DANH SÁCH ORDER PHA CHẾ -->
+        <activity
+            android:name=".activities.DanhSachMonTrongOrderPhaChe_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.DanhSachOderPhaCheActivity"
+            android:exported="true" />
+        <!-- DANH SÁCH MÓN HOÀN THÀNH -->
+        <activity
+            android:name=".activities.DanhSachMonHoanThanh_Activity"
+            android:exported="true" />
+        <!-- THỐNG KÊ -->
         <activity
             android:name=".activities.BaoCaoDoanhThuTrongNgayActivity"
             android:exported="true" />
@@ -120,22 +145,13 @@
             android:name=".activities.BieuDoDoanhThuTrongNgayActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.DanhSachMonKhaDungActivity"
-            android:exported="true" /> <!-- DANH SÁCH ORDER PHA CHẾ -->
-        <activity
-            android:name=".activities.DanhSachOderPhaCheActivity"
-            android:exported="true" /> <!-- DANH SÁCH MÓN HOÀN THÀNH -->
-        <activity
-            android:name=".activities.DanhSachMonHoanThanh_Activity"
-            android:exported="true" /> <!-- THỐNG KÊ -->
-        <activity
             android:name=".activities.ThongKeActivity"
             android:exported="true" />
         <activity
             android:name=".activities.ThongKeHoaDonActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.BaoCaoDoanhThuThangActivity"
+            android:name=".activities.BaoCaoDoanhThuTrongNamActivity"
             android:exported="true" />
         <activity
             android:name=".activities.BieuDoThongKeHoaDonThang"
@@ -147,8 +163,10 @@
             android:name=".activities.BieuDoThongKeDonHangTheoGio"
             android:exported="true" />
         <activity
-            android:name=".activities.DanhSachMonTrongOrderPhaChe_Activity"
-            android:exported="false" />
+            android:name=".activities.ThongKeDoanhThuTrongThangActivity"
+            android:exported="true">
+
+        </activity>
     </application>
 
 </manifest>
