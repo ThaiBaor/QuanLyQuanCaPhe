@@ -46,6 +46,9 @@
         <activity
             android:name=".activities.ThemNguyenLieuActivity"
             android:exported="false" />
+        <activity
+            android:name=".activities.CapNhatNguyenLieuActivity"
+            android:exported="false" />
         <!-- KHU -->
         <activity
             android:name=".activities.QuanLyKhuActivity"

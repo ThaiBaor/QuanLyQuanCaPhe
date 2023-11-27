@@ -2,6 +2,8 @@ package com.example.quanlyquancaphe.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.EditText;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -41,11 +43,12 @@ public class HoaDonTaiBanActivity extends AppCompatActivity implements Navigatio
     ArrayList<HoaDonTaiBan> data = new ArrayList<>();
     ArrayList<Khu> dataKhu = new ArrayList<>();
     ArrayList<Ban> dataBan = new ArrayList<>();
-
+    ArrayList<HoaDonTaiBan> dataFillter = new ArrayList<>();
     DrawerLayout drawerLayout;
     Toolbar toolBar;
     NavigationView navigationView;
     ActionBarDrawerToggle actionBarDrawerToggle;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manhinh_hoadontaiban_layout);
@@ -84,6 +87,49 @@ public class HoaDonTaiBanActivity extends AppCompatActivity implements Navigatio
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
+        edtSearchBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (!edtSearchBox.getText().equals("")){
+                    search(charSequence);
+                    adapter = new HoaDonTaiBanAdapter(HoaDonTaiBanActivity.this, dataFillter, dataBan, dataKhu, new HoaDonTaiBanAdapter.ItemClickListener() {
+                        @Override
+                        public void OnItemClick(int position) {
+                            HoaDonTaiBan hoaDonTaiBan = dataFillter.get(position);
+                            Intent intent = new Intent(HoaDonTaiBanActivity.this, PhieuHoaDonTaiBanActivity.class);
+                            intent.putExtra("id_HoaDon", hoaDonTaiBan.getId_HoaDon());
+                            intent.putExtra("id_Ban", hoaDonTaiBan.getId_Ban());
+                            intent.putExtra("thoiGian_ThanhToan", hoaDonTaiBan.getThoiGian_ThanhToan());
+                            intent.putExtra("ngayThanhToan", hoaDonTaiBan.getNgayThanhToan());
+                            intent.putExtra("tongTien", hoaDonTaiBan.getTongTien());
+                            intent.putExtra("daThanhToan", hoaDonTaiBan.getDaThanhToan());
+                            for (Ban item : dataBan) {
+                                if (hoaDonTaiBan.getId_Ban().equals(item.getId_Ban())) {
+                                    intent.putExtra("tenBan", item.getTenBan());
+                                    for (Khu item2 : dataKhu) {
+                                        if (item2.getId_Khu().equals(item.getId_Khu())) {
+                                            intent.putExtra("tenKhu", item2.getTenKhu());
+                                        }
+                                    }
+                                }
+                            }
+                            startActivity(intent);
+                        }
+                    });
+                    recyclerView.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
 
@@ -184,4 +230,16 @@ public class HoaDonTaiBanActivity extends AppCompatActivity implements Navigatio
         return true;
     }
 
+    public void search(CharSequence charSequence) {
+        dataFillter.clear();
+        for (HoaDonTaiBan item: data){
+            for (Ban itemBan: dataBan){
+                if (item.getId_Ban().equals(itemBan.getId_Ban())){
+                    if (itemBan.getTenBan().toLowerCase().contains(charSequence.toString().toLowerCase())){
+                        dataFillter.add(item);
+                    }
+                }
+            }
+        }
+    }
 }
