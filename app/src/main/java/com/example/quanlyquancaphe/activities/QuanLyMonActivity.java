@@ -244,7 +244,7 @@ public class QuanLyMonActivity extends AppCompatActivity implements NavigationVi
         // Tham chiếu tới tấm ảnh trong storage
         storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(imgUrl);
         // Thông báo đang xóa
-        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("").setMessage("Đang xóa dũ liệu...");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("").setMessage("Đang xóa dữ liệu...");
         builder.setCancelable(false);
         AlertDialog dialog = builder.create();
         dialog.show();
