@@ -33,7 +33,9 @@
                     android:layout_height="match_parent"
                     android:layout_weight="10"
                     android:drawableLeft="@drawable/search_icon"
-                    android:hint="Search" />
+                    android:hint="Search"
+                    android:inputType="text"
+                    android:maxLength="100"/>
 
                 <ImageButton
                     android:id="@+id/btnSort"

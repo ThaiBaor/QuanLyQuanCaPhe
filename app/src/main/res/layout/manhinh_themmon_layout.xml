@@ -25,6 +25,8 @@
         android:layout_margin="10dp"
         android:background="@drawable/quanly_edittext_background"
         android:hint="Tên"
+        android:inputType="text"
+        android:maxLength="100"
         android:paddingLeft="10dp" />
 
     <EditText
@@ -36,6 +38,8 @@
         android:background="@drawable/quanly_edittext_background"
         android:gravity="start"
         android:hint="Mô tả"
+        android:inputType="text"
+        android:maxLength="255"
         android:paddingLeft="10dp"
         android:paddingTop="10dp" />
 
@@ -54,6 +58,7 @@
             android:background="@drawable/quanly_edittext_background"
             android:hint="Đơn giá"
             android:inputType="number"
+            android:maxLength="9"
             android:paddingLeft="10dp" />
 
         <Spinner
@@ -73,6 +78,7 @@
         android:background="@drawable/quanly_edittext_background"
         android:hint="Giảm giá (%)"
         android:inputType="number"
+        android:maxLength="3"
         android:paddingLeft="10dp" />
 
     <Button
