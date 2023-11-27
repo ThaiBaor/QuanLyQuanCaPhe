@@ -53,6 +53,7 @@ public class BieuDoThongKeHoaDonThang extends AppCompatActivity {
         BarData barData = new BarData(barDataSet);
         barChart.setData(barData);
         barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
+        barChart.getAxisLeft().setAxisMinimum(0f);
         barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         barChart.getDescription().setEnabled(false);
         barChart.animateY(1000, Easing.EaseInOutQuad);
