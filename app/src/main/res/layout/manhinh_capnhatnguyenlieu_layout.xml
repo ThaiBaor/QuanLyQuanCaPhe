@@ -24,6 +24,7 @@
         android:layout_margin="10dp"
         android:background="@drawable/quanly_edittext_background"
         android:hint="Tên nguyên liệu"
+        android:maxLength="100"
         android:paddingLeft="10dp" />
 
     <LinearLayout
@@ -52,6 +53,7 @@
             android:layout_weight="1"
             android:background="@drawable/quanly_edittext_background"
             android:hint="Đơn vị"
+            android:maxLength="20"
             android:paddingLeft="10dp" />
     </LinearLayout>
 
@@ -70,6 +72,7 @@
             android:layout_weight="1"
             android:background="@drawable/quanly_edittext_background"
             android:hint="Số lượng nhập"
+            android:maxLength="10"
             android:inputType="number"
             android:padding="10dp" />
 
@@ -82,6 +85,7 @@
             android:background="@drawable/quanly_edittext_background"
             android:hint="Tồn kho"
             android:inputType="number"
+            android:maxLength="10"
             android:paddingLeft="10dp" />
     </LinearLayout>
 
