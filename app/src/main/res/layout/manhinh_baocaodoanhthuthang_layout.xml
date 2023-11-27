@@ -4,187 +4,179 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:openDrawer="start"
     android:background="@drawable/background"
     android:fitsSystemWindows="true"
-    tools:context=".activities.BaoCaoDoanhThuThangActivity"
-    android:orientation="vertical">
-
-    <androidx.drawerlayout.widget.DrawerLayout
+    android:orientation="vertical"
+    tools:context=".activities.BaoCaoDoanhThuTrongNamActivity"
+    tools:openDrawer="start">
+    <include layout="@layout/toolbar" />
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/nav_drawer_chucnang_admin">
-        <LinearLayout
+        android:orientation="vertical">
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <include layout="@layout/toolbar"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="Doanh thu trong năm 2023: "
-                android:textColor="#000"
-                android:textSize="25dp"
-                android:id="@+id/tvTitle"></TextView>
+            android:layout_height="wrap_content">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="5">
-
-                <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/money_icon" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:paddingBottom="10dp"
-                        android:text="Số hóa đơn:"
-                        android:textColor="#000"
-                        android:textSize="20dp"></TextView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:paddingTop="10dp"
-                        android:text="Doanh thu:"
-                        android:textColor="#000"
-                        android:textSize="20dp"></TextView>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="2"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tvSLHoaDon"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:paddingBottom="10dp"
-                        android:text="Đang tải"
-                        android:textColor="#1563EA"
-                        android:textSize="20dp"></TextView>
-
-                    <TextView
-                        android:id="@+id/tvDoanhThu"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:paddingTop="10dp"
-                        android:text="Đang tải"
-                        android:textColor="#1563EA"
-                        android:textSize="20dp"></TextView>
-                </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Chọn năm: "
+                    android:layout_marginLeft="10dp"
+                    android:text="Doanh thu trong năm 2023: "
                     android:textColor="#000"
-                    android:textSize="20dp"
-                    ></TextView>
-                <Spinner
+                    android:textSize="25dp"
+                    android:id="@+id/tvTitle"></TextView>
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/spNam"
-                    android:textAlignment="center"></Spinner>
+                    android:orientation="horizontal"
+                    android:weightSum="5">
+
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/money_icon" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingBottom="10dp"
+                            android:text="Số hóa đơn:"
+                            android:textColor="#000"
+                            android:textSize="20dp"></TextView>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingTop="10dp"
+                            android:text="Doanh thu:"
+                            android:textColor="#000"
+                            android:textSize="20dp"></TextView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="2"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvSLHoaDon"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingBottom="10dp"
+                            android:text="Đang tải"
+                            android:textColor="#1563EA"
+                            android:textSize="20dp"></TextView>
+
+                        <TextView
+                            android:id="@+id/tvDoanhThu"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingTop="10dp"
+                            android:text="Đang tải"
+                            android:textColor="#1563EA"
+                            android:textSize="20dp"></TextView>
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Chọn năm: "
+                        android:textColor="#000"
+                        android:textSize="20dp"
+                        ></TextView>
+                    <Spinner
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/spNam"
+                        android:textAlignment="center"></Spinner>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text="Tỉ trọng doanh thu năm:"
+                        android:textColor="#000"
+                        android:textSize="22dp"></TextView>
+
+                    <ImageButton
+                        android:id="@+id/btnChart"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="right"
+                        android:background="#DA8383"
+                        android:src="@drawable/chart_icon"></ImageButton>
+                </LinearLayout>
+                <TableLayout
+                    android:id="@+id/tbLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="3">
+
+                        <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/table_border_title"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:text="Tháng"
+                            android:textColor="#000"
+                            android:textSize="20dp"
+                            android:textStyle="bold"></TextView>
+
+                        <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/table_border_title"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:text="Số hóa đơn"
+                            android:textColor="#000"
+                            android:textSize="20dp"
+                            android:textStyle="bold"></TextView>
+
+                        <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/table_border_title"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:text="Doanh thu"
+                            android:textColor="#000"
+                            android:textSize="20dp"
+                            android:textStyle="bold"></TextView>
+                    </TableRow>
+                </TableLayout>
             </LinearLayout>
-            <TableLayout
-                android:id="@+id/tbLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp">
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="3">
-
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/table_border_title"
-                        android:gravity="center"
-                        android:padding="10dp"
-                        android:text="Tháng"
-                        android:textColor="#000"
-                        android:textSize="20dp"
-                        android:textStyle="bold"></TextView>
-
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/table_border_title"
-                        android:gravity="center"
-                        android:padding="10dp"
-                        android:text="Số hóa đơn"
-                        android:textColor="#000"
-                        android:textSize="20dp"
-                        android:textStyle="bold"></TextView>
-
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/table_border_title"
-                        android:gravity="center"
-                        android:padding="10dp"
-                        android:text="Doanh thu"
-                        android:textColor="#000"
-                        android:textSize="20dp"
-                        android:textStyle="bold"></TextView>
-                </TableRow>
-            </TableLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="Tỉ trọng doanh thu năm:"
-                    android:textColor="#000"
-                    android:textSize="22dp"></TextView>
-
-                <ImageButton
-                    android:id="@+id/btnChart"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="right"
-                    android:background="#DA8383"
-                    android:src="@drawable/chart_icon"></ImageButton>
-            </LinearLayout>
-        </LinearLayout>
-
-        <com.google.android.material.navigation.NavigationView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/nav_view"
-            android:layout_gravity="start"
-            app:headerLayout="@layout/nav_drawer_header"
-            app:menu="@menu/nav_drawer_menu_admin"
-            >
-        </com.google.android.material.navigation.NavigationView>
-    </androidx.drawerlayout.widget.DrawerLayout>
-
+        </ScrollView>
+    </LinearLayout>
 </LinearLayout>

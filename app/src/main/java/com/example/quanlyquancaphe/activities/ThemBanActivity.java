@@ -41,9 +41,7 @@ public class ThemBanActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference reference;
     ValueEventListener eventListener;
-    Drawable draRe;
     ArrayList<Ban> dataBan = new ArrayList<>();
-    BanAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +121,12 @@ public class ThemBanActivity extends AppCompatActivity {
     private Boolean validate() {
         if (edtMaBan.getText().toString().isEmpty()) {
             edtMaBan.requestFocus();
-            edtMaBan.setError("Empty");
+            edtMaBan.setError("Mã bàn trống");
+            return false;
+        }
+        if (edtMaBan.getText().length() > 10) {
+            edtMaBan.requestFocus();
+            edtMaBan.setError("Tối đa 10 ký tự");
             return false;
         }
         for (Ban item : dataBan){
@@ -135,12 +138,12 @@ public class ThemBanActivity extends AppCompatActivity {
         }
         if (edtTenBan.getText().toString().isEmpty()) {
             edtTenBan.requestFocus();
-            edtTenBan.setError("Empty");
+            edtTenBan.setError("Tên bàn trống");
             return false;
         }
         if (edtSoChoNgoi.getText().toString().isEmpty()) {
             edtSoChoNgoi.requestFocus();
-            edtSoChoNgoi.setError("Empty");
+            edtSoChoNgoi.setError("Số chỗ ngồi trống");
             return false;
         }
         return true;

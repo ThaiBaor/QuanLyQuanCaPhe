@@ -246,8 +246,10 @@ public class CapNhatThongTinMonActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(imageURL);
-                    storageReference.delete();
+                    if (!newImageURL.equals("")) {
+                        storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(imageURL);
+                        storageReference.delete();
+                    }
                     Toast.makeText(CapNhatThongTinMonActivity.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
                     finish();
                 }

@@ -9,10 +9,7 @@
             android:id="@+id/nav_thongke"
             android:icon="@drawable/thongke_icon"
             android:title="Thống kê"></item>
-        <item
-            android:id="@+id/nav_thongkedoanhthuthang"
-            android:icon="@drawable/thongke_icon"
-            android:title="Doanh thu tất cả tháng"></item>
+
         <item
             android:id="@+id/nav_qlnhanvien"
             android:icon="@drawable/qlnhanvien_icon"
@@ -33,6 +30,10 @@
             android:id="@+id/nav_qlkho"
             android:icon="@drawable/qlkho_icon"
             android:title="Quản lý kho"></item>
+        <item
+            android:id="@+id/nav_qlphieugiamgia"
+            android:icon="@drawable/phieugiamgia_icon"
+            android:title="Quản lý phiếu giảm giá"></item>
         <item
             android:id="@+id/nav_doimatkhau"
             android:icon="@drawable/lock_icon"

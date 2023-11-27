@@ -63,6 +63,7 @@ public class DanhSachMonPhucVuAdapter extends RecyclerView.Adapter<DanhSachMonPh
         holder.donGia.setText(nf.format(mon.getDonGia()) + "đ");
         if (mon.getGiamGia() == 0) {
             holder.giamGia.setVisibility(View.GONE);
+            holder.donGia.setPaintFlags(holder.donGia.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
             holder.donGia.setTextSize(17);
             holder.donGia.setTextColor(Color.rgb(255, 0, 0));
         } else {

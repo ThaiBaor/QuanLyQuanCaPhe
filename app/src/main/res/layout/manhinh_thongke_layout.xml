@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context=".activities.ThongKeActivity"
+    tools:openDrawer="start">
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/nav_drawer_chucnang_admin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <include layout="@layout/toolbar"></include>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/btnDTTrongNgay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="2.5dp"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/pie_chart_icon"
+                    android:gravity="center"
+                    android:padding="30dp"
+                    android:text="Doanh thu trong ngày"
+                    android:textSize="15dp"></Button>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:weightSum="2">
+
+                    <Button
+                        android:id="@+id/btnDHTheoGio"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_margin="2.5dp"
+                        android:layout_weight="1"
+                        android:drawableTop="@drawable/line_chart_icon_small"
+                        android:gravity="center"
+                        android:paddingTop="20dp"
+                        android:text="Đơn hàng theo giờ"
+                        android:textSize="15dp"></Button>
+
+                    <Button
+                        android:id="@+id/btnDTTrongThang"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_margin="2.5dp"
+                        android:layout_weight="1"
+                        android:drawableTop="@drawable/bar_chart_icon"
+                        android:paddingTop="10dp"
+                        android:text="DOANH THU TRONG THÁNG"
+                        android:textSize="15dp"></Button>
+                </LinearLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnDTTrongNam"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_margin="2.5dp"
+                android:drawableTop="@drawable/line_chart_icon"
+                android:paddingTop="10dp"
+                android:text="DOANH THU TRONG NĂM"
+                android:textSize="15dp"></Button>
+
+        </LinearLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/nav_drawer_header"
+            app:menu="@menu/nav_drawer_menu_admin"></com.google.android.material.navigation.NavigationView>
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+</LinearLayout>

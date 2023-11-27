@@ -35,7 +35,7 @@
             android:background="@drawable/quanly_edittext_background"
             android:hint="Mã bàn"
             android:paddingLeft="10dp"
-            android:inputType="text"/>
+            android:inputType="text" />
 
         <EditText
             android:id="@+id/edtTenBan"

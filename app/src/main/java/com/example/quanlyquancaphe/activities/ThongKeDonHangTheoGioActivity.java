@@ -7,8 +7,8 @@ import androidx.appcompat.widget.Toolbar;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.DatePicker;
@@ -18,20 +18,17 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+
 import com.example.quanlyquancaphe.R;
-import com.example.quanlyquancaphe.models.ChiTietMon;
 import com.example.quanlyquancaphe.models.HoaDon;
-import com.example.quanlyquancaphe.models.HoaDonKhachHang;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -143,14 +140,44 @@ public class ThongKeDonHangTheoGioActivity extends AppCompatActivity {
 
     private void createTable(@NonNull Map<Integer, Integer> map) {
         tableLayout.removeAllViews();
-        // Tạo hàng
+        /*
+        // Tạo hàng tiêu đề
+        TableRow titleRow = new TableRow(this);
+        titleRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        titleRow.setWeightSum(2);
+        // Tạo cột 1
+        TextView tvTitleGio = new TextView(this);
+        tvTitleGio.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT, 1));
+        tvTitleGio.setPadding(10, 10, 10, 10);
+        tvTitleGio.setGravity(Gravity.CENTER);
+        tvTitleGio.setText("Giờ");
+        tvTitleGio.setTypeface(null, Typeface.BOLD);
+        tvTitleGio.setBackgroundResource(R.drawable.table_border_title);
+        tvTitleGio.setTextSize(20);
+        titleRow.addView(tvTitleGio);
+        // Tạo cột 2
+        TextView tvTitleSoHoaDon = new TextView(this);
+        tvTitleSoHoaDon.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT, 1));
+        tvTitleSoHoaDon.setPadding(10, 10, 10, 10);
+        tvTitleSoHoaDon.setGravity(Gravity.CENTER);
+        tvTitleSoHoaDon.setText("Số hóa đơn");
+        tvTitleSoHoaDon.setTypeface(null, Typeface.BOLD);
+        tvTitleSoHoaDon.setBackgroundResource(R.drawable.table_border_title);
+        tvTitleSoHoaDon.setTextSize(20);
+        titleRow.addView(tvTitleSoHoaDon);
+
+        tableLayout.addView(titleRow);
+
+         */
+        createTitleRow();
+        // Tạo hàng dữ liệu
         for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-            TableRow tableRow = new TableRow(this);
-            tableRow.setLayoutParams(new TableLayout.LayoutParams(
+            TableRow contentRow = new TableRow(this);
+            contentRow.setLayoutParams(new TableLayout.LayoutParams(
                     TableLayout.LayoutParams.MATCH_PARENT,
                     TableLayout.LayoutParams.WRAP_CONTENT
             ));
-            tableRow.setWeightSum(2);
+            contentRow.setWeightSum(2);
             // Tạo cột
             // Cột 1
             TextView tvThang = new TextView(this);
@@ -167,7 +194,7 @@ public class ThongKeDonHangTheoGioActivity extends AppCompatActivity {
             tvThang.setBackgroundResource(R.drawable.table_border);
             tvThang.setText(entry.getKey() + "h");
             // Thêm TextView vào TableRow
-            tableRow.addView(tvThang);
+            contentRow.addView(tvThang);
             // Cột 2
             TextView tvSoHoaDon = new TextView(this);
             tvSoHoaDon.setLayoutParams(new TableRow.LayoutParams(
@@ -183,11 +210,59 @@ public class ThongKeDonHangTheoGioActivity extends AppCompatActivity {
             tvSoHoaDon.setBackgroundResource(R.drawable.table_border);
             tvSoHoaDon.setText(entry.getValue() + "");
             // Thêm TextView vào TableRow
-            tableRow.addView(tvSoHoaDon);
+            contentRow.addView(tvSoHoaDon);
 
             // Thêm TableRow vào TableLayout
-            tableLayout.addView(tableRow);
+            tableLayout.addView(contentRow);
         }
+    }
+
+    private void createTitleRow() {
+        TableRow titleRow = new TableRow(this);
+        titleRow.setLayoutParams(new TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.WRAP_CONTENT
+        ));
+        titleRow.setWeightSum(2);
+        // Tạo cột
+        // Cột 1
+        TextView column1 = new TextView(this);
+        column1.setLayoutParams(new TableRow.LayoutParams(
+                TableLayout.LayoutParams.WRAP_CONTENT,
+                TableLayout.LayoutParams.WRAP_CONTENT,
+                1
+
+        ));
+
+        column1.setTextSize(20);
+        column1.setPadding(0, 10, 0, 10);
+        column1.setTextColor(Color.BLACK);
+        column1.setGravity(Gravity.CENTER);
+        column1.setTypeface(null, Typeface.BOLD);
+        column1.setBackgroundResource(R.drawable.table_border_title);
+        column1.setText("Giờ");
+        // Thêm TextView vào TableRow
+        titleRow.addView(column1);
+        // Cột 2
+        TextView column2 = new TextView(this);
+        column2.setLayoutParams(new TableRow.LayoutParams(
+                TableLayout.LayoutParams.WRAP_CONTENT,
+                TableLayout.LayoutParams.WRAP_CONTENT,
+                1
+
+        ));
+        column2.setPadding(0, 10, 0, 10);
+        column2.setTextSize(20);
+        column2.setTypeface(null, Typeface.BOLD);
+        column2.setTextColor(Color.BLACK);
+        column2.setGravity(Gravity.CENTER);
+        column2.setBackgroundResource(R.drawable.table_border_title);
+        column2.setText("Số hóa đơn");
+        // Thêm TextView vào TableRow
+        titleRow.addView(column2);
+
+        // Thêm TableRow vào TableLayout
+        tableLayout.addView(titleRow);
     }
 
     private void openDatePicker() {
@@ -196,12 +271,13 @@ public class ThongKeDonHangTheoGioActivity extends AppCompatActivity {
         int monthNow = calendar.get(Calendar.MONTH);
         int dayNow = calendar.get(Calendar.DAY_OF_MONTH);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat dateFormat_ = new SimpleDateFormat("yyyy-MM-dd");
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 calendar.set(year, month, day);
                 edtChonNgay.setText(dateFormat.format(calendar.getTime()));
-                getData(dateFormat.format(calendar.getTime()));
+                getData(dateFormat_.format(calendar.getTime()));
             }
         }, yearNow, monthNow, dayNow);
         datePickerDialog.setTitle("Chọn ngày");
