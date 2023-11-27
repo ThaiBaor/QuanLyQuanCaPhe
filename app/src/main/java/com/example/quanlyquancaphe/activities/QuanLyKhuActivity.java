@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.quanlyquancaphe.R;
 import com.example.quanlyquancaphe.adapters.QuanLyKhuAdapter;
+import com.example.quanlyquancaphe.models.Ban;
 import com.example.quanlyquancaphe.models.Khu;
 import com.example.quanlyquancaphe.services.MenuSideBarAdmin;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,7 +40,7 @@ import com.tsuryo.swipeablerv.SwipeableRecyclerView;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class QuanLyKhuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class QuanLyKhuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     Toolbar toolBar;
     EditText edtSearchBox, edtMa, edtKhu;
     ImageButton btnadd, btnSort;
@@ -48,14 +49,13 @@ public class QuanLyKhuActivity extends AppCompatActivity implements NavigationVi
     DatabaseReference databaseReference;
     SwipeableRecyclerView recyclerView;
     QuanLyKhuAdapter quanLyKhuAdapter;
-    ArrayList<Khu> data= new ArrayList<>();
-    ArrayList<Khu> filterdata= new ArrayList<>();
+    ArrayList<Khu> data = new ArrayList<>();
+    ArrayList<Khu> filterdata = new ArrayList<>();
     ValueEventListener valueEventListener;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     ActionBarDrawerToggle actionBarDrawerToggle;
     Integer sortc = 0;
-    Khu khuAdd = new Khu();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +67,7 @@ public class QuanLyKhuActivity extends AppCompatActivity implements NavigationVi
     }
 
     private void setControl() {
-        recyclerView =findViewById(R.id.recycle);
+        recyclerView = findViewById(R.id.recycle);
         edtSearchBox = findViewById(R.id.edtSearchBox);
         btnadd = findViewById(R.id.btnAdd);
         edtMa = findViewById(R.id.edtMa);
@@ -81,7 +81,7 @@ public class QuanLyKhuActivity extends AppCompatActivity implements NavigationVi
         toolBar.setNavigationIcon(R.drawable.menu_icon);
         toolBar.setTitle("Quản lý khu");
         khoiTao();
-        quanLyKhuAdapter = new QuanLyKhuAdapter(QuanLyKhuActivity.this,data);
+        quanLyKhuAdapter = new QuanLyKhuAdapter(QuanLyKhuActivity.this, data);
         SwipeableRecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(quanLyKhuAdapter);
@@ -94,6 +94,7 @@ public class QuanLyKhuActivity extends AppCompatActivity implements NavigationVi
                 edtKhu.setText(tenKhu);
                 quanLyKhuAdapter.notifyDataSetChanged();
             }
+
             @Override
             public void onSwipedRight(int position) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(QuanLyKhuActivity.this);
@@ -119,9 +120,6 @@ public class QuanLyKhuActivity extends AppCompatActivity implements NavigationVi
                 dialog.show();
             }
         });
-
-
-
         /*
          * Additional attributes:
          * */
@@ -143,9 +141,9 @@ public class QuanLyKhuActivity extends AppCompatActivity implements NavigationVi
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!edtSearchBox.getText().equals("")){
+                if (!edtSearchBox.getText().equals("")) {
                     search(charSequence);
-                    quanLyKhuAdapter = new QuanLyKhuAdapter(QuanLyKhuActivity.this,filterdata);
+                    quanLyKhuAdapter = new QuanLyKhuAdapter(QuanLyKhuActivity.this, filterdata);
                     recyclerView.setAdapter(quanLyKhuAdapter);
                 }
             }
@@ -158,12 +156,11 @@ public class QuanLyKhuActivity extends AppCompatActivity implements NavigationVi
         btnadd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (kiemTraThem() == true){
+                if (kiemTraThem() == true) {
                     data.clear();
-                    kiemTraThem();
                     String khu = edtKhu.getText().toString();
                     Integer id = Integer.parseInt(edtMa.getText().toString());
-                    khuAdd = new Khu(id,khu);
+                    Khu khuAdd = new Khu(id, khu);
                     firebaseDatabase = FirebaseDatabase.getInstance();
                     databaseReference = firebaseDatabase.getReference().child("Khu");
                     databaseReference.child(String.valueOf(id)).setValue(khuAdd).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -178,34 +175,29 @@ public class QuanLyKhuActivity extends AppCompatActivity implements NavigationVi
                         }
                     });
                 }
-                else {
-                    Toast.makeText(QuanLyKhuActivity.this, "Nhập dữ liệu", Toast.LENGTH_SHORT).show();
-                }
             }
         });
         // sap xep
         btnSort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (sortc == 1){
+                if (sortc == 0) {
                     ++sortc;
                     data.sort(new Comparator<Khu>() {
                         @Override
                         public int compare(Khu khu1, Khu khu2) {
-                            return khu1.getTenKhu().substring(0,khu1.getTenKhu().length()).compareTo(khu2.getTenKhu().substring(0,khu2.getTenKhu().length())) > 1 ? 1 : -1;
+                            return khu1.getTenKhu().substring(0, 1).compareTo(khu2.getTenKhu().substring(0, 1)) < 1 ? 1 : -1;
                         }
                     });
-                }
-                else if(sortc == 0){
+                } else if (sortc == 1) {
                     ++sortc;
                     data.sort(new Comparator<Khu>() {
                         @Override
                         public int compare(Khu khu1, Khu khu2) {
-                            return khu1.getTenKhu().substring(0,khu1.getTenKhu().length()).compareTo(khu2.getTenKhu().substring(0,khu2.getTenKhu().length())) > 1 ? 1 : -1;
+                            return khu1.getTenKhu().substring(0, 1).compareTo(khu2.getTenKhu().substring(0, 1)) > 1 ? 1 : -1;
                         }
                     });
-                }
-                else {
+                } else {
                     data.clear();
                     khoiTao();
                     sortc = 0;
@@ -217,31 +209,30 @@ public class QuanLyKhuActivity extends AppCompatActivity implements NavigationVi
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (kiemTraUpdate() == true){
+                if (kiemTraUpdate() == true) {
                     update();
-                    data.clear();
                     quanLyKhuAdapter.notifyDataSetChanged();
-                }
-                else {
+                } else {
                     Toast.makeText(QuanLyKhuActivity.this, "Nhập dữ liệu", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
-    private void search(CharSequence charSequence){
+
+    private void search(CharSequence charSequence) {
         filterdata.clear();
-        for (Khu khu : data){
-            if(khu.getTenKhu().toLowerCase().contains(charSequence.toString().toLowerCase())){
+        for (Khu khu : data) {
+            if (khu.getTenKhu().toLowerCase().contains(charSequence.toString().toLowerCase())) {
                 filterdata.add(khu);
             }
         }
     }
 
-    private void setdrawer(){
+    private void setdrawer() {
         toolBar = findViewById(R.id.toolBar);
         drawerLayout = findViewById(R.id.nav_drawer_chucnang_admin);
         navigationView = findViewById(R.id.nav_view);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolBar,R.string.open_nav,R.string.close_nav);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolBar, R.string.open_nav, R.string.close_nav);
         //setSupportActionBar(toolbar);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_qlkhu);
@@ -250,63 +241,77 @@ public class QuanLyKhuActivity extends AppCompatActivity implements NavigationVi
     }
 
     private void update() {
-        kiemTraUpdate();
-        Khu khu = new Khu();
-        khu.setId_Khu(Integer.parseInt(edtMa.getText().toString()));
-        khu.setTenKhu(edtKhu.getText().toString());
-        databaseReference = FirebaseDatabase.getInstance().getReference("Khu");
-        databaseReference.child(khu.getId_Khu() + "").setValue(khu).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(QuanLyKhuActivity.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-                }
+        for (Khu item : data) {
+            System.out.println(item.toString());
+            if (edtMa.getText().toString().equals(item.getId_Khu() + "")) {
+                Khu khu = new Khu();
+                khu.setId_Khu(Integer.parseInt(edtMa.getText().toString()));
+                khu.setTenKhu(edtKhu.getText().toString());
+                databaseReference = FirebaseDatabase.getInstance().getReference("Khu");
+                databaseReference.child(khu.getId_Khu() + "").setValue(khu).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(QuanLyKhuActivity.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(QuanLyKhuActivity.this, "Lỗi:" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                Toast.makeText(this, "Mã không tồn tại", Toast.LENGTH_SHORT).show();
+                return;
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(QuanLyKhuActivity.this, "Lỗi:" + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        }
+        data.clear();
     }
-    private Boolean kiemTraThem(){
-        if (edtMa.getText().toString().isEmpty()){
+
+    private Boolean kiemTraThem() {
+        if (edtMa.getText().toString().isEmpty()) {
             edtMa.setError("Empty");
             return false;
         }
-        khuAdd.setId_Khu(Integer.parseInt(edtMa.getText().toString()));
-        if (edtKhu.getText().toString().isEmpty()){
+        if (edtKhu.getText().toString().isEmpty()) {
             edtKhu.setError("Empty");
             return false;
         }
-        khuAdd.setTenKhu(edtKhu.getText().toString());
+        for (Khu item : data) {
+            if (edtMa.getText().toString().equals(item.getId_Khu())) {
+                Toast.makeText(this, "Trung ma", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
         return true;
     }
 
-    private boolean kiemTraUpdate(){
-        if (edtMa.getText().toString().isEmpty()){
+    private boolean kiemTraUpdate() {
+        if (edtMa.getText().toString().isEmpty()) {
             edtMa.setError("Empty");
             return false;
         }
-        if (edtKhu.getText().toString().isEmpty()){
+        if (edtKhu.getText().toString().isEmpty()) {
             edtKhu.setError("Empty");
             return false;
         }
         return true;
     }
+
     @Override
     protected void onRestart() {
         super.onRestart();
         quanLyKhuAdapter.notifyDataSetChanged();
     }
 
-    private void khoiTao(){
+    private void khoiTao() {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference().child("Khu");
         valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot item: snapshot.getChildren()){
+                for (DataSnapshot item : snapshot.getChildren()) {
                     Khu khu = item.getValue(Khu.class);
                     data.add(khu);
                 }

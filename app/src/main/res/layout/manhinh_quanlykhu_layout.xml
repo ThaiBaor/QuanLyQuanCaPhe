@@ -70,6 +70,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/quanly_edittext_background"
                     android:hint="Mã"
+                    android:inputType="number"
+                    android:maxLength="5"
                     android:padding="10dp"/>
 
                 <EditText
@@ -81,6 +83,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/quanly_edittext_background"
                     android:hint="Tên khu"
+                    android:maxLength="100"
                     android:padding="10dp"/>
 
                 <Button
