@@ -25,6 +25,7 @@
         android:background="@drawable/quanly_edittext_background"
         android:hint="Tên nguyên liệu"
         android:paddingLeft="10dp"
+        android:maxLength="255"
         android:inputType="text"/>
 
     <LinearLayout
@@ -53,6 +54,7 @@
             android:layout_weight="1"
             android:background="@drawable/quanly_edittext_background"
             android:hint="Đơn vị"
+            android:maxLength="15"
             android:paddingLeft="10dp"
             android:inputType="text"/>
     </LinearLayout>
