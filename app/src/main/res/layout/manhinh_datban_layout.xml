@@ -30,6 +30,7 @@
             android:background="@drawable/quanly_edittext_background"
             android:hint="Tên khách hàng"
             android:paddingLeft="10dp"
+            android:maxLength="30"
             android:inputType="text"/>
         <EditText
             android:id="@+id/edtSDT"
@@ -41,6 +42,7 @@
             android:layout_weight="1"
             android:background="@drawable/quanly_edittext_background"
             android:hint="Số điện thoại"
+            android:maxLength="10"
             android:paddingLeft="10dp"
             android:inputType="number"/>
         <EditText
@@ -54,6 +56,7 @@
             android:background="@drawable/quanly_edittext_background"
             android:hint="Số người"
             android:paddingLeft="10dp"
+            android:maxLength="4"
             android:inputType="number"/>
         <LinearLayout
             android:layout_marginTop="10dp"
