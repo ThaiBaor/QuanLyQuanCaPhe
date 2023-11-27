@@ -35,7 +35,8 @@
             android:background="@drawable/quanly_edittext_background"
             android:hint="Mã bàn"
             android:paddingLeft="10dp"
-            android:inputType="text" />
+            android:inputType="text"
+            android:maxLength="10"/>
 
         <EditText
             android:id="@+id/edtTenBan"
@@ -46,6 +47,7 @@
             android:background="@drawable/quanly_edittext_background"
             android:hint="Tên bàn"
             android:paddingLeft="10dp"
+            android:maxLength="20"
             android:inputType="text"/>
     </LinearLayout>
 
