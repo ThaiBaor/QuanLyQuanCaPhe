@@ -40,6 +40,7 @@
             android:drawableLeft="@drawable/tendangnhap_icon"
             android:layout_weight="1"
             android:inputType="text"
+            android:maxLength="10"
             android:paddingLeft="10dp"
             android:layout_marginBottom="20dp"></EditText>
         <EditText
@@ -51,6 +52,7 @@
             android:inputType="textPassword"
             android:drawableLeft="@drawable/lock_icon"
             android:layout_weight="1"
+            android:maxLength="20"
             android:paddingLeft="10dp"
             android:layout_marginBottom="30dp"></EditText>
 
