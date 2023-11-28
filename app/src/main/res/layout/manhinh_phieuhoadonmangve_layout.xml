@@ -2,10 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:weightSum="10">
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_weight="8">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -201,42 +203,48 @@
     </ScrollView>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <EditText
-            android:id="@+id/maGiamGiaHDMV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Mã giảm giá"/>
-        <Switch
-            android:id="@+id/swMaGiamGiaHoaDonMV"
-            android:layout_width="match_parent"
-            android:layout_weight="4"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="end"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:layout_weight="2">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/maGiamGiaHDMV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Mã giảm giá"/>
+            <Switch
+                android:id="@+id/swMaGiamGiaHoaDonMV"
+                android:layout_width="match_parent"
+                android:layout_weight="4"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/btnQuayLaiMV"
-            android:layout_width="130dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:layout_weight="1"
-            android:text="Quay lại" />
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnQuayLaiMV"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:layout_weight="1"
+                android:text="Quay lại" />
 
 
-        <Button
-            android:id="@+id/btnThanhToanMV"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:layout_weight="1"
-            android:text="Thanh toán" />
+            <Button
+                android:id="@+id/btnThanhToanMV"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:layout_weight="1"
+                android:text="Thanh toán" />
+        </LinearLayout>
     </LinearLayout>
+
 </LinearLayout>

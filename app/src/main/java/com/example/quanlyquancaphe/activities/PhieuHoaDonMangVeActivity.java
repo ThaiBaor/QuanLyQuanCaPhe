@@ -85,6 +85,7 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
     String fileName;
     File downloadDir;
     StorageReference storageReference;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,8 +118,8 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference ref = database.getReference("HoaDon").child("MangVe");
                     taoChiTietMonQK(hoaDonMangVe.getId_HoaDon());
-                    if (check){
-                        taoPhieuGiamGiaDaSuDung(hoaDonMangVe.getId_HoaDon(),id_Phieu);
+                    if (check) {
+                        taoPhieuGiamGiaDaSuDung(hoaDonMangVe.getId_HoaDon(), id_Phieu);
                     }
                     resetTongTienHoaDon(hoaDonMangVe.getId_HoaDon(), tongTienSauGiam);
                     ref.child(hoaDonMangVe.getId_HoaDon()).child("daThanhToan").setValue(tt).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -151,30 +152,51 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                 LocalDate currentDate = LocalDate.now();
                 if (swGiamGia.isChecked()) {
-                    for (PhieuGiamGia item : dataPhieuGiamGia) {
-                        LocalDate otherDate = LocalDate.parse(item.getNgayHetHan(), formatter);
-                        if (currentDate.compareTo(otherDate) < 0) {
-                            if (item.getId_Phieu().equals(maGiamGia.getText().toString())) {
-                                tongTienSauGiam = hoaDonMangVe.getTongTien() - hoaDonMangVe.getTongTien() * item.getGiaTri() / 100;
-                                tvtongTienSauGiam.setText(nf.format(tongTienSauGiam) + "đ");
-                                id_Phieu = item.getId_Phieu();
-                                swGiamGia.setChecked(true);
-                                check = true;
-                                return;
+                    // duyệt mãng dataPhieuGiamGia
+                    for (int i = 0; i<dataPhieuGiamGia.size();i++) {
+                        // kiểm tra i có là phần tử cuối cùng ko
+                        if (i == dataPhieuGiamGia.size()-1){
+                            if (dataPhieuGiamGia.get(i).getId_Phieu().equals(maGiamGia.getText().toString())) {
+                                LocalDate otherDate = LocalDate.parse(dataPhieuGiamGia.get(i).getNgayHetHan(), formatter);
+                                if (currentDate.compareTo(otherDate) < 0) {
+                                    tongTienSauGiam = hoaDonMangVe.getTongTien() - hoaDonMangVe.getTongTien() * dataPhieuGiamGia.get(i).getGiaTri() / 100;
+                                    tvtongTienSauGiam.setText(nf.format(tongTienSauGiam) + "đ");
+                                    id_Phieu = dataPhieuGiamGia.get(i).getId_Phieu();
+                                    swGiamGia.setChecked(true);
+                                    check = true;
+                                    return;
+                                } else {
+                                    Toast.makeText(PhieuHoaDonMangVeActivity.this, "Mã đã hết hạn!", Toast.LENGTH_SHORT).show();
+                                    swGiamGia.setChecked(false);
+                                    check = false;
+                                }
                             } else {
                                 Toast.makeText(PhieuHoaDonMangVeActivity.this, "Mã Không tồn tại!", Toast.LENGTH_SHORT).show();
                                 swGiamGia.setChecked(false);
+
                                 check = false;
                             }
-                        } else {
-                            Toast.makeText(PhieuHoaDonMangVeActivity.this, "Mã đã hết hạn!", Toast.LENGTH_SHORT).show();
-                            swGiamGia.setChecked(false);
-                            check = false;
+                        }
+                        else {
+                            if (dataPhieuGiamGia.get(i).getId_Phieu().equals(maGiamGia.getText().toString())) {
+                                LocalDate otherDate = LocalDate.parse(dataPhieuGiamGia.get(i).getNgayHetHan(), formatter);
+                                if (currentDate.compareTo(otherDate) < 0) {
+                                    tongTienSauGiam = hoaDonMangVe.getTongTien() - hoaDonMangVe.getTongTien() * dataPhieuGiamGia.get(i).getGiaTri() / 100;
+                                    tvtongTienSauGiam.setText(nf.format(tongTienSauGiam) + "đ");
+                                    id_Phieu = dataPhieuGiamGia.get(i).getId_Phieu();
+                                    swGiamGia.setChecked(true);
+                                    check = true;
+                                    return;
+                                } else {
+                                    Toast.makeText(PhieuHoaDonMangVeActivity.this, "Mã đã hết hạn!", Toast.LENGTH_SHORT).show();
+                                    swGiamGia.setChecked(false);
+                                    check = false;
+                                }
+                            }
                         }
                     }
-                }
-                else {
-                    tvtongTienSauGiam.setText(nf.format(hoaDonMangVe.getTongTien())+"đ");
+                } else {
+                    tvtongTienSauGiam.setText(nf.format(hoaDonMangVe.getTongTien()) + "đ");
                 }
             }
         });
@@ -198,7 +220,8 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
         scaledbmp = Bitmap.createScaledBitmap(bmp, 400, 400, false);
         scaledqr = Bitmap.createScaledBitmap(qr, 200, 200, false);
     }
-    public void loadDataThongTin(){
+
+    public void loadDataThongTin() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("").setMessage("Đang tải dữ liệu...");
         builder.setCancelable(false);
         AlertDialog dialog = builder.create();
@@ -206,7 +229,7 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
         if (bundle != null) {
             NumberFormat nf = NumberFormat.getNumberInstance();
             hoaDonMangVe.setId_HoaDon(bundle.getString("id_HoaDon"));
-            tvMHD.setText(hoaDonMangVe.getId_HoaDon().substring(0,13));
+            tvMHD.setText(hoaDonMangVe.getId_HoaDon().substring(0, 13));
             hoaDonMangVe.setThoiGian_ThanhToan(bundle.getString("thoiGian_ThanhToan"));
             tvGioHD.setText(hoaDonMangVe.getThoiGian_ThanhToan());
             hoaDonMangVe.setNgayThanhToan(bundle.getString("ngayThanhToan"));
@@ -220,6 +243,7 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
         }
         dialog.dismiss();
     }
+
     private void datachitietmon() {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference().child("ChiTietMon").child(tenKH);
@@ -237,17 +261,17 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
                     }
                 }
                 Map<String, Integer> mapGopSL = new HashMap<>();
-                for (ChiTietMon item : dataChiTietMon){
-                    Integer current = mapGopSL.getOrDefault(item.getId_Mon(),0);
-                    mapGopSL.put(item.getId_Mon(),current + item.getSl());
+                for (ChiTietMon item : dataChiTietMon) {
+                    Integer current = mapGopSL.getOrDefault(item.getId_Mon(), 0);
+                    mapGopSL.put(item.getId_Mon(), current + item.getSl());
                 }
-                for (Map.Entry<String, Integer> entry : mapGopSL.entrySet()){
+                for (Map.Entry<String, Integer> entry : mapGopSL.entrySet()) {
                     ChiTietMon chiTietMon = new ChiTietMon();
                     chiTietMon.setId_Mon(entry.getKey());
                     chiTietMon.setSl(entry.getValue());
-                    for (ChiTietMon item : dataChiTietMon){
+                    for (ChiTietMon item : dataChiTietMon) {
                         ChiTietMon chiTietMon1 = new ChiTietMon();
-                        if (item.getId_Mon().equals(entry.getKey())){
+                        if (item.getId_Mon().equals(entry.getKey())) {
                             chiTietMon1.setId_Mon(item.getId_Mon());
                             chiTietMon1.setSl(chiTietMon.getSl());
                             chiTietMon1.setId_Ban(item.getId_Ban());
@@ -275,7 +299,8 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
             }
         });
     }
-    public void taoChiTietMonQK(String id_HoaDon){
+
+    public void taoChiTietMonQK(String id_HoaDon) {
         HoaDonUltility.getHdInstance().thanhToanMangVe(tenKH, id_HoaDon);
     }
 
@@ -297,8 +322,6 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
 
         // load hình ảnh lên file pdf
         canvas.drawBitmap(scaledbmp, 400, 0, paint);
-
-
 
 
         titlePaint.setTextAlign(Paint.Align.CENTER);
@@ -374,7 +397,7 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTextSize(30f);
         paint.setColor(Color.BLACK);
-        canvas.drawText( "Cảm ơn quý khách vì sự ủng hộ. Chúng tôi luôn sẵn lòng phục vụ bạn!", pageWidth/2, pageRemember + 400, paint);
+        canvas.drawText("Cảm ơn quý khách vì sự ủng hộ. Chúng tôi luôn sẵn lòng phục vụ bạn!", pageWidth / 2, pageRemember + 400, paint);
 
         paint.setTextAlign(Paint.Align.LEFT);
         paint.setTextSize(50f);
@@ -388,9 +411,7 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
         canvas.drawText(nf.format(hoaDonMangVe.getTongTien()) + "đ", pageWidth - 90, pageRemember + 100, paint);
 
         // load hình ảnh lên file pdf
-        canvas.drawBitmap(scaledqr, 500, pageRemember+150, paint);
-
-
+        canvas.drawBitmap(scaledqr, 500, pageRemember + 150, paint);
 
 
         pdfDocument.finishPage(page);
@@ -439,6 +460,7 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
             }
         });
     }
+
     public void loadDataPhieuGiamGia() {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference().child("PhieuGiamGia");
@@ -457,7 +479,8 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
             }
         });
     }
-    public void taoPhieuGiamGiaDaSuDung(String id_HoaDon, String id_Phieu){
+
+    public void taoPhieuGiamGiaDaSuDung(String id_HoaDon, String id_Phieu) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("PhieuGiamGia").child("ChuaSuDung");
         databaseReference.child(id_Phieu).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -481,8 +504,9 @@ public class PhieuHoaDonMangVeActivity extends AppCompatActivity {
             }
         });
     }
-    public void resetTongTienHoaDon(String id_HoaDon, Double tongTien){
-        databaseReference = FirebaseDatabase.getInstance().getReference("HoaDon").child("TaiBan");
+
+    public void resetTongTienHoaDon(String id_HoaDon, Double tongTien) {
+        databaseReference = FirebaseDatabase.getInstance().getReference("HoaDon").child("MangVe");
         databaseReference.child(id_HoaDon).child("tongTien").setValue(tongTien);
     }
 }
