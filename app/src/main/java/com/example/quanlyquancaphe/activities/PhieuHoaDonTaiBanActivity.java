@@ -131,8 +131,8 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference ref = database.getReference("HoaDon").child("TaiBan");
                     taoChiTietMonQK(hoaDonTaiBan.getId_HoaDon());
-                    if (check){
-                        taoPhieuGiamGiaDaSuDung(hoaDonTaiBan.getId_HoaDon(),id_Phieu);
+                    if (check) {
+                        taoPhieuGiamGiaDaSuDung(hoaDonTaiBan.getId_HoaDon(), id_Phieu);
                     }
                     resetTongTienHoaDon(hoaDonTaiBan.getId_HoaDon(), tongTienSauGiam);
                     ref.child(hoaDonTaiBan.getId_HoaDon()).child("daThanhToan").setValue(tt).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -165,30 +165,47 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                 LocalDate currentDate = LocalDate.now();
                 if (swGiamGia.isChecked()) {
-                    for (PhieuGiamGia item : dataPhieuGiamGia) {
-                        LocalDate otherDate = LocalDate.parse(item.getNgayHetHan(), formatter);
-                        if (currentDate.compareTo(otherDate) < 0) {
-                            if (item.getId_Phieu().equals(maGiamGia.getText().toString())) {
-                                tongTienSauGiam = hoaDonTaiBan.getTongTien() - hoaDonTaiBan.getTongTien() * item.getGiaTri() / 100;
-                                tvtongTienSauGiam.setText(nf.format(tongTienSauGiam) + "đ");
-                                id_Phieu = item.getId_Phieu();
-                                swGiamGia.setChecked(true);
-                                check = true;
-                                return;
+                    for (int i = 0; i < dataPhieuGiamGia.size(); i++) {
+                        if (i == dataPhieuGiamGia.size() - 1) {
+                            if (dataPhieuGiamGia.get(i).getId_Phieu().equals(maGiamGia.getText().toString())) {
+                                LocalDate otherDate = LocalDate.parse(dataPhieuGiamGia.get(i).getNgayHetHan(), formatter);
+                                if (currentDate.compareTo(otherDate) < 0) {
+                                    tongTienSauGiam = hoaDonTaiBan.getTongTien() - hoaDonTaiBan.getTongTien() * dataPhieuGiamGia.get(i).getGiaTri() / 100;
+                                    tvtongTienSauGiam.setText(nf.format(tongTienSauGiam) + "đ");
+                                    id_Phieu = dataPhieuGiamGia.get(i).getId_Phieu();
+                                    swGiamGia.setChecked(true);
+                                    check = true;
+                                    return;
+                                } else {
+                                    Toast.makeText(PhieuHoaDonTaiBanActivity.this, "Mã Không tồn tại!", Toast.LENGTH_SHORT).show();
+                                    swGiamGia.setChecked(false);
+                                    check = false;
+                                }
                             } else {
-                                Toast.makeText(PhieuHoaDonTaiBanActivity.this, "Mã Không tồn tại!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PhieuHoaDonTaiBanActivity.this, "Mã đã hết hạn!", Toast.LENGTH_SHORT).show();
                                 swGiamGia.setChecked(false);
                                 check = false;
                             }
                         } else {
-                            Toast.makeText(PhieuHoaDonTaiBanActivity.this, "Mã đã hết hạn!", Toast.LENGTH_SHORT).show();
-                            swGiamGia.setChecked(false);
-                            check = false;
+                            if (dataPhieuGiamGia.get(i).getId_Phieu().equals(maGiamGia.getText().toString())) {
+                                LocalDate otherDate = LocalDate.parse(dataPhieuGiamGia.get(i).getNgayHetHan(), formatter);
+                                if (currentDate.compareTo(otherDate) < 0) {
+                                    tongTienSauGiam = hoaDonTaiBan.getTongTien() - hoaDonTaiBan.getTongTien() * dataPhieuGiamGia.get(i).getGiaTri() / 100;
+                                    tvtongTienSauGiam.setText(nf.format(tongTienSauGiam) + "đ");
+                                    id_Phieu = dataPhieuGiamGia.get(i).getId_Phieu();
+                                    swGiamGia.setChecked(true);
+                                    check = true;
+                                    return;
+                                } else {
+                                    Toast.makeText(PhieuHoaDonTaiBanActivity.this, "Mã Không tồn tại!", Toast.LENGTH_SHORT).show();
+                                    swGiamGia.setChecked(false);
+                                    check = false;
+                                }
+                            }
                         }
                     }
-                }
-                else {
-                    tvtongTienSauGiam.setText(nf.format(hoaDonTaiBan.getTongTien())+"đ");
+                } else {
+                    tvtongTienSauGiam.setText(nf.format(hoaDonTaiBan.getTongTien()) + "đ");
                 }
             }
         });
@@ -475,7 +492,8 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
             }
         });
     }
-    public void taoPhieuGiamGiaDaSuDung(String id_HoaDon, String id_Phieu){
+
+    public void taoPhieuGiamGiaDaSuDung(String id_HoaDon, String id_Phieu) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("PhieuGiamGia").child("ChuaSuDung");
         databaseReference.child(id_Phieu).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -499,7 +517,8 @@ public class PhieuHoaDonTaiBanActivity extends AppCompatActivity {
             }
         });
     }
-    public void resetTongTienHoaDon(String id_HoaDon, Double tongTien){
+
+    public void resetTongTienHoaDon(String id_HoaDon, Double tongTien) {
         databaseReference = FirebaseDatabase.getInstance().getReference("HoaDon").child("TaiBan");
         databaseReference.child(id_HoaDon).child("tongTien").setValue(tongTien);
     }
