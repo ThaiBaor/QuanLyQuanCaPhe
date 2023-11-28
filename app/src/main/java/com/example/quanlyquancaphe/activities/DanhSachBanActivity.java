@@ -289,30 +289,37 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
                             menu.getItem(3).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                                 @Override
                                 public boolean onMenuItemClick(@NonNull MenuItem item) {
-                                    // Kiểm tra món trong bàn đã xong hết chưa
-                                    kiemTraMonVanCon(dataBan.get(position).getId_Ban(), vanConMon -> {
-                                        // Nếu không còn thì tạo hóa đơn
-                                        if (!vanConMon) {
-                                            // Tạo hóa đơn cho thu ngân
-                                            HoaDonUltility.getHdInstance().taoHoaDonTaiBan(DanhSachBanActivity.this, dataBan.get(position).getId_Ban());
-                                            //sau khi thanh toán, chuyển trạng thái bàn thành 0: bàn trống
-                                            ChuyenTrangThaiBan(dataBan.get(position).getId_Ban(), 0);
-                                        }
-                                        //  Nếu còn thì cảnh báo bằng dialog
-                                        else {
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(DanhSachBanActivity.this);
-                                            builder.setCancelable(true);
-                                            builder.setTitle("Cảnh báo");
-                                            builder.setMessage("!!! Vẫn còn món trong bàn chưa xong.");
-                                            builder.setPositiveButton("Thanh toán", (dialogInterface, i) -> {
-                                                HoaDonUltility.getHdInstance().taoHoaDonTaiBan(DanhSachBanActivity.this, dataBan.get(position).getId_Ban());
-                                                ChuyenTrangThaiBan(dataBan.get(position).getId_Ban(), 0);
-                                            });
-                                            builder.setNegativeButton("Hủy", (dialogInterface, i) -> {
+                                    // Kiểm tra có món trong bàn hay không
+                                    kiemTraCoMonTrongban(dataBan.get(position).getId_Ban(), coMon -> {
+                                        if (coMon) {
+                                            // Kiểm tra món trong bàn đã xong hết chưa
+                                            kiemTraMonVanCon(dataBan.get(position).getId_Ban(), vanConMon -> {
+                                                // Nếu không còn thì tạo hóa đơn
+                                                if (!vanConMon) {
+                                                    // Tạo hóa đơn cho thu ngân
+                                                    HoaDonUltility.getHdInstance().taoHoaDonTaiBan(DanhSachBanActivity.this, dataBan.get(position).getId_Ban());
+                                                    //sau khi thanh toán, chuyển trạng thái bàn thành 0: bàn trống
+                                                    ChuyenTrangThaiBan(dataBan.get(position).getId_Ban(), 0);
+                                                }
+                                                //  Nếu còn thì cảnh báo bằng dialog
+                                                else {
+                                                    AlertDialog.Builder builder = new AlertDialog.Builder(DanhSachBanActivity.this);
+                                                    builder.setCancelable(true);
+                                                    builder.setTitle("Cảnh báo");
+                                                    builder.setMessage("!!! Vẫn còn món trong bàn chưa xong.");
+                                                    builder.setPositiveButton("Thanh toán", (dialogInterface, i) -> {
+                                                        HoaDonUltility.getHdInstance().taoHoaDonTaiBan(DanhSachBanActivity.this, dataBan.get(position).getId_Ban());
+                                                        ChuyenTrangThaiBan(dataBan.get(position).getId_Ban(), 0);
+                                                    });
+                                                    builder.setNegativeButton("Hủy", (dialogInterface, i) -> {
 
+                                                    });
+                                                    AlertDialog dialog = builder.create();
+                                                    dialog.show();
+                                                }
                                             });
-                                            AlertDialog dialog = builder.create();
-                                            dialog.show();
+                                        } else {
+                                            Toast.makeText(DanhSachBanActivity.this, "Bàn không có món để thanh toán", Toast.LENGTH_SHORT).show();
                                         }
                                     });
                                     return true;
@@ -339,6 +346,22 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
         });
     }
 
+    // Hàm kiểm tra xem bàn có món nào hay không
+    private void kiemTraCoMonTrongban(String id_Ban, kiemTraCoMonTrongBanListener listener) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon");
+        databaseReference.child(id_Ban).child("HT").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listener.kiemTraCoMonTrongBan(snapshot.exists());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     // Hàm kiểm tra xem bàn có còn món chưa hoàn thành hay không
     private void kiemTraMonVanCon(String id_Ban, kiemTraMonVanConTrongBanListener listener) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon");
@@ -361,6 +384,10 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
 
             }
         });
+    }
+
+    interface kiemTraCoMonTrongBanListener {
+        void kiemTraCoMonTrongBan(boolean coMon);
     }
 
     interface kiemTraMonVanConTrongBanListener {

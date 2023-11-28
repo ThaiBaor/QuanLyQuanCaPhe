@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -100,6 +101,7 @@ public class GioHangActivity extends AppCompatActivity implements GioHangInterfa
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 dataOnFB.clear();
                 finalData.clear();
+                adapter.notifyDataSetChanged();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     for (DataSnapshot items : dataSnapshot.getChildren()) {
                         ChiTietMon _chiTietMon = items.getValue(ChiTietMon.class);
@@ -118,7 +120,7 @@ public class GioHangActivity extends AppCompatActivity implements GioHangInterfa
                     adapter.notifyDataSetChanged();
                     return;
                 }
-                // Trường hợp vừa lấy dữ liệu tạm thời vừa lấy dũ liệu trên Firebase
+                // Trường hợp vừa lấy dữ liệu tạm thời vừa lấy dữ liệu trên Firebase
                 if (dataOnFB.size() != 0) {
                     dataOnFB.addAll(currentData);
                     finalData.addAll(dataOnFB);
