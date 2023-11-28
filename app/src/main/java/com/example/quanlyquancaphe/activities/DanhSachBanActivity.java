@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -340,18 +341,19 @@ public class DanhSachBanActivity extends AppCompatActivity implements View.OnCre
 
     // Hàm kiểm tra xem bàn có còn món chưa hoàn thành hay không
     private void kiemTraMonVanCon(String id_Ban, kiemTraMonVanConTrongBanListener listener) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon").child(id_Ban).child("HT");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("ChiTietMon");
+        databaseReference.child(id_Ban).child("HT").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     for (DataSnapshot item : dataSnapshot.getChildren()) {
-                        if (item.child("id_TrangThai").getValue(Integer.class) != 3) {
+                        if (item.child("id_TrangThai").getValue(Integer.class) < 2) {
                             listener.kiemTraMonVanConTrongBan(true);
                             return;
                         }
                     }
                 }
+                listener.kiemTraMonVanConTrongBan(false);
             }
 
             @Override
